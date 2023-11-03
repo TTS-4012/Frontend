@@ -37,14 +37,14 @@ jobs:
 
       - name: Install ESLint
         run: |
-          npm install 
-            eslint@8
+          npm install \
+            eslint@8 \
             @microsoft/eslint-formatter-sarif@2
 
       - name: Run ESLint
         run: |
-          npm run lint --
-          --format @microsoft/eslint-formatter-sarif
+          npm run lint -- \
+          --format @microsoft/eslint-formatter-sarif \
           --output-file eslint-results.sarif
         continue-on-error: true
 
