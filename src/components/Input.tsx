@@ -1,12 +1,12 @@
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
-import { InputHTMLAttributes } from "react";
+import { ForwardedRef, InputHTMLAttributes, forwardRef } from "react";
 
 type PropsType = InputHTMLAttributes<HTMLInputElement> & {
     label: string
-    error: string | undefined
+    error?: string | undefined
 }
 
-function Input({ label, error, ...inputProps }: PropsType) {
+const Input = forwardRef(({ label, error, ...inputProps }: PropsType, ref: ForwardedRef<HTMLInputElement>) => {
     return (
         <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -21,16 +21,17 @@ function Input({ label, error, ...inputProps }: PropsType) {
                         'focus:ring-indigo-500 text-gray-700 focus:border-indigo-500 border-gray-300'
                     }`}
                     aria-invalid={!!error}
+                    ref={ref}
                 />
                 {error && <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <ExclamationCircleIcon className="text-red-500" aria-hidden="true" />
                 </div>}
             </div>
-            {error && <p className="mt-2 text-sm text-red-600" id="email-error">
-                {error}
-            </p>}
+            <p className="mt-2 text-sm text-red-600" id="email-error">
+                {error}&nbsp;
+            </p>
         </div>
     );
-}
+});
 
 export default Input;
