@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import './index.css';
 import Register from './pages/Register.tsx';
+import Verify from './pages/Verify.tsx';
 
 const router = createBrowserRouter([
   {
@@ -11,7 +12,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/verify",
-    Component: Register,
+    Component: Verify,
   },
   {
     path: "/protect",
