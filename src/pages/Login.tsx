@@ -7,7 +7,7 @@ import Button from "../components/Button";
 import Password from "../components/Password";
 import Link from "../components/Link";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type FormDataType = {
    username: string;
@@ -24,12 +24,13 @@ const validationSchema = yup
 function Login() {
    const {
       register,
+      watch,
       handleSubmit,
    } = useForm<FormDataType>({
       resolver: yupResolver(validationSchema)
    });
 
-   const [error, setError] = useState(false);
+   const [showError, setShowError] = useState(false);
 
    const navigate = useNavigate();
 
@@ -41,19 +42,24 @@ function Login() {
          navigate('/home');
       })
       .catch(() => {
-         setError(true);
+         setShowError(true);
       });
    };
 
+   useEffect(() => {
+      const subscription = watch(() => setShowError(false));
+      return () => subscription.unsubscribe();
+    }, [watch]);
+  
    return (
       <form onSubmit={handleSubmit(handleLogin)} className="flex flex-col">
          <p className="text-left text-3xl font-extrabold text-indigo-700 mb-3 p-3">Login</p>
          <Input label="Username" {...register("username")} />
          <Password label="Password" {...register("password")} />
-         <Link className="self-start ml-3 text-sm" address="/aaaaaa">Forgot password</Link>
+         {/* <Link className="self-start ml-3 text-sm" address="/aaaaaa">Forgot password</Link> */}
          <Link className="self-start ml-3 text-sm" address="/register">Register</Link>
          <div className="flex flex-row items-center">
-            <span className="text-red-700 ml-3">{error && 'Login Failed'}</span>
+            <span className="text-red-700 ml-3">{showError && 'Login Failed'}</span>
             <Button type="submit" size="md" className="font-bold ml-auto mr-2 flex-end">Login</Button>
          </div>
       </form>
