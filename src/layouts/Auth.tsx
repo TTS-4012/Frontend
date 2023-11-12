@@ -1,14 +1,10 @@
-import { ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 
-type PropsType = {
-    children: ReactNode
-};
-
-function Auth(props: PropsType) {
+function Auth() {
     return (
         <div className="h-screen w-screen bg-indigo-100 flex">
             <div className="m-auto max-w-md w-full bg-white p-3 rounded-lg shadow">
-                {props.children}
+                <Outlet />
             </div>
         </div>
     );
