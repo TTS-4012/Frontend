@@ -43,7 +43,7 @@ function Register() {
            navigate('/verify', {state: {user_id: res.data.user_id}});
         })
         .catch(() => {
-           // TODO show error
+            setShowError(true);
         });    
     };
 
@@ -57,7 +57,7 @@ function Register() {
             <p className="text-left text-3xl font-extrabold text-gray-900 mb-3 p-3">Register</p>
             <Input label="Username" {...register("username")} error={errors.username?.message} />
             <Input label="Email" {...register("email")} error={errors.email?.message} />
-            <Input label="Password" {...register("password")} type="password" error={errors.passConfirm?.message} />
+            <Input label="Password" {...register("password")} type="password" error={errors.password?.message} />
             <Input label="Repeat password" {...register("passConfirm")} type="password" error={errors.passConfirm?.message} />
             <div className="flex flex-row items-center">
                 <span className="text-red-700 ml-3">{showError && 'Login Failed'}</span>
