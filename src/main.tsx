@@ -4,8 +4,13 @@ import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import './index.css';
 import Register from './pages/Register.tsx';
 import Verify from './pages/Verify.tsx';
+import Login from './pages/Login.tsx';
 
 const router = createBrowserRouter([
+  {
+    path: "/login",
+    Component: Login,
+  },
   {
     path: "/register",
     Component: Register,
@@ -18,10 +23,6 @@ const router = createBrowserRouter([
     path: "/protect",
     Component: Register,
   },
-  {
-    path: "/enter",
-    Component: Register,
-  }
 ]);
 
 
