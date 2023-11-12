@@ -7,6 +7,7 @@ import Button from "../components/Button";
 import Password from "../components/Password";
 import Link from "../components/Link";
 import axios from "axios";
+import { useState } from "react";
 
 type FormDataType = {
    username: string;
@@ -31,25 +32,28 @@ function Login() {
    const navigate = useNavigate();
 
    const handleLogin = (data: FormDataType) => {
-      axios.post('https://api.ocontest.ir/auth/login', data)
+      axios.post('https://api.ocontest.ir/v1/auth/login', data)
       .then((res) => {
          localStorage.setItem('auth.access_token', res.data.access_token);
          localStorage.setItem('auth.refresh_token', res.data.refresh_token);
          navigate('/home');
       })
       .catch(() => {
-         // TODO show error
+         setErroHandeler(true);
       });
    };
-
+   const [errorHandeler,setErroHandeler] = useState(false);
    return (
       <form onSubmit={handleSubmit(handleLogin)} className="flex flex-col">
-         <p className="text-left text-3xl font-extrabold text-indigo-700 mb-3 p-3">Login</p>
+         <p className="text-left text-3xl font-extrabold text-indigo-700 mb-3 py-3 px-1">Login</p>
          <Input label="Username" {...register("username")} />
          <Password label="Password" {...register("password")} />
-         <Link className="self-start ml-2 text-sm" address="/aaaaaa">Forgot password</Link>
-         <Link className="self-start ml-2 text-sm" address="/register">Register</Link>
-         <Button type="submit" size="md" className="font-bold ml-auto">Login</Button>
+         <Link className="self-start ml-3 text-sm" address="/aaaaaa">Forgot password</Link>
+         <Link className="self-start ml-3 text-sm" address="/register">Register</Link>
+         <div className="flex flex-row items-center">
+            <span>{errorHandeler&&<label className="text-red-700 ml-3">Username or password is wrong</label>}</span>
+            <Button type="submit" size="md" className="font-bold ml-auto mr-2 flex-end">Login</Button>
+         </div>
       </form>
    );
 }
