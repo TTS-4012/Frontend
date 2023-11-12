@@ -1,22 +1,20 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import axios from "axios";
 
 type FormDataType = {
-    email: string;
-    code: string;
+    otp: string;
 }
 
 const validationSchema = yup
     .object({
-        email: yup.string().email().required(),
-        code: yup.string().length(6).required()
+        otp: yup.string().length(6).required()
     })
     .required();
-
 
 function Verify() {
     const { state } = useLocation();
@@ -27,23 +25,30 @@ function Verify() {
         formState: { errors },
     } = useForm<FormDataType>({
         resolver: yupResolver(validationSchema),
-        defaultValues: {
-            email: state.email
-        }
     });
 
     const navigate = useNavigate();
 
     const onSubmit = (data: FormDataType) => {
-        console.log(data);
-        navigate('/secure', { state: { email: data.email } });
+        axios.post('https://api.ocontest.ir/v1/auth/verify', {
+            user_id: state.user_id,
+            otp: data.otp,
+        }).then(() => {
+            navigate('/login');
+        })
+        .catch(() => {
+            // TODO show error
+        });
     };
+
+    if (!state?.user_id) {
+        return <Navigate to='/register' />;
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
             <p className="text-left text-3xl font-extrabold text-gray-900 mb-3 p-3">Verify</p>
-            <Input label="Email" {...register("email")} error={errors.email?.message} readOnly />
-            <Input label="Enter the code" {...register("code")} error={errors.code?.message} type="number" />
+            <Input label="Enter the code" {...register("otp")} error={errors.otp?.message} type="number" />
             <Button type="submit" size="md" className="font-bold ml-auto">
             Verify
             </Button>

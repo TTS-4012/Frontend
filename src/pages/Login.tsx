@@ -29,6 +29,8 @@ function Login() {
       resolver: yupResolver(validationSchema)
    });
 
+   const [error, setError] = useState(false);
+
    const navigate = useNavigate();
 
    const handleLogin = (data: FormDataType) => {
@@ -39,19 +41,19 @@ function Login() {
          navigate('/home');
       })
       .catch(() => {
-         setErroHandeler(true);
+         setError(true);
       });
    };
-   const [errorHandeler,setErroHandeler] = useState(false);
+
    return (
       <form onSubmit={handleSubmit(handleLogin)} className="flex flex-col">
-         <p className="text-left text-3xl font-extrabold text-indigo-700 mb-3 py-3 px-1">Login</p>
+         <p className="text-left text-3xl font-extrabold text-indigo-700 mb-3 p-3">Login</p>
          <Input label="Username" {...register("username")} />
          <Password label="Password" {...register("password")} />
          <Link className="self-start ml-3 text-sm" address="/aaaaaa">Forgot password</Link>
          <Link className="self-start ml-3 text-sm" address="/register">Register</Link>
          <div className="flex flex-row items-center">
-            <span>{errorHandeler&&<label className="text-red-700 ml-3">Username or password is wrong</label>}</span>
+            <span className="text-red-700 ml-3">{error && 'Login Failed'}</span>
             <Button type="submit" size="md" className="font-bold ml-auto mr-2 flex-end">Login</Button>
          </div>
       </form>
