@@ -7,6 +7,7 @@ import Register from './pages/Register.tsx';
 import Verify from './pages/Verify.tsx';
 import Login from './pages/Login.tsx';
 import Secure from './pages/Secure.tsx';
+import Home from './pages/Home.tsx';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
         Component: Secure,
       },
     ]
+  },
+  {
+    path: "/home",
+    Component: Home,
   }
 ]);
 
