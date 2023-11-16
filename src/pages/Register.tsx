@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
 type FormDataType = {
@@ -33,24 +33,24 @@ function Register() {
         resolver: yupResolver(validationSchema)
     });
 
-    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>();
 
     const navigate = useNavigate();
 
     const handleRegister = (data: FormDataType) => {
         axios.post('https://api.ocontest.ir/v1/auth/register', data)
-        .then((res) => {
-           navigate('/verify', {state: {user_id: res.data.user_id}});
-        })
-        .catch(() => {
-            setShowError(true);
-        });    
+            .then((res) => {
+                navigate('/verify', { state: { user_id: res.data.UserID } });
+            })
+            .catch((err: AxiosError<any>) => {
+                setErrorMessage(err.response?.data.message ?? err.message);
+            });
     };
 
     useEffect(() => {
-        const subscription = watch(() => setShowError(false));
+        const subscription = watch(() => setErrorMessage(undefined));
         return () => subscription.unsubscribe();
-      }, [watch]);
+    }, [watch]);
 
     return (
         <form onSubmit={handleSubmit(handleRegister)} className="flex flex-col">
@@ -60,7 +60,7 @@ function Register() {
             <Input label="Password" {...register("password")} type="password" error={errors.password?.message} />
             <Input label="Repeat password" {...register("passConfirm")} type="password" error={errors.passConfirm?.message} />
             <div className="flex flex-row items-center">
-                <span className="text-red-700 ml-3">{showError && 'Login Failed'}</span>
+                <span className="text-red-700 ml-3">{errorMessage}</span>
                 <Button type="submit" size="md" className="font-bold ml-auto">Register</Button>
             </div>
         </form>
