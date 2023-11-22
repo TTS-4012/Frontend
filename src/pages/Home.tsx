@@ -1,5 +1,5 @@
 function Home() {
-   return "Not Implemented Yet";
+   return (<div>Not Implemented Yet</div>);
 }
 
 export default Home;

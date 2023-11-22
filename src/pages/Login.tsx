@@ -18,14 +18,14 @@ const validationSchema = yup
    .object({
       username: yup.string().required(),
       password: yup.string().required()
-   })
-   .required();
+   }).required();
 
 function Login() {
    const {
       register,
       watch,
       handleSubmit,
+      formState: { errors }
    } = useForm<FormDataType>({
       resolver: yupResolver(validationSchema)
    });
@@ -54,8 +54,8 @@ function Login() {
    return (
       <form onSubmit={handleSubmit(handleLogin)} className="flex flex-col">
          <p className="text-left text-3xl font-extrabold text-indigo-700 mb-3 p-3">Login</p>
-         <Input label="Username" {...register("username")} />
-         <Password label="Password" {...register("password")} />
+         <Input label="Username" {...register("username")} error={errors.username?.message}/>
+         <Password label="Password" {...register("password")} error={errors.password?.message} />
          {/* <Link className="self-start ml-3 text-sm" address="/aaaaaa">Forgot password</Link> */}
          <Link className="self-start ml-3 text-sm" address="/register">Register</Link>
          <div className="flex flex-row items-center">
