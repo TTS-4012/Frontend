@@ -3,22 +3,16 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Auth from "./layouts/Auth.tsx";
-import Register from "./pages/Register.tsx";
-import Verify from "./pages/Verify.tsx";
-import Login from "./pages/Login.tsx";
+import Register from "./pages/Auth/Register.tsx";
+import Verify from "./pages/Auth/Verify.tsx";
+import Login from "./pages/Auth/Login.tsx";
 import Home from "./pages/Home.tsx";
-import ForgotPass from "./pages/ForgotPass.tsx";
-import LoginWithOTP from "./pages/LoginWithOTP.tsx";
-import DashBoard from "./pages/DashBoard.tsx";
+import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 
 const router = createBrowserRouter([
   {
     Component: Auth,
     children: [
-      {
-        path: "/login",
-        Component: Login,
-      },
       {
         path: "/register",
         Component: Register,
@@ -28,22 +22,18 @@ const router = createBrowserRouter([
         Component: Verify,
       },
       {
-        path: "/forgotpass",
-        Component: ForgotPass,
+        path: "/login",
+        Component: Login,
       },
       {
-        path: "/loginwithotp",
-        Component: LoginWithOTP,
+        path: "/otp-login",
+        Component: OTPLogin,
       },
     ],
   },
   {
     path: "/home",
     Component: Home,
-  },
-  {
-    path: "/dashboard",
-    Component: DashBoard,
   },
 ]);
 

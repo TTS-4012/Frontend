@@ -20,18 +20,11 @@ const Input = forwardRef(({ label, error, ...inputProps }: PropsType, ref: Forwa
         />
         {error && (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-            <ExclamationCircleIcon
-              className="text-red-500"
-              aria-hidden="true"
-            />
+            <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
           </div>
         )}
       </div>
-      <p
-        className="mt-2 text-sm text-red-600"
-        id="email-error">
-        {error}&nbsp;
-      </p>
+      <p className="mt-0.5 text-sm text-red-600">{error}&nbsp;</p>
     </div>
   );
 });

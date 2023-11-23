@@ -2,10 +2,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 type FormDataType = {
   otp: string;
@@ -74,12 +74,16 @@ function Verify() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col">
-      <p className="mb-3 p-3 text-left text-3xl font-extrabold text-gray-900">Verify</p>
+      <p className="mb-3 p-3 text-left text-3xl font-extrabold text-indigo-700">Verify</p>
       <Input
         label="Enter the code"
-        {...register("otp")}
+        {...register("otp", {
+          onChange: (e: ChangeEvent<HTMLInputElement>) => {
+            e.target.value = e.target.value.replace(/[^\d]/g, "");
+          },
+        })}
         error={errors.otp?.message}
-        type="number"
+        inputMode="numeric"
       />
       <div className="flex flex-row items-center">
         <span className="ml-3 text-red-700">{errorMessage}</span>

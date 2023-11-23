@@ -2,34 +2,26 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import Checkbox from "../../components/Checkbox";
+import Link from "../../components/Link";
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
 type FormDataType = {
   username: string;
-  email: string;
   password: string;
-  passConfirm: string;
 };
 
 const validationSchema = yup
   .object({
     username: yup.string().required(),
-    email: yup.string().email().required(),
-    password: yup
-      .string()
-      .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, "Password must hava a digit, a letter and lengh at least 8")
-      .required(),
-    passConfirm: yup
-      .string()
-      .oneOf([yup.ref("password")], "Passwords must match")
-      .required(),
+    password: yup.string().required(),
   })
   .required();
 
-function Register() {
+function Login() {
   const {
     register,
     watch,
@@ -38,16 +30,18 @@ function Register() {
   } = useForm<FormDataType>({
     resolver: yupResolver(validationSchema),
   });
-
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const navigate = useNavigate();
 
-  const handleRegister = (data: FormDataType) => {
+  const handleLogin = (data: FormDataType) => {
     axios
-      .post("https://api.ocontest.ir/v1/auth/register", data)
+      .post("https://api.ocontest.ir/v1/auth/login", data)
       .then((res) => {
-        navigate("/verify", { state: { user_id: res.data.UserID } });
+        localStorage.setItem("auth.access_token", res.data.access_token);
+        localStorage.setItem("auth.refresh_token", res.data.refresh_token);
+        navigate("/dashboard");
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
@@ -61,42 +55,39 @@ function Register() {
 
   return (
     <form
-      onSubmit={handleSubmit(handleRegister)}
+      onSubmit={handleSubmit(handleLogin)}
       className="flex flex-col">
-      <p className="mb-3 p-3 text-left text-3xl font-extrabold text-gray-900">Register</p>
+      <p className="mb-3 p-3 text-left text-3xl font-extrabold text-indigo-700">Login</p>
       <Input
         label="Username"
         {...register("username")}
         error={errors.username?.message}
       />
       <Input
-        label="Email"
-        {...register("email")}
-        error={errors.email?.message}
-      />
-      <Input
         label="Password"
         {...register("password")}
-        type="password"
+        type={showPassword ? "text" : "password"}
         error={errors.password?.message}
       />
-      <Input
-        label="Repeat password"
-        {...register("passConfirm")}
-        type="password"
-        error={errors.passConfirm?.message}
+      <Checkbox
+        value={showPassword}
+        onToggle={setShowPassword}
+        label="Show password"
+        className="m-1"
       />
+      <p className="m-2 text-sm">
+        <Link to="/otp-login">Login with OTP</Link> | <Link to="/register">Register</Link>
+      </p>
       <div className="flex flex-row items-center">
         <span className="ml-3 text-red-700">{errorMessage}</span>
         <Button
           type="submit"
           size="md"
-          className="ml-auto font-bold">
-          Register
+          className="flex-end ml-auto mr-2 font-bold">
+          Login
         </Button>
       </div>
     </form>
   );
 }
-
-export default Register;
+export default Login;

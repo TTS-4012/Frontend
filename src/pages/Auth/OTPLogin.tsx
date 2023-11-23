@@ -2,8 +2,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
@@ -17,7 +17,7 @@ const validationSchema = yup
   })
   .required();
 
-function LoginWithOTP() {
+function OTPLogin() {
   const {
     register,
     watch,
@@ -51,7 +51,7 @@ function LoginWithOTP() {
     <form
       onSubmit={handleSubmit(handleLogin)}
       className="flex flex-col">
-      <p className="mb-3 p-3 text-left text-3xl font-extrabold text-indigo-700">One time password</p>
+      <p className="mb-3 p-3 text-left text-3xl font-extrabold text-indigo-700">Login with OTP</p>
       <Input
         label="Email"
         {...register("email")}
@@ -69,4 +69,4 @@ function LoginWithOTP() {
     </form>
   );
 }
-export default LoginWithOTP;
+export default OTPLogin;
