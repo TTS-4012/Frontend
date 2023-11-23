@@ -46,8 +46,7 @@ function Verify() {
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
         });
-    }
-    else if (state?.email) {
+    } else if (state?.email) {
       axios
         .post("https://api.ocontest.ir/v1/auth/verify", {
           email: state.email,
@@ -72,10 +71,10 @@ function Verify() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-      <p className="text-left text-3xl font-extrabold text-gray-900 mb-3 p-3">
-        Verify
-      </p>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col">
+      <p className="mb-3 p-3 text-left text-3xl font-extrabold text-gray-900">Verify</p>
       <Input
         label="Enter the code"
         {...register("otp")}
@@ -83,8 +82,11 @@ function Verify() {
         type="number"
       />
       <div className="flex flex-row items-center">
-        <span className="text-red-700 ml-3">{errorMessage}</span>
-        <Button type="submit" size="md" className="font-bold ml-auto">
+        <span className="ml-3 text-red-700">{errorMessage}</span>
+        <Button
+          type="submit"
+          size="md"
+          className="ml-auto font-bold">
           Verify
         </Button>
       </div>
