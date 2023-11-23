@@ -6,9 +6,10 @@ import Auth from './layouts/Auth.tsx';
 import Register from './pages/Register.tsx';
 import Verify from './pages/Verify.tsx';
 import Login from './pages/Login.tsx';
-import Secure from './pages/Secure.tsx';
 import Home from './pages/Home.tsx';
 import ForgotPass from './pages/ForgotPass.tsx';
+import LWOTP from './pages/LoginWithOTP.tsx';
+import DashBoard from './pages/DashBoard.tsx';
 
 const router = createBrowserRouter([
   {
@@ -27,18 +28,22 @@ const router = createBrowserRouter([
         Component: Verify,
       },
       {
-        path: "/secure",
-        Component: Secure,
-      },
-      {
         path: "/forgotpass",
         Component: ForgotPass
+      },
+      {
+        path: "/loginwithotp",
+        Component: LWOTP
       }
     ]
   },
   {
     path: "/home",
     Component: Home,
+  },
+  {
+    path: "/dashboard",
+    Component: DashBoard
   }
 ]);
 

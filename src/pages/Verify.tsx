@@ -8,65 +8,88 @@ import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
 type FormDataType = {
-    otp: string;
-}
+  otp: string;
+};
 
 const validationSchema = yup
-    .object({
-        otp: yup.string().length(6).required()
-    })
-    .required();
+  .object({
+    otp: yup.string().length(6).required(),
+  })
+  .required();
 
 function Verify() {
-    const { state } = useLocation();
+  const { state } = useLocation();
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm<FormDataType>({
-        resolver: yupResolver(validationSchema),
-    });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormDataType>({
+    resolver: yupResolver(validationSchema),
+  });
 
-    const [errorMessage, setErrorMessage] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string>();
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const onSubmit = (data: FormDataType) => {
-        axios.post('https://api.ocontest.ir/v1/auth/verify', {
-            user_id: state.user_id,
-            otp: data.otp,
-        }).then(() => {
-            navigate('/login');
+  const onSubmit = (data: FormDataType) => {
+    if (state?.user_id) {
+      axios
+        .post("https://api.ocontest.ir/v1/auth/verify", {
+          user_id: state.user_id,
+          otp: data.otp,
         })
-            .catch((err: AxiosError<any>) => {
-                // err.response?.data.message is empty. discuss with morti.
-                setErrorMessage(err.response?.data.message ?? err.message);
-            });
-    };
-
-    useEffect(() => {
-        const subscription = watch(() => setErrorMessage(undefined));
-        return () => subscription.unsubscribe();
-    }, [watch]);
-
-    if (!state?.user_id) {
-        return <Navigate to='/register' />;
+        .then(() => {
+          navigate("/login");
+        })
+        .catch((err: AxiosError<any>) => {
+          setErrorMessage(err.response?.data.message ?? err.message);
+        });
     }
+    else if (state?.email) {
+      axios
+        .post("https://api.ocontest.ir/v1/auth/verify", {
+          email: state.email,
+          otp: data.otp,
+        })
+        .then(() => {
+          navigate("/dashboard");
+        })
+        .catch((err: AxiosError<any>) => {
+          setErrorMessage(err.response?.data.message ?? err.message);
+        });
+    }
+  };
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-            <p className="text-left text-3xl font-extrabold text-gray-900 mb-3 p-3">Verify</p>
-            <Input label="Enter the code" {...register("otp")} error={errors.otp?.message} type="number" />
-            <div className="flex flex-row items-center">
-                <span className="text-red-700 ml-3">{errorMessage}</span>
-                <Button type="submit" size="md" className="font-bold ml-auto">
-                    Verify
-                </Button>
-            </div>
-        </form>
-    );
+  useEffect(() => {
+    const subscription = watch(() => setErrorMessage(undefined));
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  if (!state?.user_id && !state?.email) {
+    return <Navigate to="/register" />;
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+      <p className="text-left text-3xl font-extrabold text-gray-900 mb-3 p-3">
+        Verify
+      </p>
+      <Input
+        label="Enter the code"
+        {...register("otp")}
+        error={errors.otp?.message}
+        type="number"
+      />
+      <div className="flex flex-row items-center">
+        <span className="text-red-700 ml-3">{errorMessage}</span>
+        <Button type="submit" size="md" className="font-bold ml-auto">
+          Verify
+        </Button>
+      </div>
+    </form>
+  );
 }
 
 export default Verify;
