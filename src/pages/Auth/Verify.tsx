@@ -13,7 +13,7 @@ type FormDataType = {
 
 const validationSchema = yup
   .object({
-    otp: yup.string().length(6).required(),
+    otp: yup.string().required(),
   })
   .required();
 
@@ -79,7 +79,7 @@ function Verify() {
         label="Enter the code"
         {...register("otp", {
           onChange: (e: ChangeEvent<HTMLInputElement>) => {
-            e.target.value = e.target.value.replace(/[^\d]/g, "");
+            e.target.value = e.target.value.replace(/[^\d]/g, "").slice(0,6);
           },
         })}
         error={errors.otp?.message}
