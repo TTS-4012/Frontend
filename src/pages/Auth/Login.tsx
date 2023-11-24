@@ -10,13 +10,13 @@ import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
 type FormDataType = {
-  username: string;
+  email: string;
   password: string;
 };
 
 const validationSchema = yup
   .object({
-    username: yup.string().required(),
+    email: yup.string().required(),
     password: yup.string().required(),
   })
   .required();
@@ -37,7 +37,10 @@ function Login() {
 
   const handleLogin = (data: FormDataType) => {
     axios
-      .post("https://api.ocontest.ir/v1/auth/login", data)
+      .post("/auth/login", {
+        ...data,
+        grant_type: "password",
+      })
       .then((res) => {
         localStorage.setItem("auth.access_token", res.data.access_token);
         localStorage.setItem("auth.refresh_token", res.data.refresh_token);
@@ -59,9 +62,9 @@ function Login() {
       className="flex flex-col">
       <p className="mb-3 p-3 text-left text-3xl font-extrabold text-indigo-700">Login</p>
       <Input
-        label="Username"
-        {...register("username")}
-        error={errors.username?.message}
+        label="Email"
+        {...register("email")}
+        error={errors.email?.message}
       />
       <Input
         label="Password"

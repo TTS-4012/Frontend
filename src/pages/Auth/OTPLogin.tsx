@@ -33,7 +33,7 @@ function OTPLogin() {
 
   const handleLogin = (data: FormDataType) => {
     axios
-      .post("https://api.ocontest.ir/v1/auth/", data)
+      .post("/auth/otp", data)
       .then((res) => {
         navigate("/verify", { state: { email: res.data.email } });
       })

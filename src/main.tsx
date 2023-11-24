@@ -8,6 +8,9 @@ import Verify from "./pages/Auth/Verify.tsx";
 import Login from "./pages/Auth/Login.tsx";
 import Home from "./pages/Home.tsx";
 import OTPLogin from "./pages/Auth/OTPLogin.tsx";
+import axios from "axios";
+
+axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
 const router = createBrowserRouter([
   {

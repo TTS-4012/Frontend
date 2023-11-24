@@ -36,7 +36,7 @@ function Verify() {
   const onSubmit = (data: FormDataType) => {
     if (state?.user_id) {
       axios
-        .post("https://api.ocontest.ir/v1/auth/verify", {
+        .post("/auth/verify", {
           user_id: state.user_id,
           otp: data.otp,
         })
@@ -48,7 +48,8 @@ function Verify() {
         });
     } else if (state?.email) {
       axios
-        .post("https://api.ocontest.ir/v1/auth/verify", {
+        .post("/auth/login", {
+          grant_type: "otp",
           email: state.email,
           otp: data.otp,
         })

@@ -47,9 +47,13 @@ function Register() {
 
   const handleRegister = (data: FormDataType) => {
     axios
-      .post("https://api.ocontest.ir/v1/auth/register", data)
+      .post("/auth/register", {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      })
       .then((res) => {
-        navigate("/verify", { state: { user_id: res.data.UserID } });
+        navigate("/verify", { state: { user_id: res.data.user_id } });
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
