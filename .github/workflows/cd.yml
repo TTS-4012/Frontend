@@ -1,0 +1,19 @@
+name: FrontEnd CD
+on:
+  workflow_dispatch:
+  push: 
+    branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build Docker Image
+        run: |
+            docker build -t ghcr.io/tts-4012/ocontest-frontend
+      - name: Push Docker Image
+        run: |
+            docker push ghcr.io/tts-4012/ocontest-frontend
+      
