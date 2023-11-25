@@ -44,7 +44,7 @@ function Login() {
       .then((res) => {
         localStorage.setItem("auth.access_token", res.data.access_token);
         localStorage.setItem("auth.refresh_token", res.data.refresh_token);
-        navigate("/dashboard");
+        navigate("/home");
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);

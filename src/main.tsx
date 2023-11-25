@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/home",
+    path: "*",
     Component: Home,
   },
 ]);

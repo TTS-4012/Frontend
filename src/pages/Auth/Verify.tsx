@@ -54,7 +54,7 @@ function Verify() {
           otp: data.otp,
         })
         .then(() => {
-          navigate("/dashboard");
+          navigate("/home");
         })
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
@@ -80,7 +80,7 @@ function Verify() {
         label="Enter the code"
         {...register("otp", {
           onChange: (e: ChangeEvent<HTMLInputElement>) => {
-            e.target.value = e.target.value.replace(/[^\d]/g, "").slice(0,6);
+            e.target.value = e.target.value.replace(/[^\d]/g, "").slice(0, 6);
           },
         })}
         error={errors.otp?.message}

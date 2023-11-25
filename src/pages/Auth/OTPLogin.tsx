@@ -34,8 +34,8 @@ function OTPLogin() {
   const handleLogin = (data: FormDataType) => {
     axios
       .post("/auth/otp", data)
-      .then((res) => {
-        navigate("/verify", { state: { email: res.data.email } });
+      .then(() => {
+        navigate("/verify", { state: { email: data.email } });
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
