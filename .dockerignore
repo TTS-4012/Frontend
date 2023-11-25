@@ -1,8 +1,6 @@
-README.md
-build
+.git
+.github
+.vscode
 dist
 node_modules
-LICENSE
-.git
-.DS_Store
 .env

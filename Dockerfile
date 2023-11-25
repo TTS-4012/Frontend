@@ -1,7 +1,10 @@
 FROM node:lts-slim as build
 WORKDIR /app
-COPY . /app
-RUN npm install
+
+COPY package* .
+RUN npm ci
+
+COPY . .
 RUN npm run build
 
 FROM nginx:1.25
