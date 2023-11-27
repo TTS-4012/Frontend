@@ -133,7 +133,7 @@ function ProblemsTable() {
   };
 
   return (
-    <div>
+    <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <TableContainer
         component={Paper}
