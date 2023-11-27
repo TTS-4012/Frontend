@@ -9,6 +9,7 @@ import Login from "./pages/Auth/Login.tsx";
 import Home from "./pages/Home.tsx";
 import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 import axios from "axios";
+import Problem from "./pages/Problem.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "*",
+    path: "/problem/:id",
+    Component: Problem,
+  },
+  {
+    path: "/home",
     Component: Home,
   },
 ]);
