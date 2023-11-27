@@ -53,7 +53,9 @@ function Verify() {
           email: state.email,
           otp: data.otp,
         })
-        .then(() => {
+        .then((res) => {
+          localStorage.setItem("auth.access_token", res.data.access_token);
+          localStorage.setItem("auth.refresh_token", res.data.refresh_token);
           navigate("/home");
         })
         .catch((err: AxiosError<any>) => {

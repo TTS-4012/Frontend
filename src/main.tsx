@@ -12,6 +12,9 @@ import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 import SpanningTable from "./pages/Problem/Porblemset.tsx";
 
 import axios from "axios";
+import Problem from "./pages/Problem.tsx";
+import ProblemCreation from "./pages/Problems/ProblemCreation.tsx";
+import Dashboard from "./layouts/Dashboard.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
@@ -38,15 +41,24 @@ const router = createBrowserRouter([
     ],
   },
   {
-    Component: Main,
+    Component: Dashboard,
     children: [
       {
-        path: "/home",
-        Component: Home,
-      },
-      {
-        path: "/problems",
-        Component: SpanningTable,
+        path: "problems",
+        children: [
+          {
+            path: "new",
+            Component: ProblemCreation,
+          },
+          {
+            path: ":id",
+            Component: Problem,
+          },
+          {
+            index: true,
+            Component: SpanningTable,
+          },
+        ],
       },
       {
         path: "*",
