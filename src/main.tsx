@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Auth from "./layouts/Auth.tsx";
-import Main from "./layouts/Main.tsx";
 import Register from "./pages/Auth/Register.tsx";
 import Verify from "./pages/Auth/Verify.tsx";
 import Login from "./pages/Auth/Login.tsx";
