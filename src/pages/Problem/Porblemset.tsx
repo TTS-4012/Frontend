@@ -53,9 +53,6 @@ type ProblemDataType = {
   // TODO : tag
 };
 
-function createRowProblem(id: number, t: string, h: number, count: number) {
-  return { problem_id: id, title: t, hardness: h, solve_count: count };
-}
 type OrderDataType = {
   order_by: "hardness" | "solve_count" | "problem_id" | undefined;
   decending: boolean | undefined;
@@ -68,7 +65,7 @@ function ProblemsTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [problemData, setProblemData] = useState<ProblemDataType[]>([createRowProblem(1, "this is first", 1300, 10), createRowProblem(2, "this is second", 1400, 5), createRowProblem(3, "this is third", 500, 10), createRowProblem(4, "amghezi", 2100, 5), createRowProblem(1, "this is first", 1300, 10), createRowProblem(2, "this is second", 1400, 5), createRowProblem(3, "this is third", 500, 10), createRowProblem(4, "amghezi", 2100, 5), createRowProblem(1, "this is first", 1300, 10), createRowProblem(2, "this is second", 1400, 5), createRowProblem(3, "this is third", 500, 10), createRowProblem(4, "amghezi", 2100, 5)]);
+  const [problemData, setProblemData] = useState<ProblemDataType[]>();
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const navigate = useNavigate();
