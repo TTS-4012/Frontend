@@ -85,10 +85,10 @@ function ProblemsTable() {
       });
   }, [page, rowsPerPage, order]);
 
-  const handleClick = (problem_id: number) => {
+  const handleClick = (e: any, problem_id: number) => {
     navigate("/problems/" + String(problem_id));
   };
-  const handleChangePage = (newPage: number) => {
+  const handleChangePage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
     setPage(newPage);
   };
   const createOrder = (orderMethod: "hardness" | "solve_count", dec: boolean | undefined) => {
@@ -163,7 +163,7 @@ function ProblemsTable() {
             {problemData.map((problem, i) => (
               <TableRow
                 key={problem.problem_id}
-                onClick={() => handleClick(problem.problem_id)}
+                onClick={(event) => handleClick(event, problem.problem_id)}
                 sx={{ cursor: "pointer" }}
                 className="hover:bg-blue-100">
                 <TableCell
