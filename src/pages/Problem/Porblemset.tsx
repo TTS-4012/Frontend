@@ -18,7 +18,7 @@ import { useState, useEffect } from "react";
 
 function TablePaginationActions(props: { count: number; onPageChange: (e: any, n: number) => void; page: number; rowsPerPage: number }) {
   const theme = useTheme();
-  const { page, onPageChange } = props;
+  const { count, page, rowsPerPage, onPageChange } = props;
 
   const handleBackButtonClick = (event: any) => {
     onPageChange(event, page - 1);
