@@ -65,7 +65,7 @@ function ProblemsTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [problemData, setProblemData] = useState<ProblemDataType[]>();
+  const [problemData, setProblemData] = useState<ProblemDataType[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const navigate = useNavigate();
