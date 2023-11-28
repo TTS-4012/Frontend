@@ -18,12 +18,11 @@ import { useState, useEffect } from "react";
 
 function TablePaginationActions(props: { count: number; onPageChange: (e: any, n: number) => void; page: number; rowsPerPage: number }) {
   const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
+  const { page, onPageChange } = props;
 
   const handleBackButtonClick = (event: any) => {
     onPageChange(event, page - 1);
   };
-
 
   const handleNextButtonClick = (event: any) => {
     onPageChange(event, page + 1);
