@@ -9,7 +9,7 @@ import Login from "./pages/Auth/Login.tsx";
 import Home from "./pages/Home.tsx";
 import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 import axios from "axios";
-import Problem from "./pages/Problem.tsx";
+import Problem from "./pages/Problems/Problem.tsx";
 import ProblemCreation from "./pages/Problems/ProblemCreation.tsx";
 import Dashboard from "./layouts/Dashboard.tsx";
 
