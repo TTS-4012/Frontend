@@ -75,3 +75,396 @@ Visual Studio-like style based on original C# coloring by Jason Diamond <jason@d
 .hljs-strong {
   font-weight: bold;
 }
+
+.shelakhte h1,
+.shelakhte h2,
+.shelakhte h3,
+.shelakhte h4,
+.shelakhte h5,
+.shelakhte h6 {
+    margin-top: 40px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.shelakhte .katex {
+    direction: ltr;
+}
+
+.shelakhte p,
+.shelakhte details,
+.shelakhte summary {
+    line-height: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.shelakhte img {
+    display: block;
+    margin: auto;
+    max-width: 100%;
+}
+
+.shelakhte table {
+    width: 100%;
+    background: #fff;
+    margin: 1em 0;
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0.30769231rem;
+    text-align: right;
+    color: rgba(0, 0, 0, 0.87);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.shelakhte table thead th {
+    cursor: auto;
+    background: #f9fafb;
+    text-align: inherit;
+    color: rgba(0, 0, 0, 0.87);
+    padding: 0.92307692em 0.76923077em;
+    vertical-align: inherit;
+    font-style: none;
+    font-weight: 700;
+    text-transform: none;
+    border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+    border-right: none;
+}
+
+.shelakhte table thead tr:first-child > th:first-child {
+    border-radius: 0 0.30769231rem 0 0;
+}
+
+.shelakhte table thead tr > th:first-child {
+    border-right: none;
+}
+
+.shelakhte table thead tr:first-child > th:last-child {
+    border-radius: 0.30769231rem 0 0 0;
+}
+
+.shelakhte table td {
+    padding: 0.76923077em 0.76923077em;
+    text-align: inherit;
+}
+
+.shelakhte table tr:first-child td {
+    border-top: none;
+}
+
+.shelakhte table tr td {
+    border-top: 1px solid rgba(34, 36, 38, 0.1);
+}
+
+.shelakhte th[align="left"],
+.shelakhte td[align="left"] {
+    text-align: left;
+}
+
+.shelakhte th[align="center"],
+.shelakhte td[align="center"] {
+    text-align: center;
+}
+
+.shelakhte th[align="right"],
+.shelakhte td[align="right"] {
+    text-align: right;
+}
+
+.shelakhte h1 {
+    font-size: x-large;
+}
+
+.shelakhte h2 {
+    font-size: large;
+}
+
+.shelakhte h3 {
+    font-size: larger;
+}
+
+.shelakhte h4 {
+    font-size: medium;
+}
+
+.shelakhte h5 {
+    font-size: small;
+}
+
+.shelakhte h5 {
+    font-size: smaller;
+}
+
+.shelakhte :where(h1, h2, h3, h4, h5, h6) .link-icon {
+    opacity: 0;
+    font-size: large;
+    margin: 0px 5px;
+}
+
+.shelakhte :where(h1, h2, h3, h4, h5, h6):hover .link-icon {
+    opacity: 1;
+}
+
+.shelakhte code mark {
+    padding: 0px 2px;
+    color: inherit;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 181, 173, 0.3);
+    background-color: rgba(0, 181, 173, 0.1);
+}
+
+.shelakhte code mark.red,
+.shelakhte details.red {
+    border: 1px solid rgba(220, 40, 40, 0.3);
+    background-color: rgba(220, 40, 40, 0.1);
+}
+
+.shelakhte code mark.orange,
+.shelakhte details.orange {
+    border: 1px solid rgba(242, 113, 28, 0.3);
+    background-color: rgba(242, 113, 28, 0.1);
+}
+
+.shelakhte code mark.yellow,
+.shelakhte details.yellow {
+    border: 1px solid rgba(251, 189, 8, 0.3);
+    background-color: rgba(251, 189, 8, 0.1);
+}
+
+.shelakhte code mark.olive,
+.shelakhte details.olive {
+    border: 1px solid rgba(181, 204, 24, 0.3);
+    background-color: rgba(181, 204, 24, 0.1);
+}
+
+.shelakhte code mark.green,
+.shelakhte details.green {
+    border: 1px solid rgba(33, 186, 69, 0.3);
+    background-color: rgba(33, 186, 69, 0.1);
+}
+
+.shelakhte code mark.teal,
+.shelakhte details.teal {
+    border: 1px solid rgba(0, 181, 173, 0.3);
+    background-color: rgba(0, 181, 173, 0.1);
+}
+
+.shelakhte code mark.blue,
+.shelakhte details.blue {
+    border: 1px solid rgba(33, 133, 208, 0.3);
+    background-color: rgba(33, 133, 208, 0.1);
+}
+
+.shelakhte code mark.violet,
+.shelakhte details.violet {
+    border: 1px solid rgba(100, 53, 201, 0.3);
+    background-color: rgba(100, 53, 201, 0.1);
+}
+
+.shelakhte code mark.purple,
+.shelakhte details.purple {
+    border: 1px solid rgba(163, 51, 200, 0.3);
+    background-color: rgba(163, 51, 200, 0.1);
+}
+
+.shelakhte code mark.pink,
+.shelakhte details.pink {
+    border: 1px solid rgba(224, 57, 151, 0.3);
+    background-color: rgba(224, 57, 151, 0.1);
+}
+
+.shelakhte code mark.brown,
+.shelakhte details.brown {
+    border: 1px solid rgba(165, 103, 63, 0.3);
+    background-color: rgba(165, 103, 63, 0.1);
+}
+
+.shelakhte code mark.grey,
+.shelakhte details.grey {
+    border: 1px solid rgba(118, 118, 118, 0.3);
+    background-color: rgba(118, 118, 118, 0.1);
+}
+
+.shelakhte details.red,
+.shelakhte details.orange,
+.shelakhte details.yellow,
+.shelakhte details.olive,
+.shelakhte details.green,
+.shelakhte details.teal,
+.shelakhte details.blue,
+.shelakhte details.violet,
+.shelakhte details.purple,
+.shelakhte details.pink,
+.shelakhte details.brown,
+.shelakhte details.grey {
+    border-radius: 0.4em;
+    padding: 0.5em;
+}
+
+.shelakhte details {
+    margin-top: 1em;
+}
+
+.shelakhte details summary {
+    cursor: pointer;
+    outline: none;
+}
+
+.shelakhte details[open] > summary {
+    margin-bottom: 0.5em;
+}
+
+.shelakhte details > summary * {
+    display: inline;
+}
+
+.shelakhte ul,
+.shelakhte ol {
+    padding: 0 2em;
+    margin-top: 10px;
+}
+
+.shelakhte hr {
+    margin: 20px 0;
+}
+
+.shelakhte ul li p,
+.shelakhte ol li p {
+    text-align: initial;
+    direction: auto;
+}
+
+.shelakhte .code-toolbar {
+    display: flex;
+    border: 1px solid #ededed;
+    border-radius: 6px;
+    flex-direction: column-reverse;
+    margin: 10px 0;
+}
+
+.shelakhte .code-toolbar .toolbar-item > * {
+    margin: 5px;
+    text-align: center;
+    direction: ltr;
+}
+
+.shelakhte .code-toolbar .toolbar-item > svg {
+    width: 24px;
+    height: auto;
+}
+
+.shelakhte .code-toolbar > .toolbar > .toolbar-item > button > span {
+    color: transparent;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPmNvbnRlbnQtY29weTwvdGl0bGU+PHBhdGggZD0iTTE5LDIxSDhWN0gxOU0xOSw1SDhBMiwyIDAgMCwwIDYsN1YyMUEyLDIgMCAwLDAgOCwyM0gxOUEyLDIgMCAwLDAgMjEsMjFWN0EyLDIgMCAwLDAgMTksNU0xNiwxSDRBMiwyIDAgMCwwIDIsM1YxN0g0VjNIMTZWMVoiIC8+PC9zdmc+);
+
+    height: 20px;
+    width: 20px;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button[data-copy-state="copy-success"] > span {
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'/%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.6097 5.20743C21.0475 5.54416 21.1294 6.17201 20.7926 6.60976L10.7926 19.6098C10.6172 19.8378 10.352 19.9793 10.0648 19.9979C9.77765 20.0166 9.49637 19.9106 9.29289 19.7072L4.29289 14.7072C3.90237 14.3166 3.90237 13.6835 4.29289 13.2929C4.68342 12.9024 5.31658 12.9024 5.70711 13.2929L9.90178 17.4876L19.2074 5.39034C19.5441 4.95258 20.172 4.87069 20.6097 5.20743Z' fill='%23666'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.shelakhte .code-toolbar .toolbar-item > span {
+    border: none !important;
+    box-shadow: none !important;
+    color: #8b8b8b !important;
+    font-weight: 600 !important;
+    background-color: unset !important;
+}
+
+.shelakhte .code-toolbar .toolbar-item.filename {
+    flex: 1 !important;
+    text-align: end;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.shelakhte .code-toolbar .toolbar-item.filename span {
+    margin: 0 !important;
+    font-size: 14px !important;
+}
+
+.shelakhte .code-toolbar .toolbar-item > button {
+    border-radius: 5px !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #8b8b8b !important;
+    padding: 5px !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ebebeb !important;
+    font-weight: 600 !important;
+    position: relative;
+    transition: background 0.2s ease;
+}
+
+.shelakhte .code-toolbar .toolbar-item > button:hover {
+    color: #676767 !important;
+    background: #d7d7d7 !important;
+}
+
+.shelakhte pre {
+    background-color: #fff !important;
+    text-shadow: none !important;
+    line-height: 1.7 !important;
+    font-size: 13px !important;
+    margin: 0px !important;
+    border-radius: 0 0 6px 6px;
+}
+
+.shelakhte code:not(pre code) {
+    text-shadow: none !important;
+    padding: 0.12em 0.25em;
+    background: #f7f7f7;
+    border: 1px solid #ededed;
+    border-radius: 0.375rem;
+    display: inline-block;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.shelakhte .line-numbers .line-numbers-rows {
+    border-right: none !important;
+    margin-right: 100px !important;
+}
+
+.shelakhte .line-numbers-rows > span:before {
+    color: #a8a8a8 !important;
+    line-height: 1.7 !important;
+}
+
+.shelakhte .code-toolbar .toolbar {
+    position: relative !important;
+    top: 0 !important;
+    padding: 0 12px 0 16px;
+    border-radius: 6px 6px 0 0;
+    border-bottom: 1px solid #ebebeb;
+    display: flex;
+    height: 48px;
+    align-items: center;
+    background: #fafafa;
+    width: 100%;
+    opacity: 1 !important;
+    right: unset !important;
+}
+
+.shelakhte pre:not([class]) code:not([class]) {
+    display: block;
+    overflow-x: auto;
+}
+
+.shelakhte blockquote {
+    margin: 0;
+    padding: 0 1em;
+    color: #707075;
+    border-inline-start: 0.25em solid #e5e2e0;
+}
+
+.shelakhte a {
+    color: #0099cc;
+}
