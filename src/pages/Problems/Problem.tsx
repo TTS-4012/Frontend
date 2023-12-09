@@ -2,9 +2,8 @@ import axios, { AxiosError } from "axios";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Button";
-import Markdown from "react-markdown";
+import Markdown from "../../components/Markdown";
 import FilePicker from "../../components/FilePicker";
-import rehypeHighlight from "rehype-highlight";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 
 type ProblemData = {
@@ -58,9 +57,7 @@ function Problem() {
         {data?.title ?? "title"}
       </p>
       <div className="mt-2 flex flex-row items-start gap-2">
-        <div className=" flex w-9/12 flex-col rounded-b-md bg-white p-5 shadow-md">
-          <Markdown rehypePlugins={[rehypeHighlight]}>{data.description}</Markdown>
-        </div>
+        <Markdown className="w-9/12 rounded-b-md bg-white p-5 shadow-md">{data.description}</Markdown>
         <div className=" flex w-3/12 flex-col">
           <form
             onSubmit={handleSubmit}

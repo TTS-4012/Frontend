@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import * as monaco from "monaco-editor";
-import Markdown from "react-markdown";
+import Markdown from "../../components/Markdown";
 import { Tab } from "@headlessui/react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -19,7 +19,7 @@ const validationSchema = yup
   })
   .required();
 
-function ProblemCreation() {
+function NewProblem() {
   const editorContainer = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
 
@@ -53,7 +53,7 @@ function ProblemCreation() {
         "/problems",
         {
           title: data.name,
-          descriptions: content,
+          description: content,
         },
         {
           headers: {
@@ -73,7 +73,14 @@ function ProblemCreation() {
               <Tab
                 as={Fragment}
                 key={item}>
-                {({ selected }) => <button className={`${selected ? "bg-white text-indigo-700" : "text-gray-500 hover:text-gray-700"} "z-10 rounded-t-lg px-3 py-1 text-sm font-medium outline-none`}>{item}</button>}
+                {({ selected }) => (
+                  <button
+                    className={`${
+                      selected ? "bg-white text-indigo-700" : "text-gray-500 hover:text-gray-700"
+                    } "z-10 rounded-t-lg px-3 py-1 text-sm font-medium outline-none`}>
+                    {item}
+                  </button>
+                )}
               </Tab>
             ))}
           </Tab.List>
@@ -86,7 +93,7 @@ function ProblemCreation() {
             <Tab.Panel
               unmount={false}
               className="shelakhte h-full overflow-auto rounded-lg rounded-tl-none bg-white p-2">
-              <Markdown>{content}</Markdown>
+              <Markdown>{content ?? ""}</Markdown>
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
@@ -112,4 +119,4 @@ function ProblemCreation() {
   );
 }
 
-export default ProblemCreation;
+export default NewProblem;

@@ -4,7 +4,7 @@ import Header from "./Header";
 function Dashboard() {
   if (!localStorage.getItem("auth.access_token")) return <Navigate to="/login" />;
   return (
-    <div className="flex h-screen w-screen flex-col bg-indigo-100">
+    <div className="flex min-h-screen w-full flex-col bg-indigo-100">
       <Header />
       <Outlet />
     </div>

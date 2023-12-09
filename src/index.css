@@ -10,11 +10,6 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
-/*
-
-Visual Studio-like style based on original C# coloring by Jason Diamond <jason@diamond.name>
-
-*/
 .hljs {
   background: white;
   color: black;
