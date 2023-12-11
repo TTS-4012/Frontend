@@ -13,9 +13,11 @@ type ProblemData = {
   solve_count: number;
   description: string;
 };
+
 type PropsType = HTMLAttributes<HTMLDivElement> & {
   id: string;
 };
+
 function ProblemComponent({ id, ...otherProps }: PropsType) {
   const [data, setdata] = useState<ProblemData>();
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -23,7 +25,7 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
 
   useEffect(() => {
     axios
-      .get<ProblemData>(`https://api.ocontest.ir/v1/problems/${id}`, {
+      .get<ProblemData>(`/problems/${id}`, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
       })
       .then((res) => {
@@ -39,7 +41,7 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
     if (filePicker.current?.files?.length) {
       axios
         .post(
-          "https://api.ocontest.ir/v1/submissions",
+          "/submissions",
           {
             problem_id: id,
             file: e,
@@ -51,7 +53,7 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
           },
         )
         .then(() => {
-          navigate("...");
+          navigate(".");
         })
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
@@ -60,7 +62,9 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
       setErrorMessage("no file seleced");
     }
   };
+
   const filePicker = useRef<HTMLInputElement>(null);
+
   return data ? (
     <div
       className="m-5 flex flex-col gap-2"
@@ -87,11 +91,11 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
       </form>
     </div>
   ) : (
-    <div className="flex h-screen w-full bg-indigo-100">
+    <div className="flex h-screen w-full text-indigo-800">
       {errorMessage ? (
-        <div className="m-auto bg-indigo-100 text-9xl text-indigo-800">{errorMessage}</div>
+        <p className="m-auto text-center text-5xl">{errorMessage}</p>
       ) : (
-        <ArrowPathIcon className="m-auto  h-36 w-36 animate-spin text-indigo-800" />
+        <ArrowPathIcon className="m-auto h-20 w-20 animate-spin" />
       )}
     </div>
   );
