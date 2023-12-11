@@ -1,4 +1,4 @@
-import ProblemComponent from "./ProblemComponent";
+import ProblemComponent from "../../components/ProblemComponent";
 import { useParams } from "react-router-dom";
 
 type ParamsType = {

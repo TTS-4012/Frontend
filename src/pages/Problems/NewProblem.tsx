@@ -7,7 +7,8 @@ import Button from "../../components/Button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 type FormDataType = {
   name: string;
@@ -46,10 +47,12 @@ function NewProblem() {
     };
   }, []);
 
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const navigate = useNavigate();
+
   const onSave = (data: FormDataType) => {
-    console.log(data);
     axios
-      .post(
+      .post<{ problem_Id: string }>(
         "/problems",
         {
           title: data.name,
@@ -61,7 +64,12 @@ function NewProblem() {
           },
         },
       )
-      .then(console.log);
+      .then((res) => {
+        navigate(`/problems/${res.data.problem_Id}`);
+      })
+      .catch((err: AxiosError<any>) => {
+        setErrorMessage(err.response?.data.message ?? err.message);
+      });
   };
 
   return (
@@ -106,7 +114,7 @@ function NewProblem() {
           {...register("name")}
         />
         <div className="flex flex-row items-center">
-          <span className="ml-3 text-red-700">{}</span>
+          <span className="ml-3 text-red-700">{errorMessage}</span>
           <Button
             type="submit"
             size="md"

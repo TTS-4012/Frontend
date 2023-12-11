@@ -2,9 +2,9 @@ import { HTMLAttributes } from "react";
 import axios, { AxiosError } from "axios";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button";
-import Markdown from "../../components/Markdown";
-import FilePicker from "../../components/FilePicker";
+import Button from "./Button";
+import Markdown from "./Markdown";
+import FilePicker from "./FilePicker";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 
 type ProblemData = {
