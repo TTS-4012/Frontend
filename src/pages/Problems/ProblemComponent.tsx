@@ -68,23 +68,23 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
       <p className="rounded-t-lg border-black bg-white p-5 text-center align-middle text-3xl font-black shadow-md">
         {data?.title ?? "title"}
       </p>
-      <Markdown className=" bg-white p-5 shadow-md">{data.description}</Markdown>
-      <div className="flex flex-col">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-2 rounded-b-lg bg-white p-5 shadow-md">
-          <p className="text-xl font-bold text-indigo-800">Submit here</p>
+      <Markdown className=" bg-white p-8 shadow-md">{data.description}</Markdown>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-start gap-2 rounded-b-lg bg-white p-5 shadow-md">
+        <p className="text-xl font-bold text-indigo-800">Submit here</p>
+        <div className="flex flex-row gap-3">
           <FilePicker ref={filePicker} />
           <div className="flex flex-row justify-between">
-            <span className="ml-3 text-red-700">{errorMessage}</span>
             <Button
               type="submit"
-              size="md">
+              size="xs">
               Submit
             </Button>
           </div>
-        </form>
-      </div>
+        </div>
+        <span className="ml-3 text-red-700">{errorMessage}</span>
+      </form>
     </div>
   ) : (
     <div className="flex h-screen w-full bg-indigo-100">
