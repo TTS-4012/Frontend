@@ -1,27 +1,14 @@
-import { ForwardedRef, LabelHTMLAttributes, forwardRef } from "react";
+import { LinkProps, Link as RouterLink } from "react-router-dom";
 
-type PropsType = LabelHTMLAttributes<HTMLLabelElement> & {
-  link: string;
-  size: "sm" | "md" | "lg";
-};
-
-const LinkLable = forwardRef(({ link, size, className, ...otherprops }: PropsType, ref: ForwardedRef<HTMLLabelElement>) => {
+function LinkLabel({ className, ...otherProps }: LinkProps) {
   return (
     <div>
-      <label
-        className={`
-        ${
-          {
-            sm: "rounded-md px-3 py-2 text-sm",
-            md: "rounded-md px-4 py-2 text-sm",
-            lg: "rounded-md px-4 py-2 text-base",
-          }[size]
-        } ${className}`}
-        {...otherprops}
-        ref={ref}
+      <RouterLink
+        className={` bg-slate-50 visited:bg-blue-400 hover:bg-blue-300 visited:hover: text-black ${className}`}
+        {...otherProps}
       />
     </div>
   );
-});
+}
 
-export default LinkLable;
+export default LinkLabel;
