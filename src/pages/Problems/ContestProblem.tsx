@@ -22,8 +22,7 @@ type ParamsType = {
 };
 
 function ContestProblem() {
-  const { contestId, problemId } = useParams<ParamsType>(); //<ParamsType></ParamsType>
-  console.log(contestId, problemId);
+  const { contestId, problemId } = useParams<ParamsType>();
   const contest_bar = ["Ranking", "Uplaod History"];
   const [contestData, setContestmData] = useState<ContestDataType>({
     contest_Id: 10,
@@ -48,17 +47,16 @@ function ContestProblem() {
         setContestmData(res.data);
       })
       .catch((err: AxiosError<any>) => {
-        // console.log(err.message);
+        console.log(err.message);
         setErrorMessage(err.response?.data.message ?? err.message);
       });
   }, [contestId, problemId]);
 
-  // setErrorMessage("this is error");
   return (
     problemId && (
       <>
-        {/*add !*/}
-        {!errorMessage && (
+        {/* add !*/}
+        {errorMessage && (
           <div className="flex flex-row">
             <div className=" basis-5/6">
               <ProblemComponent id={problemId}></ProblemComponent>;
@@ -66,9 +64,11 @@ function ContestProblem() {
 
             <div className="mb-auto mr-5 mt-5 flex basis-1/6 flex-col rounded-lg pb-5 text-center">
               <div className="flex flex-col rounded-lg bg-gray-100 shadow-md">
-                <p className="rounded-t-lg bg-gray-300 py-2 text-xl"> {contestData.title} </p>
-                {contestData?.porblems.map((problem) => (
-                  <label className="hover:bg-white">
+                <p className="rounded-t-lg bg-gray-300 py-1.5 text-xl font-medium"> {contestData?.title} </p>
+                {contestData?.porblems.map((problem, i) => (
+                  <label
+                    key={i}
+                    className="rounded-md hover:bg-white">
                     {problemId != String(problem.problem_id) ? (
                       <LinkLabel
                         to={"/contests/" + String(contestId) + "/" + String(problem.problem_id)}
@@ -89,10 +89,12 @@ function ContestProblem() {
               <span className="py-2"> </span>
               <div className="flex flex-col rounded-lg bg-gray-100 shadow-md ">
                 {contest_bar.map((title) => (
-                  <label className="py-1 hover:bg-white">
+                  <label
+                    // key={j}
+                    className="rounded-md py-1 hover:bg-white">
                     <LinkLabel
                       to={"/" + title}
-                      className="inline w-10 px-2 text-xl ">
+                      className="inline w-10 px-2 text-xl">
                       {title}
                     </LinkLabel>
                   </label>
@@ -101,9 +103,7 @@ function ContestProblem() {
             </div>
           </div>
         )}
-        <div className="flex h-screen w-full text-indigo-800">
-          {errorMessage && <p className="m-auto text-center text-5xl">{errorMessage}</p>}
-        </div>
+        {/* {errorMessage && <p className="m-auto text-center text-5xl text-indigo-800">{errorMessage}</p>} */}
       </>
     )
   );
