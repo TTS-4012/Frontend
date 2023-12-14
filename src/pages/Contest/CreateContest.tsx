@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Duration from "../../components/Duration";
@@ -18,13 +18,14 @@ const validationSchema = yup
   .object({
     name: yup.string().required(),
     start: yup.date().required().min(new Date(), "Date cannot be in the past"),
-    duration: yup.number().required(),
+    duration: yup.number().min(1).required(),
   })
   .required();
 
 function CreateContest() {
   const {
     control,
+    watch,
     register,
     formState: { errors },
     handleSubmit,
@@ -49,6 +50,11 @@ function CreateContest() {
 
   const [errorMessage, setErrorMessage] = useState<string>();
 
+  useEffect(() => {
+    const subscription = watch(() => setErrorMessage(undefined));
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   return (
     <div className="rounded-md bg-white p-5">
       <p className="mb-3 p-3 text-left text-3xl font-extrabold text-indigo-700">New Contest</p>
@@ -66,7 +72,12 @@ function CreateContest() {
           {...register("start", {
             valueAsDate: true,
           })}
-          error={errors.start?.message}
+          error={
+            errors.start?.message ==
+            "start must be a `date` type, but the final value was: `Invalid Date` (cast from the value `Invalid Date`)."
+              ? "Start time is a required field "
+              : errors.start?.message
+          }
         />
         <Controller
           control={control}
