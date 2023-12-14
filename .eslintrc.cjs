@@ -19,7 +19,7 @@ module.exports = {
       "error",
       {
         plugins: ["prettier-plugin-tailwindcss"],
-        printWidth: 1000,
+        printWidth: 120,
         quoteProps: "consistent",
         bracketSameLine: true,
         singleAttributePerLine: true,
