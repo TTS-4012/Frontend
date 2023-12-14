@@ -15,8 +15,14 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
+import Button from "../../components/Button";
 
-function TablePaginationActions(props: { count: number; onPageChange: (e: any, n: number) => void; page: number; rowsPerPage: number }) {
+function TablePaginationActions(props: {
+  count: number;
+  onPageChange: (e: any, n: number) => void;
+  page: number;
+  rowsPerPage: number;
+}) {
   const theme = useTheme();
   const { page, onPageChange } = props;
 
@@ -50,7 +56,6 @@ type ProblemDataType = {
   title: string;
   solve_count: number;
   hardness: number;
-  // TODO : tag
 };
 
 type OrderDataType = {
@@ -58,9 +63,7 @@ type OrderDataType = {
   decending: boolean | undefined;
 };
 
-function ProblemsTable() {
-  const [hardnessDecending, setHardnessDecending] = useState(true);
-  const [solveDecending, setSolveDecending] = useState(true);
+function ListProblems() {
   const [order, setOrder] = useState<OrderDataType>({ order_by: "problem_id", decending: true });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -75,7 +78,13 @@ function ProblemsTable() {
     axios
       .get<ProblemDataType[]>("/problems", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
-        params: { limit: rowsPerPage, offset: page * rowsPerPage, ordered_by: order?.order_by, decendig: order?.decending, get_count: true },
+        params: {
+          limit: rowsPerPage,
+          offset: page * rowsPerPage,
+          ordered_by: order?.order_by,
+          decendig: order?.decending,
+          get_count: true,
+        },
       })
       .then((res) => {
         setTableData(res.data);
@@ -86,23 +95,17 @@ function ProblemsTable() {
       });
   }, [page, rowsPerPage, order]);
 
-  const handleClick = (e: any, problem_id: number) => {
+  const handleClick = (e: unknown, problem_id: number) => {
     navigate("/problems/" + String(problem_id));
   };
-  const handleChangePage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
+  const handleChangePage = (e: unknown, newPage: number) => {
     setPage(newPage);
   };
   const createOrder = (orderMethod: "hardness" | "solve_count", dec: boolean | undefined) => {
     return { order_by: orderMethod, decending: dec };
   };
-  const handleOrdering = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, orderMethod: "hardness" | "solve_count", decending: boolean) => {
-    if (orderMethod == "hardness") {
-      setHardnessDecending(decending);
-      setOrder(createOrder(orderMethod, hardnessDecending));
-    } else {
-      setSolveDecending(decending);
-      setOrder(createOrder(orderMethod, solveDecending));
-    }
+  const handleOrdering = (orderMethod: "hardness" | "solve_count", decending: boolean) => {
+    setOrder(createOrder(orderMethod, decending));
   };
 
   const handleChangeRowsPerPage = (e: any) => {
@@ -113,35 +116,31 @@ function ProblemsTable() {
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
-      <div className="flex flex-col gap-1 ">
-        <div className="flex flex-row justify-start gap-0 rounded-sm bg-gray-300 pl-3 shadow-md">
-          <p className="text-md px-5 py-2 font-bold ">Sort by </p>
-          <button
-            className=" rounded-r-sm px-5 py-2 text-sm font-bold text-black hover:bg-indigo-50 focus:text-white focus:outline-none focus:ring-1 focus:ring-indigo-50 "
-            onClick={(e) => handleOrdering(e, "hardness", true)}>
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-row justify-start gap-2 rounded-sm bg-white p-2 pl-3 shadow-md">
+          <p className="px-5 py-2 font-bold">Sort by </p>
+          <Button
+            size="sm"
+            onClick={() => handleOrdering("hardness", true)}>
             Hardest
-          </button>
-
-          <button
-            className="rounded-r-sm px-5 py-2 text-sm font-bold hover:bg-indigo-50 focus:text-white focus:ring-1 focus:ring-indigo-50"
-            onClick={(e) => handleOrdering(e, "hardness", false)}>
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => handleOrdering("hardness", false)}>
             Easiest
-          </button>
-
-          <button
-            className="rounded-r-sm px-5 py-2 text-sm font-bold hover:bg-indigo-50 focus:text-white focus:ring-1 focus:ring-indigo-50"
-            onClick={(e) => handleOrdering(e, "solve_count", true)}>
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => handleOrdering("solve_count", true)}>
             Most Solved
-          </button>
-          <button
-            className="rounded-r-sm px-5 py-2 text-sm font-bold hover:bg-indigo-50 focus:text-white focus:ring-1 focus:ring-indigo-50"
-            onClick={(e) => handleOrdering(e, "solve_count", false)}>
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => handleOrdering("solve_count", false)}>
             Least Solved
-          </button>
+          </Button>
         </div>
-        <TableContainer
-          component={Paper}
-          className="px-8">
+        <TableContainer component={Paper}>
           <Table
             sx={{ minWidth: 650 }}
             size="small">
@@ -207,4 +206,4 @@ function ProblemsTable() {
   );
 }
 
-export default ProblemsTable;
+export default ListProblems;

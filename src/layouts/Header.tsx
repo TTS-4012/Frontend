@@ -6,7 +6,7 @@ function Header() {
   const handleLogOut = () => {
     localStorage.removeItem("auth.access_token");
     localStorage.removeItem("auth.refresh_token");
-    navigate("/home");
+    navigate("/login");
   };
 
   return (
