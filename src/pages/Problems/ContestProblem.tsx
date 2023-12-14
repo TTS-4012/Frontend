@@ -58,28 +58,15 @@ function ContestProblem() {
     problemId && (
       <>
         {/*add !*/}
-        {errorMessage && (
+        {!errorMessage && (
           <div className="flex flex-row">
             <div className=" basis-5/6">
               <ProblemComponent id={problemId}></ProblemComponent>;
             </div>
 
             <div className="mb-auto mr-5 mt-5 flex basis-1/6 flex-col rounded-lg pb-5 text-center">
-              <div className="flex flex-col rounded-lg bg-gray-100 shadow-md ">
-                <p className="text-bold rounded-t-lg bg-gray-300  py-2 text-xl"> Contest Name </p>
-                {contest_bar.map((title) => (
-                  <label className="py-1 hover:bg-white">
-                    <LinkLabel
-                      to={"/" + title}
-                      className="inline w-10 px-2 text-xl ">
-                      {title}
-                    </LinkLabel>
-                  </label>
-                ))}
-              </div>
-              <span className="py-2"> </span>
               <div className="flex flex-col rounded-lg bg-gray-100 shadow-md">
-                <p className="rounded-t-lg bg-gray-300 py-2 text-xl"> Problems </p>
+                <p className="rounded-t-lg bg-gray-300 py-2 text-xl"> {contestData.title} </p>
                 {contestData?.porblems.map((problem) => (
                   <label className="hover:bg-white">
                     {problemId != String(problem.problem_id) ? (
@@ -91,10 +78,23 @@ function ContestProblem() {
                     ) : (
                       <LinkLabel
                         to={"/contests/" + String(contestId) + "/" + String(problem.problem_id)}
-                        className=" inline w-10 px-2 text-lg font-semibold">
+                        className=" inline w-10 px-2 text-lg font-semibold text-indigo-400">
                         {problem.title.slice(0, 15)} {problem.title.length > 15 && "..."}
                       </LinkLabel>
                     )}
+                  </label>
+                ))}
+              </div>
+
+              <span className="py-2"> </span>
+              <div className="flex flex-col rounded-lg bg-gray-100 shadow-md ">
+                {contest_bar.map((title) => (
+                  <label className="py-1 hover:bg-white">
+                    <LinkLabel
+                      to={"/" + title}
+                      className="inline w-10 px-2 text-xl ">
+                      {title}
+                    </LinkLabel>
                   </label>
                 ))}
               </div>
