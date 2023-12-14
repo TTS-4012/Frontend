@@ -25,7 +25,7 @@ function Duration(props: PropsType) {
       <label className="block text-sm font-medium text-gray-700">Duration</label>
       <div className=" flex w-3/4 flex-row gap-2">
         <Input
-          label="D"
+          label="Day"
           type="number"
           min={0}
           value={day}
@@ -37,7 +37,7 @@ function Duration(props: PropsType) {
           onBlur={props.onBlur}
         />
         <Input
-          label="H"
+          label="Hour"
           type="number"
           min={0}
           value={hour}
@@ -49,7 +49,7 @@ function Duration(props: PropsType) {
           onBlur={props.onBlur}
         />
         <Input
-          label="M"
+          label="Minute"
           type="number"
           min={0}
           value={minute}

@@ -4,7 +4,9 @@ import Input from "../../components/Input";
 import Duration from "../../components/Duration";
 import { Controller, useForm } from "react-hook-form";
 import axios, { AxiosError } from "axios";
+import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 type FormData = {
   name: string;
@@ -12,14 +14,26 @@ type FormData = {
   duration: number;
 };
 
+const validationSchema = yup
+  .object({
+    name: yup.string().required(),
+    start: yup.date().required().min(new Date(), "Date cannot be in the past"),
+    duration: yup.number().required(),
+  })
+  .required();
+
 function CreateContest() {
   const {
     control,
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+  });
+
   const navigate = useNavigate();
+
   const handleCreate = (data: FormData) => {
     console.log(data.start);
     axios
@@ -52,6 +66,7 @@ function CreateContest() {
           {...register("start", {
             valueAsDate: true,
           })}
+          error={errors.start?.message}
         />
         <Controller
           control={control}
