@@ -8,12 +8,16 @@ type PropsType = InputHTMLAttributes<HTMLInputElement> & {
 const FilePicker = forwardRef(({ error, ...inputProps }: PropsType, ref: ForwardedRef<HTMLInputElement>) => {
   return (
     <div>
-      <div className="relative m-4 mt-1 rounded-md shadow-sm">
+      <div className="relative rounded-md border border-gray-300 p-1 shadow-sm">
         <input
           {...inputProps}
           type="file"
-          className={`block w-full rounded-md pr-10 focus:outline-none sm:text-sm 
-                        ${error ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 text-gray-700 focus:border-indigo-500 focus:ring-indigo-500"}`}
+          className={`block w-full rounded-md pr-10 file:rounded-md file:border-0 file:bg-indigo-600 file:text-sm file:text-white file:hover:bg-indigo-700 focus:outline-none
+                        ${
+                          error
+                            ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
+                            : "border-gray-300 text-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
+                        }`}
           aria-invalid={!!error}
           ref={ref}
         />

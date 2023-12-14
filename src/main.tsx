@@ -3,17 +3,17 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Auth from "./layouts/Auth.tsx";
+import Dashboard from "./layouts/Dashboard.tsx";
 import Register from "./pages/Auth/Register.tsx";
 import Verify from "./pages/Auth/Verify.tsx";
 import Login from "./pages/Auth/Login.tsx";
-import Home from "./pages/Home.tsx";
 import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 import SpanningTable from "./pages/Problem/Porblemset.tsx";
 
+import NewProblem from "./pages/Problems/NewProblem.tsx";
+import Problem from "./pages/Problems/Problem.tsx";
+import Home from "./pages/Home.tsx";
 import axios from "axios";
-import Problem from "./pages/Problem.tsx";
-import ProblemCreation from "./pages/Problems/ProblemCreation.tsx";
-import Dashboard from "./layouts/Dashboard.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "new",
-            Component: ProblemCreation,
+            Component: NewProblem,
           },
           {
             path: ":id",
