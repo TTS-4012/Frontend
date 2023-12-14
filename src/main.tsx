@@ -8,8 +8,8 @@ import Register from "./pages/Auth/Register.tsx";
 import Verify from "./pages/Auth/Verify.tsx";
 import Login from "./pages/Auth/Login.tsx";
 import OTPLogin from "./pages/Auth/OTPLogin.tsx";
+import EditProblem from "./pages/Problems/EditProblem.tsx";
 import ListProblems from "./pages/Problems/ListProblems.tsx";
-import NewProblem from "./pages/Problems/NewProblem.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import Home from "./pages/Home.tsx";
 import axios from "axios";
@@ -45,16 +45,25 @@ const router = createBrowserRouter([
         path: "problems",
         children: [
           {
+            index: true,
+            Component: ListProblems,
+          },
+          {
             path: "new",
-            Component: NewProblem,
+            Component: EditProblem,
           },
           {
             path: ":id",
-            Component: Problem,
-          },
-          {
-            index: true,
-            Component: ListProblems,
+            children: [
+              {
+                index: true,
+                Component: Problem,
+              },
+              {
+                path: "edit",
+                Component: EditProblem,
+              },
+            ],
           },
         ],
       },
