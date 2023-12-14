@@ -38,8 +38,12 @@ function CreateContest() {
   const handleCreate = (data: FormData) => {
     axios
       .post(
-        "contest",
-        { ...data },
+        "contests",
+        {
+          title: data.title,
+          start_time: data.start_time.getTime() / 1000,
+          Duration: data.duration,
+        },
         {
           headers: {
             Authorization: localStorage.getItem("auth.access_token"),
@@ -81,7 +85,7 @@ function CreateContest() {
           })}
           error={
             errors.start_time?.message ==
-            "start must be a `date` type, but the final value was: `Invalid Date` (cast from the value `Invalid Date`)."
+            "start_time must be a `date` type, but the final value was: `Invalid Date` (cast from the value `Invalid Date`)."
               ? "Start time is a required field "
               : errors.start_time?.message
           }

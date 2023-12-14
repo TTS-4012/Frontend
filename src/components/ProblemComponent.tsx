@@ -41,13 +41,13 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
     if (filePicker.current?.files?.length) {
       const data = await filePicker.current?.files[0].text();
       axios
-        .post(`/problems/${id}/submisions`, data, {
+        .post(`/problems/${id}/submit`, data, {
           headers: {
             Authorization: localStorage.getItem("auth.access_token"),
           },
         })
         .then(() => {
-          navigate(".");
+          navigate("./home");
         })
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
