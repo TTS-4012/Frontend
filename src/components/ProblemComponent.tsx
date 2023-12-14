@@ -36,16 +36,14 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
       });
   }, [id]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (filePicker.current?.files?.length) {
-      const t = new FormData();
-      t.append("file", filePicker.current?.files[0]);
+      const data = await filePicker.current?.files[0].text();
       axios
-        .post(`/problems/${id}/submisions`, t, {
+        .post(`/problems/${id}/submisions`, data, {
           headers: {
-            "Content-Type": "multipart/form-data",
-            "Authorization": localStorage.getItem("auth.access_token"),
+            Authorization: localStorage.getItem("auth.access_token"),
           },
         })
         .then(() => {

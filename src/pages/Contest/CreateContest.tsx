@@ -9,15 +9,15 @@ import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 type FormData = {
-  name: string;
-  start: Date;
+  title: string;
+  start_time: Date;
   duration: number;
 };
 
 const validationSchema = yup
   .object({
-    name: yup.string().required(),
-    start: yup.date().required().min(new Date(), "Date cannot be in the past"),
+    title: yup.string().required(),
+    start_time: yup.date().required().min(new Date(), "Date cannot be in the past"),
     duration: yup.number().min(1).required(),
   })
   .required();
@@ -37,7 +37,15 @@ function CreateContest() {
 
   const handleCreate = (data: FormData) => {
     axios
-      .post("contest/create", { ...data })
+      .post(
+        "contest",
+        { ...data },
+        {
+          headers: {
+            Authorization: localStorage.getItem("auth.access_token"),
+          },
+        },
+      )
       .then(() => {
         //later add push notification
         navigate("/home");
@@ -62,20 +70,20 @@ function CreateContest() {
         className="Flex">
         <Input
           label="Name"
-          {...register("name")}
-          error={errors.name?.message}
+          {...register("title")}
+          error={errors.title?.message}
         />
         <Input
-          label="Start"
+          label="start_time"
           type="datetime-local"
-          {...register("start", {
+          {...register("start_time", {
             valueAsDate: true,
           })}
           error={
-            errors.start?.message ==
+            errors.start_time?.message ==
             "start must be a `date` type, but the final value was: `Invalid Date` (cast from the value `Invalid Date`)."
               ? "Start time is a required field "
-              : errors.start?.message
+              : errors.start_time?.message
           }
         />
         <Controller
