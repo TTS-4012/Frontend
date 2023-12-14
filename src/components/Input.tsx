@@ -13,10 +13,10 @@ const Input = forwardRef(({ label, error, ...inputProps }: PropsType, ref: Forwa
       <div className="relative mt-1 rounded-md shadow-sm">
         <input
           {...inputProps}
-          className={`block w-full rounded-md pr-10 focus:outline-none sm:text-sm 
+          className={`block w-full rounded-md focus:outline-none sm:text-sm 
                     ${
                       error
-                        ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
+                        ? "border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
                         : "border-gray-300 text-gray-700 focus:border-indigo-500 focus:ring-indigo-500"
                     }`}
           aria-invalid={!!error}

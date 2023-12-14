@@ -37,25 +37,19 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
       });
   }, [id]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (filePicker.current?.files?.length) {
+      const data = await filePicker.current?.files[0].text();
       axios
-        .post(
-          "/submissions",
-          {
-            problem_id: id,
-            file: e,
+        .post(`/problems/${id}/submit`, data, {
+          headers: {
+            Authorization: localStorage.getItem("auth.access_token"),
           },
-          {
-            headers: {
-              Authorization: localStorage.getItem("auth.access_token"),
-            },
-          },
-        )
-        .then(() => {
-          navigate(".");
         })
+        // .then(() => {
+        //   navigate("submissions");
+        // })
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
         });
