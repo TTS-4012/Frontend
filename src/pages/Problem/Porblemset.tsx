@@ -18,7 +18,7 @@ import { useState, useEffect } from "react";
 
 function TablePaginationActions(props: { count: number; onPageChange: (e: any, n: number) => void; page: number; rowsPerPage: number }) {
   const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
+  const { page, onPageChange } = props;
 
   const handleBackButtonClick = (event: any) => {
     onPageChange(event, page - 1);
@@ -53,6 +53,11 @@ type ProblemDataType = {
   // TODO : tag
 };
 
+// type TableDataType = {
+//   problems: ProblemDataType[];
+//   total_count: number;
+// };
+
 type OrderDataType = {
   order_by: "hardness" | "solve_count" | "problem_id" | undefined;
   decending: boolean | undefined;
@@ -63,26 +68,28 @@ function ProblemsTable() {
   const [solveDecending, setSolveDecending] = useState(true);
   const [order, setOrder] = useState<OrderDataType>({ order_by: "problem_id", decending: true });
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
 
-  const [problemData, setProblemData] = useState<ProblemDataType[]>([]);
+  const [tableData, setTableData] = useState<ProblemDataType[]>();
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    setErrorMessage("");
     axios
       .get<ProblemDataType[]>("/problems", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
-        params: { limit: rowsPerPage, offset: page * rowsPerPage, ordered_by: order?.order_by, decendig: order?.decending },
+        params: { limit: rowsPerPage, offset: page * rowsPerPage, ordered_by: order?.order_by, decendig: order?.decending, get_count: true },
       })
       .then((res) => {
-        setProblemData(res.data);
+        setTableData(res.data);
       })
       .catch((err: AxiosError<any>) => {
         console.log(err.message);
         setErrorMessage(err.response?.data.message ?? err.message);
       });
+    console.log(tableData);
   }, [page, rowsPerPage, order]);
 
   const handleClick = (e: any, problem_id: number) => {
@@ -94,12 +101,12 @@ function ProblemsTable() {
   const createOrder = (orderMethod: "hardness" | "solve_count", dec: boolean | undefined) => {
     return { order_by: orderMethod, decending: dec };
   };
-  const handleOrdering = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, orderMethod: "hardness" | "solve_count") => {
+  const handleOrdering = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, orderMethod: "hardness" | "solve_count", decending: boolean) => {
     if (orderMethod == "hardness") {
-      setHardnessDecending(!hardnessDecending);
+      setHardnessDecending(decending);
       setOrder(createOrder(orderMethod, hardnessDecending));
     } else {
-      setSolveDecending(!solveDecending);
+      setSolveDecending(decending);
       setOrder(createOrder(orderMethod, solveDecending));
     }
   };
@@ -112,91 +119,96 @@ function ProblemsTable() {
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
-      <TableContainer
-        component={Paper}
-        className="px-8">
-        <Table
-          sx={{ minWidth: 650 }}
-          size="small">
-          <TableHead>
-            <TableRow className=" max-h-10">
-              <TableCell
-                align="left"
-                colSpan={2}></TableCell>
-              <TableCell
-                className=""
-                align="center">
-                <button
-                  className="ml-0 rounded-r-sm px-5 py-2 text-sm font-bold hover:bg-indigo-50 focus:outline-none focus:ring-1 focus:ring-indigo-50 focus:ring-offset-1"
-                  onClick={(e) => handleOrdering(e, "hardness")}>
-                  {hardnessDecending && "Most"} {!hardnessDecending && "Least"}
-                </button>
-              </TableCell>
-              <TableCell
-                className=""
-                align="center">
-                <button
-                  className=" ml-0 rounded-r-sm px-5 py-2  font-bold hover:bg-indigo-50 focus:outline-none focus:ring-1 focus:ring-indigo-50 focus:ring-offset-1"
-                  onClick={(e) => handleOrdering(e, "solve_count")}>
-                  {solveDecending && " Most "} {!solveDecending && "Least"}
-                </button>
-              </TableCell>
-            </TableRow>
-            <TableRow className="bg-indigo-100">
-              <TableCell
-                align="left"
-                padding="checkbox">
-                <p className="pl-2 font-bold  ">Number</p>
-              </TableCell>
-              <TableCell align="center">
-                <p className="font-bold  text-violet-800">Problem</p>
-              </TableCell>
-              <TableCell align="center">
-                <p className="font-bold  text-violet-800">Hardness</p>
-              </TableCell>
-              <TableCell align="center">
-                <p className="font-bold  text-violet-800">Solve Count</p>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {problemData.map((problem, i) => (
-              <TableRow
-                key={problem.problem_id}
-                onClick={(event) => handleClick(event, problem.problem_id)}
-                sx={{ cursor: "pointer" }}
-                className="hover:bg-blue-100">
+      <div className="flex flex-col gap-1 ">
+        <div className="flex flex-row justify-start gap-0 rounded-sm bg-gray-300 pl-3 shadow-md">
+          <p className="text-md px-5 py-2 font-bold ">Sort by </p>
+          <button
+            className=" rounded-r-sm px-5 py-2 text-sm font-bold text-black hover:bg-indigo-50 focus:text-white focus:outline-none focus:ring-1 focus:ring-indigo-50 "
+            onClick={(e) => handleOrdering(e, "hardness", true)}>
+            Hardest
+          </button>
+
+          <button
+            className="rounded-r-sm px-5 py-2 text-sm font-bold hover:bg-indigo-50 focus:text-white focus:ring-1 focus:ring-indigo-50"
+            onClick={(e) => handleOrdering(e, "hardness", false)}>
+            Easiest
+          </button>
+
+          <button
+            className="rounded-r-sm px-5 py-2 text-sm font-bold hover:bg-indigo-50 focus:text-white focus:ring-1 focus:ring-indigo-50"
+            onClick={(e) => handleOrdering(e, "solve_count", true)}>
+            Most Solved
+          </button>
+          <button
+            className="rounded-r-sm px-5 py-2 text-sm font-bold hover:bg-indigo-50 focus:text-white focus:ring-1 focus:ring-indigo-50"
+            onClick={(e) => handleOrdering(e, "solve_count", false)}>
+            Least Solved
+          </button>
+        </div>
+        <TableContainer
+          component={Paper}
+          className="px-8">
+          <Table
+            sx={{ minWidth: 650 }}
+            size="small">
+            <TableHead>
+              <TableRow className="bg-indigo-100">
                 <TableCell
-                  className=" bg-blue-50"
-                  align="center">
-                  {page * rowsPerPage + i + 1}
+                  align="left"
+                  padding="checkbox">
+                  <p className="pl-2 font-bold  ">Number</p>
                 </TableCell>
                 <TableCell align="center">
-                  <p>
-                    {problem.title.slice(0, 15)} {problem.title.length > 15 && "..."}
-                  </p>
+                  <p className="font-bold  text-violet-800">Problem</p>
                 </TableCell>
-                <TableCell align="center">{problem.hardness}</TableCell>
-                <TableCell align="center">{problem.solve_count}</TableCell>
+                <TableCell align="center">
+                  <p className="font-bold  text-violet-800">Hardness</p>
+                </TableCell>
+                <TableCell align="center">
+                  <p className="font-bold  text-violet-800">Solve Count</p>
+                </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 15]}
-                colSpan={4}
-                count={-1}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {tableData?.map((problem, i) => (
+                <TableRow
+                  key={problem.problem_id}
+                  onClick={(event) => handleClick(event, problem.problem_id)}
+                  sx={{ cursor: "pointer" }}
+                  className="hover:bg-blue-100">
+                  <TableCell
+                    className=" bg-blue-50"
+                    align="center">
+                    {page * rowsPerPage + i + 1}
+                  </TableCell>
+                  <TableCell align="center">
+                    <p>
+                      {problem.title.slice(0, 15)} {problem.title.length > 15 && "..."}
+                    </p>
+                  </TableCell>
+                  <TableCell align="center">{problem.hardness}</TableCell>
+                  <TableCell align="center">{problem.solve_count}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  className=""
+                  rowsPerPageOptions={[20, 50, 100]}
+                  colSpan={4}
+                  count={-1}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 }
