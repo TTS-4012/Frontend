@@ -52,10 +52,13 @@ function TablePaginationActions(props: {
 }
 
 type ProblemDataType = {
-  problem_id: number;
-  title: string;
-  solve_count: number;
-  hardness: number;
+  total_count: number;
+  problems: {
+    problem_id: number;
+    title: string;
+    solve_count: number;
+    hardness: number;
+  }[];
 };
 
 type OrderDataType = {
@@ -68,7 +71,7 @@ function ListProblems() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
-  const [tableData, setTableData] = useState<ProblemDataType[]>();
+  const [tableData, setTableData] = useState<ProblemDataType>();
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const navigate = useNavigate();
@@ -76,7 +79,7 @@ function ListProblems() {
   useEffect(() => {
     setErrorMessage("");
     axios
-      .get<ProblemDataType[]>("/problems", {
+      .get<ProblemDataType>("/problems", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           limit: rowsPerPage,
@@ -101,16 +104,15 @@ function ListProblems() {
   const handleChangePage = (e: unknown, newPage: number) => {
     setPage(newPage);
   };
+  const handleChangeRowsPerPage = (e: any) => {
+    setRowsPerPage(parseInt(e.target.value, 10));
+    setPage(0);
+  };
   const createOrder = (orderMethod: "hardness" | "solve_count", dec: boolean | undefined) => {
     return { order_by: orderMethod, decending: dec };
   };
   const handleOrdering = (orderMethod: "hardness" | "solve_count", decending: boolean) => {
     setOrder(createOrder(orderMethod, decending));
-  };
-
-  const handleChangeRowsPerPage = (e: any) => {
-    setRowsPerPage(parseInt(e.target.value, 10));
-    setPage(0);
   };
 
   return (
@@ -163,7 +165,7 @@ function ListProblems() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData?.map((problem, i) => (
+              {tableData?.problems.map((problem, i) => (
                 <TableRow
                   key={problem.problem_id}
                   onClick={(event) => handleClick(event, problem.problem_id)}
@@ -190,7 +192,7 @@ function ListProblems() {
                   className=""
                   rowsPerPageOptions={[20, 50, 100]}
                   colSpan={4}
-                  count={-1}
+                  count={tableData?.total_count ?? -1}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
