@@ -53,11 +53,6 @@ type ProblemDataType = {
   // TODO : tag
 };
 
-// type TableDataType = {
-//   problems: ProblemDataType[];
-//   total_count: number;
-// };
-
 type OrderDataType = {
   order_by: "hardness" | "solve_count" | "problem_id" | undefined;
   decending: boolean | undefined;
@@ -89,7 +84,6 @@ function ProblemsTable() {
         console.log(err.message);
         setErrorMessage(err.response?.data.message ?? err.message);
       });
-    console.log(tableData);
   }, [page, rowsPerPage, order]);
 
   const handleClick = (e: any, problem_id: number) => {
