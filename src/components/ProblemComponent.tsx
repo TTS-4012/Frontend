@@ -6,6 +6,7 @@ import Button from "./Button";
 import Markdown from "./Markdown";
 import FilePicker from "./FilePicker";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
+import { PencilIcon } from "@heroicons/react/24/outline";
 
 type ProblemData = {
   title: string;
@@ -63,9 +64,19 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
     <div
       className="m-5 flex flex-col gap-2"
       {...otherProps}>
-      <p className="rounded-t-lg border-black bg-white p-5 text-center align-middle text-3xl font-black shadow-md">
+      <div className="relative rounded-t-lg border-black bg-white p-5 text-center align-middle text-3xl font-black shadow-md">
         {data?.title ?? "title"}
-      </p>
+        <div className="absolute right-4 top-4 flex gap-2">
+          <Button
+            size="xs"
+            variant="inline"
+            onClick={() => {
+              navigate("edit");
+            }}>
+            <PencilIcon className="h-5 w-5" />
+          </Button>
+        </div>
+      </div>
       <Markdown className=" bg-white p-8 shadow-md">{data.description}</Markdown>
       <form
         onSubmit={handleSubmit}
