@@ -48,7 +48,7 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
           },
         })
         .then(() => {
-          navigate("./home");
+          navigate("/home");
         })
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);

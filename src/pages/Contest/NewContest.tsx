@@ -22,7 +22,7 @@ const validationSchema = yup
   })
   .required();
 
-function CreateContest() {
+function NewContest() {
   const {
     control,
     watch,
@@ -67,7 +67,7 @@ function CreateContest() {
   }, [watch]);
 
   return (
-    <div className="rounded-md bg-white p-5">
+    <div className="m-auto w-5/12 rounded-md bg-white p-5">
       <p className="mb-3 p-3 text-left text-3xl font-extrabold text-indigo-700">New Contest</p>
       <form
         onSubmit={handleSubmit(handleCreate)}
@@ -115,4 +115,4 @@ function CreateContest() {
   );
 }
 
-export default CreateContest;
+export default NewContest;

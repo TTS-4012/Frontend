@@ -9,23 +9,23 @@ function Home() {
         type="button"
         size="md"
         onClick={() => {
-          navigate("");
+          navigate("/problems");
         }}>
         problemset
       </Button>
       <Button
         size="md"
         onClick={() => {
-          navigate("/problems/newproblem");
+          navigate("/problems/new");
         }}>
-        creat problem
+        New Problem
       </Button>
       <Button
         size="md"
         onClick={() => {
-          navigate("/contest/creat");
+          navigate("/contests/new");
         }}>
-        creat contest
+        New Contest
       </Button>
     </div>
   );
