@@ -120,7 +120,7 @@ function ListProblems() {
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
-        <div className="flex flex-row justify-start gap-2 rounded-sm bg-white p-2 pl-3 shadow-md">
+        <div className="flex flex-row justify-start gap-2 rounded-sm bg-white p-2 pl-3 shadow-sm">
           <p className="px-5 py-2 font-bold">Sort by </p>
           <Button
             size="sm"
@@ -148,20 +148,20 @@ function ListProblems() {
             sx={{ minWidth: 650 }}
             size="small">
             <TableHead>
-              <TableRow className="bg-indigo-100">
+              <TableRow className="bg-indigo-300">
                 <TableCell
                   align="left"
                   padding="checkbox">
                   <p className="pl-2 font-bold  ">Number</p>
                 </TableCell>
                 <TableCell align="center">
-                  <p className="font-bold  text-violet-800">Problem</p>
+                  <p className="font-bold  ">Problem</p>
                 </TableCell>
                 <TableCell align="center">
-                  <p className="font-bold  text-violet-800">Hardness</p>
+                  <p className="font-bold  ">Hardness</p>
                 </TableCell>
                 <TableCell align="center">
-                  <p className="font-bold  text-violet-800">Solve Count</p>
+                  <p className="font-bold  ">Solve Count</p>
                 </TableCell>
               </TableRow>
             </TableHead>
