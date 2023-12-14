@@ -39,19 +39,15 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (filePicker.current?.files?.length) {
+      const t = new FormData();
+      t.append("file", filePicker.current?.files[0]);
       axios
-        .post(
-          "/submissions",
-          {
-            problem_id: id,
-            file: e,
+        .post(`/problems/${id}/submisions`, t, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": localStorage.getItem("auth.access_token"),
           },
-          {
-            headers: {
-              Authorization: localStorage.getItem("auth.access_token"),
-            },
-          },
-        )
+        })
         .then(() => {
           navigate(".");
         })
