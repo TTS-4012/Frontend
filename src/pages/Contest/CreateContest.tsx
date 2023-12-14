@@ -36,7 +36,6 @@ function CreateContest() {
   const navigate = useNavigate();
 
   const handleCreate = (data: FormData) => {
-    console.log(data.start);
     axios
       .post("contest/create", { ...data })
       .then(() => {
