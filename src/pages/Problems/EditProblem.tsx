@@ -8,7 +8,18 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios, { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
+type ProblemData = {
+  title: string;
+  hardness: number;
+  solve_count: number;
+  description: string;
+};
+
+type ParamsType = {
+  id?: string;
+};
 
 type FormDataType = {
   name: string;
@@ -20,52 +31,64 @@ const validationSchema = yup
   })
   .required();
 
-function NewProblem() {
+function EditProblem() {
+  const { id } = useParams<ParamsType>();
+
   const editorContainer = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
 
-  const { register, handleSubmit } = useForm<FormDataType>({
+  const { register, handleSubmit, setValue } = useForm<FormDataType>({
     resolver: yupResolver(validationSchema),
   });
 
   const [content, setContent] = useState<string>();
   useEffect(() => {
-    if (editorContainer.current) {
-      editor.current = monaco.editor.create(editorContainer.current, {
-        language: "markdown",
-        automaticLayout: true,
-      });
+    if (!editorContainer.current) return;
+    editor.current = monaco.editor.create(editorContainer.current, {
+      language: "markdown",
+      automaticLayout: true,
+    });
 
-      editor.current.onDidChangeModelContent(() => {
-        setContent(editor.current?.getValue());
-      });
-    }
+    editor.current.onDidChangeModelContent(() => {
+      setContent(editor.current?.getValue());
+    });
+
+    if (id)
+      axios
+        .get<ProblemData>(`/problems/${id}`, {
+          headers: { Authorization: localStorage.getItem("auth.access_token") },
+        })
+        .then((res) => {
+          setValue("name", res.data.title);
+          editor.current?.setValue(res.data.description);
+        });
 
     return () => {
       editor.current?.dispose();
       editor.current = undefined;
     };
-  }, []);
+  }, [id, setValue]);
 
   const [errorMessage, setErrorMessage] = useState<string>();
   const navigate = useNavigate();
 
   const onSave = (data: FormDataType) => {
-    axios
-      .post<{ problem_Id: string }>(
-        "/problems",
-        {
-          title: data.name,
-          description: content,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem("auth.access_token"),
-          },
-        },
-      )
-      .then((res) => {
-        navigate(`/problems/${res.data.problem_Id}`);
+    const body = {
+      title: data.name,
+      description: content,
+    };
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("auth.access_token"),
+      },
+    };
+    const save = () =>
+      id
+        ? axios.put(`/problems/${id}`, body, config).then(() => id)
+        : axios.post<{ problem_Id: string }>("/problems", body, config).then((res) => res.data.problem_Id);
+    save()
+      .then((savedId) => {
+        navigate(`/problems/${savedId}`);
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
@@ -127,4 +150,4 @@ function NewProblem() {
   );
 }
 
-export default NewProblem;
+export default EditProblem;
