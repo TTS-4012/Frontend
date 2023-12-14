@@ -4,7 +4,7 @@ function LinkLabel({ className, ...otherProps }: LinkProps) {
   return (
     <div>
       <RouterLink
-        className={` bg-slate-50 visited:bg-blue-400 hover:bg-blue-300 visited:hover: text-black ${className}`}
+        className={` visited:hover: bg-slate-50 text-black visited:bg-blue-400 hover:bg-blue-300 ${className}`}
         {...otherProps}
       />
     </div>
