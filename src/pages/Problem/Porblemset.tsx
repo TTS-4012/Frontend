@@ -18,7 +18,7 @@ import { useState, useEffect } from "react";
 
 function TablePaginationActions(props: { count: number; onPageChange: (e: any, n: number) => void; page: number; rowsPerPage: number }) {
   const theme = useTheme();
-  const { page, onPageChange } = props;
+  const { count, page, rowsPerPage, onPageChange } = props;
 
   const handleBackButtonClick = (event: any) => {
     onPageChange(event, page - 1);
@@ -53,6 +53,11 @@ type ProblemDataType = {
   // TODO : tag
 };
 
+type TableDataType = {
+  problems: ProblemDataType[];
+  total_count: number;
+};
+
 type OrderDataType = {
   order_by: "hardness" | "solve_count" | "problem_id" | undefined;
   decending: boolean | undefined;
@@ -84,6 +89,7 @@ function ProblemsTable() {
         console.log(err.message);
         setErrorMessage(err.response?.data.message ?? err.message);
       });
+    console.log(tableData);
   }, [page, rowsPerPage, order]);
 
   const handleClick = (e: any, problem_id: number) => {
@@ -191,7 +197,7 @@ function ProblemsTable() {
                   className=""
                   rowsPerPageOptions={[20, 50, 100]}
                   colSpan={4}
-                  count={-1}
+                  count={tableData?.total_count ? tableData.total_count : -1}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
