@@ -55,7 +55,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "contest",
+        path: "contests",
         children: [
           {
             path: ":contestId/:problemId",
