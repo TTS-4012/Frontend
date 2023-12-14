@@ -2,7 +2,7 @@ import ProblemComponent from "../../components/ProblemComponent";
 import axios, { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import LinkLabel from "../../components/LinkLable";
+import LinkLabel from "../../components/LinkLabel";
 
 type ProblemDataType = {
   problem_id: number;
