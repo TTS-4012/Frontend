@@ -44,7 +44,7 @@ function TablePaginationActions(props: {
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={count != -1 && page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="next page">
         {theme.direction === "rtl" ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
@@ -99,10 +99,10 @@ function ListProblems() {
       });
   }, [page, rowsPerPage, order]);
 
-  const handleClick = (e: unknown, problem_id: number) => {
+  const handleClick = (_: unknown, problem_id: number) => {
     navigate("/problems/" + String(problem_id));
   };
-  const handleChangePage = (e: unknown, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
   const handleChangeRowsPerPage = (e: any) => {
