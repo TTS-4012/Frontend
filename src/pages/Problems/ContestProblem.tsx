@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import LinkLabel from "../../components/LinkLabel";
+import { duration } from "@mui/material";
 
 type ProblemDataType = {
   problem_id: number;
@@ -12,7 +13,7 @@ type ContestDataType = {
   contest_Id: number;
   title: string;
   porblems: ProblemDataType[];
-  start_time: string;
+  start_time: Date;
   duration: number;
 };
 
@@ -32,13 +33,18 @@ function ContestProblem() {
       { problem_id: 2, title: "problem2" },
       { problem_id: 3, title: "problem3" },
     ],
-    start_time: "00000000000000",
+    start_time: new Date("2023-12-21T22:00:00"),
     duration: 6000,
   });
+  const [reverseTimer, setTimer] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string>();
 
   useEffect(() => {
     setErrorMessage("");
+    setInterval(
+      () => setTimer(contestData.start_time.valueOf() - new Date().valueOf() + contestData.duration * 60 * 1000),
+      1000,
+    );
     axios
       .get<ContestDataType>("/contest/" + String(contestId), {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
@@ -65,6 +71,27 @@ function ContestProblem() {
             <div className="mb-auto mr-5 mt-5 flex basis-1/6 flex-col rounded-lg pb-5 text-center">
               <div className="flex flex-col rounded-lg bg-gray-100 shadow-md">
                 <p className="rounded-t-lg bg-gray-300 py-1.5 text-xl font-medium"> {contestData?.title} </p>
+
+
+                <p>
+                  {contestData.start_time.toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
+                <p>
+                  {contestData.start_time.toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  })}
+                </p>
+                <p>
+                  {reverseTimer / 60000},{reverseTimer % 60000}
+                </p>
+
+                
                 {contestData?.porblems.map((problem, i) => (
                   <label
                     key={i}
