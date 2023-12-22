@@ -2,7 +2,6 @@ import Dialog from "../../../components/Dialog";
 import { CodeBracketIcon, ListBulletIcon } from "@heroicons/react/20/solid";
 import { ReactNode, useState } from "react";
 import { createPortal } from "react-dom";
-import CodeView from "./CodeView";
 
 enum Verdicts {
   VerdictOK,
@@ -45,7 +44,6 @@ function SubmissionsRow({ data, index }: PropsType) {
   const message = data.results.verdicts.length === 0 ? "No tast case found" : data.results.message;
 
   const [verdictsModalOpen, setVerdictsModalOpen] = useState(false);
-  const [codeViewOpen, setCodeViewOpen] = useState(false);
 
   return (
     <>
@@ -71,17 +69,7 @@ function SubmissionsRow({ data, index }: PropsType) {
           </div>
         </Dialog>,
         document.body,
-        `${data.metadata.submission_id}-Test cases`,
-      )}
-      {createPortal(
-        <Dialog
-          open={codeViewOpen}
-          onClose={setCodeViewOpen}
-          title={`Submission id: ${data.metadata.submission_id}`}>
-          <CodeView id={data.metadata.submission_id} />
-        </Dialog>,
-        document.body,
-        `${data.metadata.submission_id}-Code`,
+        data.metadata.submission_id,
       )}
       <tr className={`text-sm text-gray-800 ${index % 2 === 0 ? undefined : "bg-gray-50"}`}>
         <td className="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6">
@@ -100,10 +88,7 @@ function SubmissionsRow({ data, index }: PropsType) {
               className="h-6 w-6 text-indigo-600 hover:text-indigo-800"
               onClick={() => setVerdictsModalOpen(true)}
             />
-            <CodeBracketIcon
-              className="h-6 w-6 text-indigo-600 hover:text-indigo-800"
-              onClick={() => setCodeViewOpen(true)}
-            />
+            <CodeBracketIcon className="h-6 w-6 text-indigo-600 hover:text-indigo-800" />
           </div>
         </td>
       </tr>
