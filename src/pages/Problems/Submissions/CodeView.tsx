@@ -28,9 +28,9 @@ function CodeView({ id , ...otherProps }: PropsType) {
   }, [id]);
   return data ? (
     <div
-      className="flex flex-col self-center rounded-md bg-white p-2 shadow overflow-scroll border px-2  py-1"
+      className="flex flex-col self-center rounded-md bg-white p-2 shadow overflow-scroll border px-2 py-1"
       {...otherProps}>
-      <Markdown>{` ${data} `}</Markdown>
+      <Markdown>{`\`\`\`python\n${data}\n\`\`\``}</Markdown>
     </div>
   ) : (
     <div className="flex w-full text-indigo-800">
