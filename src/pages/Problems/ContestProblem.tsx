@@ -38,8 +38,8 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
 
   return (
     <div className="flex flex-col gap-1 rounded-t-lg bg-white p-1 shadow-md">
-      <p className="border-b border-gray-200 p-4 text-3xl font-bold text-gray-900 sm:px-6">{contestData?.title}</p>
-      <div className="flex flex-row gap-1 p-2">
+      <p className="border-b border-gray-200 p-4 text-3xl font-bold text-gray-900 sm:px-6 mx-auto">{contestData?.title}</p>
+      <div className="flex flex-row gap-3 p-2">
         {contestData.start_time - Math.floor(new Date().valueOf()/1000) > 0 ? (
           <>
             <CalendarIcon className="m-auto h-6 w-6" />
@@ -119,7 +119,7 @@ function ContestProblem() {
           <div className="flex basis-1/6 flex-col gap-2">
             <ContestDuration contestData={contestData} />
             <div className="flex flex-col space-y-1 bg-white p-1 shadow-md">
-              <p className="border-b border-gray-200 p-2 text-gray-900 sm:px-4">problems</p>
+              <p className="border-b border-gray-200 p-2 text-gray-900 sm:px-4 font-medium">Problems</p>
               {contestData?.problems?.map((problem, i) => (
                 <Link
                   key={i}
@@ -135,13 +135,13 @@ function ContestProblem() {
             </div>
             <div className="flex flex-col space-y-1 rounded-b-lg bg-white p-1 shadow-md">
               <Link
-                to={`/scoreboard`}
+                to={`/contests/${contestId}/scoreboard`}
                 className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                 <TrophyIcon className="h-5 w-5" />
                 Scoreboard
               </Link>
               <Link
-                to={`/submissions`}
+                to={`/contests/${contestId}/submissions`}
                 className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                 <PuzzlePieceIcon className="h-5 w-5" />
                 Submissions
