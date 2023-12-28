@@ -40,19 +40,19 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
     <div className="flex flex-col gap-1 rounded-t-lg bg-white p-1 shadow-md">
       <p className="border-b border-gray-200 p-4 text-3xl font-bold text-gray-900 sm:px-6">{contestData?.title}</p>
       <div className="flex flex-row gap-1 p-2">
-        {contestData.start_time.valueOf() - new Date().valueOf() > 0 ? (
+        {contestData.start_time - Math.floor(new Date().valueOf()/1000) > 0 ? (
           <>
             <CalendarIcon className="m-auto h-6 w-6" />
             <p className="flex grow flex-col">
               <p className="text-lg font-medium">
-                {contestData.start_time.toLocaleDateString("en-GB", {
+                {new Date(contestData.start_time*1000).toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "short",
                   year: "numeric",
                 })}
               </p>
               <p className="text-lg">
-                {contestData.start_time.toLocaleString("en-US", {
+                {new Date(contestData.start_time*1000).toLocaleString("en-US", {
                   hour: "numeric",
                   minute: "numeric",
                   hour12: true,
@@ -60,21 +60,21 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
               </p>
             </p>
           </>
-        ) : contestData.start_time.valueOf() + contestData.duration * 1000 - new Date().valueOf() > 0 ? (
+        ) : contestData.start_time + contestData.duration - Math.floor(new Date().valueOf()/1000) > 0 ? (
           <>
             <div className="mx-auto flex flex-row gap-2 py-2">
               <ClockIcon className="m-auto h-6 w-6" />
               <p
                 className={`grow text-lg font-medium flex${
-                  (reverseTimer < 600000 && reverseTimer >= 60000 && "text-yellow-600") ||
-                  (reverseTimer < 60000 && "text-red-600")
+                  (reverseTimer < 600 && reverseTimer >= 600 && "text-yellow-600") ||
+                  (reverseTimer < 60 && "text-red-600")
                 }`}>
-                {Math.floor(reverseTimer / 3600000).toString().length == 1 && "0"}
-                {Math.floor(reverseTimer / 3600000)}:{" "}
-                {Math.floor((reverseTimer % 3600000) / 60000).toString().length == 1 && "0"}
-                {Math.floor((reverseTimer % 3600000) / 60000)}:{" "}
-                {Math.floor((reverseTimer % 60000) / 1000).toString().length == 1 && "0"}
-                {Math.floor((reverseTimer % 60000) / 1000)}
+                {Math.floor(reverseTimer / 3600).toString().length == 1 && "0"}
+                {Math.floor(reverseTimer / 3600)}:{" "}
+                {Math.floor((reverseTimer % 3600) / 60).toString().length == 1 && "0"}
+                {Math.floor((reverseTimer % 3600) / 60)}:{" "}
+                {Math.floor((reverseTimer % 60)).toString().length == 1 && "0"}
+                {Math.floor((reverseTimer % 60))}
               </p>
             </div>
           </>
