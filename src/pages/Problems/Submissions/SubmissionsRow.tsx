@@ -79,9 +79,7 @@ function SubmissionsRow({ data, index }: PropsType) {
           open={codeViewOpen}
           onClose={setCodeViewOpen}
           title={`Submission id: ${data.metadata.submission_id}`}>
-          <div>
-            <CodeView id={data.metadata.submission_id} />
-          </div>
+          <CodeView id={data.metadata.submission_id} />
         </Dialog>,
         document.body,
         data.metadata.submission_id,
