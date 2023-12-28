@@ -6,11 +6,11 @@ type ParamsType = {
 };
 
 function Problem() {
-  const { id } = useParams<ParamsType>();
+  const { problemId } = useParams<ParamsType>();
   return (
-    id && (
+    problemId && (
       <ProblemComponent
-        id={id}
+        id={problemId}
         className="m-5"
       />
     )
