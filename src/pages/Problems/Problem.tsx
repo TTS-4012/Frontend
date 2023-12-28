@@ -7,7 +7,14 @@ type ParamsType = {
 
 function Problem() {
   const { id } = useParams<ParamsType>();
-  return id && <ProblemComponent id={id}></ProblemComponent>;
+  return (
+    id && (
+      <ProblemComponent
+        id={id}
+        className="m-5"
+      />
+    )
+  );
 }
 
 export default Problem;
