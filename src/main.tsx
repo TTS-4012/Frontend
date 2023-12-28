@@ -14,6 +14,9 @@ import ListSubmissions from "./pages/Problems/Submissions/ListSubmissons.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import Home from "./pages/Home.tsx";
 import ListContests from "./pages/Contest/ListContests.tsx";
+import ContestProblem from "./pages/Contest/ContestProblem.tsx";
+import Login from "./pages/Auth/Login.tsx";
+import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
@@ -87,21 +90,16 @@ const router = createBrowserRouter([
             path: ":contestId",
             children: [
               {
-                path: "edit",
-                Component: EditContest,
+                path: "new",
+                Component: EditProblem,
               },
               {
-                path: "problems",
-                children: [
-                  {
-                    path: "new",
-                    Component: EditProblem,
-                  },
-                  {
-                    path: ":problemId",
-                    Component: ContestProblem,
-                  },
-                ],
+                path: ":problemId",
+                Component: ContestProblem,
+              },
+              {
+                path: ":problemId/edit",
+                Component: EditProblem,
               },
             ],
           },

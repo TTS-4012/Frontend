@@ -18,6 +18,7 @@ type ProblemData = {
 };
 
 type ParamsType = {
+  contestId?: string;
   problemId?: string;
 };
 
@@ -32,7 +33,7 @@ const validationSchema = yup
   .required();
 
 function EditProblem() {
-  const { problemId } = useParams<ParamsType>();
+  const { contestId, problemId } = useParams<ParamsType>();
 
   const editorContainer = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -55,7 +56,7 @@ function EditProblem() {
 
     if (problemId)
       axios
-        .get<ProblemData>(`/problems/${problemId}`, {
+        .get<ProblemData>(`${contestId ? `/contests/${contestId}` : ""}problems/${problemId}`, {
           headers: { Authorization: localStorage.getItem("auth.access_token") },
         })
         .then((res) => {
@@ -67,8 +68,7 @@ function EditProblem() {
       editor.current?.dispose();
       editor.current = undefined;
     };
-  }, [problemId, setValue]);
-  }, [problemId, setValue]);
+  }, [contestId, problemId, setValue]);
 
   const [errorMessage, setErrorMessage] = useState<string>();
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ function EditProblem() {
   const onSave = (data: FormDataType) => {
     const body = {
       title: data.name,
-      contest_id: Number(contestId),
+      contest_id: contestId,
       description: content,
     };
     const config = {
