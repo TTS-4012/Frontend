@@ -20,7 +20,7 @@ function Dialog(props: DialogProps) {
         className="absolute inset-0 z-10 bg-black/30"
         aria-hidden="true"
       />
-      <HeadlessDialog.Panel className="z-20 w-full max-w-xl max-h-full min-h-[50%] rounded-2xl bg-white shadow-xl overflow-hidden">
+      <HeadlessDialog.Panel className="z-20 max-h-full min-h-[50%] w-full max-w-xl overflow-hidden rounded-2xl bg-white shadow-xl">
         <div className="flex justify-between border-b border-gray-200 p-4 text-gray-900 sm:px-6">
           <HeadlessDialog.Title className="text-lg font-medium leading-6">{props.title}</HeadlessDialog.Title>
           <Button
