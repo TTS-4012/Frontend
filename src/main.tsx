@@ -15,6 +15,7 @@ import ListProblems from "./pages/Problems/ListProblems.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import Home from "./pages/Home.tsx";
 import axios from "axios";
+import Leaderboard from "./pages/Contest/Leaderboard.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
             path: ":contestId/:problemId",
             Component: ContestProblem,
           },
+          {
+            path: "leaderboard",
+            Component: Leaderboard
+          }
         ],
       },
       {
