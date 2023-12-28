@@ -12,6 +12,7 @@ import NewContest from "./pages/Contest/NewContest.tsx";
 import ContestProblem from "./pages/Problems/ContestProblem.tsx";
 import EditProblem from "./pages/Problems/EditProblem.tsx";
 import ListProblems from "./pages/Problems/ListProblems.tsx";
+import ListSubmissions from "./pages/Problems/Submissions/ListSubmissons.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import Home from "./pages/Home.tsx";
 import axios from "axios";
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
               {
                 path: "edit",
                 Component: EditProblem,
+              },
+              {
+                path: "submissions",
+                Component: ListSubmissions,
               },
             ],
           },
