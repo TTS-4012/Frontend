@@ -88,21 +88,16 @@ const router = createBrowserRouter([
             path: ":contestId",
             children: [
               {
-                path: "edit",
-                Component: EditContest,
+                path: "new",
+                Component: EditProblem,
               },
               {
-                path: "problems",
-                children: [
-                  {
-                    path: "new",
-                    Component: EditProblem,
-                  },
-                  {
-                    path: ":problemId",
-                    Component: ContestProblem,
-                  },
-                ],
+                path: ":problemId",
+                Component: ContestProblem,
+              },
+              {
+                path: ":problemId/edit",
+                Component: EditProblem,
               },
             ],
           },
