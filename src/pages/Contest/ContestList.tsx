@@ -57,7 +57,7 @@ type ContestDataType = {
 };
 
 function ListContests() {
-  const [decsendingTable, setDecsendingTable] = useState<boolean>(false);
+  const decsendingTable = false;
   const [started, setStarted] = useState<boolean>(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
