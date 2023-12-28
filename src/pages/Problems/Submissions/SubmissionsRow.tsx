@@ -70,7 +70,6 @@ function SubmissionsRow({ data, index }: PropsType) {
             ))}
           </div>
         </Dialog>,
-        
         document.body,
         data.metadata.submission_id,
       )}

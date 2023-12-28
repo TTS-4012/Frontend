@@ -10,7 +10,7 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
   id: string;
 };
 
-function CodeView({ id , ...otherProps }: PropsType) {
+function CodeView({ id, ...otherProps }: PropsType) {
   const [data, setdata] = useState<Code>();
   const [errorMessage, setErrorMessage] = useState<string>();
   useEffect(() => {
@@ -28,7 +28,7 @@ function CodeView({ id , ...otherProps }: PropsType) {
   }, [id]);
   return data ? (
     <div
-      className="flex flex-col self-center rounded-md bg-white p-2 shadow overflow-scroll border px-2 py-1"
+      className="flex flex-col self-center overflow-scroll rounded-md border bg-white p-2 px-2 py-1 shadow"
       {...otherProps}>
       <Markdown>{`\`\`\`python\n${data}\n\`\`\``}</Markdown>
     </div>
@@ -39,6 +39,7 @@ function CodeView({ id , ...otherProps }: PropsType) {
       ) : (
         <ArrowPathIcon className="m-auto h-20 w-20 animate-spin" />
       )}
-    </div>);
+    </div>
+  );
 }
 export default CodeView;
