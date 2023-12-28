@@ -18,7 +18,6 @@ type ProblemData = {
 };
 
 type ParamsType = {
-  contestId?: string;
   problemId?: string;
 };
 
@@ -33,7 +32,7 @@ const validationSchema = yup
   .required();
 
 function EditProblem() {
-  const { contestId, problemId } = useParams<ParamsType>();
+  const { problemId } = useParams<ParamsType>();
 
   const editorContainer = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -55,15 +54,20 @@ function EditProblem() {
     });
 
     if (problemId)
-      axios.get<ProblemData>(`/problems/${problemId}`).then((res) => {
-        setValue("name", res.data.title);
-        editor.current?.setValue(res.data.description);
-      });
+      axios
+        .get<ProblemData>(`/problems/${problemId}`, {
+          headers: { Authorization: localStorage.getItem("auth.access_token") },
+        })
+        .then((res) => {
+          setValue("name", res.data.title);
+          editor.current?.setValue(res.data.description);
+        });
 
     return () => {
       editor.current?.dispose();
       editor.current = undefined;
     };
+  }, [problemId, setValue]);
   }, [problemId, setValue]);
 
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -75,21 +79,22 @@ function EditProblem() {
       contest_id: Number(contestId),
       description: content,
     };
-    if (problemId) {
-      axios
-        .put(`/problems/${problemId}`, body)
-        .then(() => navigate(-1))
-        .catch((err: AxiosError<any>) => {
-          setErrorMessage(err.response?.data.message ?? err.message);
-        });
-    } else {
-      axios
-        .post<{ problem_Id: string }>("/problems", body)
-        .then((res) => navigate(`../${res.data.problem_Id}`))
-        .catch((err: AxiosError<any>) => {
-          setErrorMessage(err.response?.data.message ?? err.message);
-        });
-    }
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("auth.access_token"),
+      },
+    };
+    const save = () =>
+      problemId
+        ? axios.put(`/problems/${problemId}`, body, config).then(() => problemId)
+        : axios.post<{ problem_Id: string }>("/problems", body, config).then((res) => res.data.problem_Id);
+    save()
+      .then((savedId) => {
+        navigate(`/problems/${savedId}`);
+      })
+      .catch((err: AxiosError<any>) => {
+        setErrorMessage(err.response?.data.message ?? err.message);
+      });
   };
 
   return (
