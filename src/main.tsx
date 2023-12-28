@@ -57,7 +57,7 @@ const router = createBrowserRouter([
             Component: EditProblem,
           },
           {
-            path: ":id",
+            path: ":problemId",
             children: [
               {
                 index: true,

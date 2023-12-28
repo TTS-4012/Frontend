@@ -2,15 +2,15 @@ import ProblemComponent from "../../components/ProblemComponent";
 import { useParams } from "react-router-dom";
 
 type ParamsType = {
-  id: string;
+  problemId: string;
 };
 
 function Problem() {
-  const { id } = useParams<ParamsType>();
+  const { problemId } = useParams<ParamsType>();
   return (
-    id && (
+    problemId && (
       <ProblemComponent
-        id={id}
+        id={problemId}
         className="m-5"
       />
     )

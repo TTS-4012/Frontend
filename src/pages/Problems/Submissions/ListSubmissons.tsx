@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import SubmissionsRow, { SubmissionData } from "./SubmissionsRow";
 
 type ParamsType = {
-  id: string;
+  problemId: string;
 };
 
 type ProblemSubmissionListData = {
@@ -13,13 +13,13 @@ type ProblemSubmissionListData = {
 };
 
 function ListSubmissions() {
-  const { id } = useParams<ParamsType>();
+  const { problemId } = useParams<ParamsType>();
 
   const [data, setData] = useState<ProblemSubmissionListData>();
 
   useEffect(() => {
     axios
-      .get<ProblemSubmissionListData>(`/problems/${id}/submissions`, {
+      .get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
       })
       .then((res) => {
@@ -28,7 +28,7 @@ function ListSubmissions() {
     //   .catch((err: AxiosError<any>) => {
     //     setErrorMessage(err.response?.data.message ?? err.message);
     //   })
-  }, [id]);
+  }, [problemId]);
 
   return (
     <>
