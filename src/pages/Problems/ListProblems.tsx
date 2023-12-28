@@ -120,29 +120,29 @@ function ListProblems() {
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
-        <div className="flex flex-row justify-start gap-2 rounded-sm bg-gray-100 pl-3 shadow-sm">
+        <div className="flex flex-row justify-start gap-2 rounded-sm bg-slate-400 pl-3 shadow-sm">
           <p className="px-5 py-2 font-bold">Sort by </p>
-          <button className={`px-5 ${order.order_by == "hardness" && order.decending && "bg-white" }`} 
+          <button className={`px-5 ${order.order_by == "hardness" && order.decending && "bg-slate-300" }`} 
             onClick={() => handleOrdering("hardness", true)}>
             Hardest
           </button>
-          <button className={`px-5 ${order.order_by == "hardness" && !order.decending && "bg-white" }`} 
+          <button className={`px-5 ${order.order_by == "hardness" && !order.decending && "bg-slate-300" }`} 
             onClick={() => handleOrdering("hardness", false)}>
             Easiest
           </button>
-          <button className={`px-5 ${order.order_by == "solve_count" && order.decending && "bg-white" }`} 
+          <button className={`px-5 ${order.order_by == "solve_count" && order.decending && "bg-slate-300" }`} 
             onClick={() => handleOrdering("solve_count", true)}>
             Most Solved
           </button>
-          <button className={`px-5 ${order.order_by == "solve_count" && !order.decending && "bg-white" }`} 
+          <button className={`px-5 ${order.order_by == "solve_count" && !order.decending && "bg-slate-300" }`} 
             onClick={() => handleOrdering("solve_count", false)}>
             Least Solved
           </button>
-          <button className={`px-5 ${order.order_by == "problem_id" && order.decending && "bg-white" }`} 
+          <button className={`px-5 ${order.order_by == "problem_id" && order.decending && "bg-slate-300" }`} 
             onClick={() => handleOrdering("problem_id", true)}>
             Latest
           </button>
-          <button className={`px-5 ${order.order_by == "problem_id" && !order.decending && "bg-white" }`} 
+          <button className={`px-5 ${order.order_by == "problem_id" && !order.decending && "bg-slate-300" }`} 
             onClick={() => handleOrdering("problem_id", false)}>
             Newest
           </button>
