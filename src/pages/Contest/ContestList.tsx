@@ -115,23 +115,13 @@ function ListContests() {
             onClick={() => setStarted(false)}>
             Not Started
           </button>
-          <button
-            className={`px-5 ${!decsendingTable && "bg-slate-200"}`}
-            onClick={() => setDecsendingTable(false)}>
-            Acsending
-          </button>
-          <button
-            className={`px-5 ${decsendingTable && "bg-slate-200"}`}
-            onClick={() => setDecsendingTable(true)}>
-            Decsending
-          </button>
         </div>
         <TableContainer component={Paper}>
           <Table
             sx={{ minWidth: 650 }}
             size="small">
             <TableHead>
-              <TableRow className="bg-indigo-300">
+              <TableRow className=" bg-cyan-600">
                 <TableCell
                   align="left"
                   padding="checkbox">
@@ -155,7 +145,7 @@ function ListContests() {
                     {page * rowsPerPage + i + 1}
                   </TableCell>
                   <TableCell align="center">
-                    <p>
+                    <p className=" font-medium text-lg">
                       {contest.title.slice(0, 25)} {contest.title.length > 25 && "..."}
                     </p>
                   </TableCell>
