@@ -67,7 +67,10 @@ type OrderDataType = {
 };
 
 function ListProblems() {
-  const [order, setOrder] = useState<OrderDataType>({ order_by: "problem_id", decending: false });
+  const [order, setOrder] = useState<OrderDataType>({
+    order_by: "problem_id",
+    decending: false,
+  });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
