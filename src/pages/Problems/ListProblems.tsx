@@ -68,7 +68,7 @@ type OrderDataType = {
 };
 
 function ListProblems() {
-  const [order, setOrder] = useState<OrderDataType>({ order_by: "problem_id", decending: true });
+  const [order, setOrder] = useState<OrderDataType>({ order_by: "problem_id", decending: false });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
@@ -109,10 +109,10 @@ function ListProblems() {
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(0);
   };
-  const createOrder = (orderMethod: "hardness" | "solve_count", dec: boolean | undefined) => {
+  const createOrder = (orderMethod: "hardness" | "solve_count"|"problem_id", dec: boolean | undefined) => {
     return { order_by: orderMethod, decending: dec };
   };
-  const handleOrdering = (orderMethod: "hardness" | "solve_count", decending: boolean) => {
+  const handleOrdering = (orderMethod: "hardness" | "solve_count"|"problem_id", decending: boolean) => {
     setOrder(createOrder(orderMethod, decending));
   };
 
@@ -120,28 +120,32 @@ function ListProblems() {
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
-        <div className="flex flex-row justify-start gap-2 rounded-sm bg-white p-2 pl-3 shadow-sm">
+        <div className="flex flex-row justify-start gap-2 rounded-sm bg-gray-100 pl-3 shadow-sm">
           <p className="px-5 py-2 font-bold">Sort by </p>
-          <Button
-            size="sm"
+          <button className={`px-5 ${order.order_by == "hardness" && order.decending && "bg-white" }`} 
             onClick={() => handleOrdering("hardness", true)}>
             Hardest
-          </Button>
-          <Button
-            size="sm"
+          </button>
+          <button className={`px-5 ${order.order_by == "hardness" && !order.decending && "bg-white" }`} 
             onClick={() => handleOrdering("hardness", false)}>
             Easiest
-          </Button>
-          <Button
-            size="sm"
+          </button>
+          <button className={`px-5 ${order.order_by == "solve_count" && order.decending && "bg-white" }`} 
             onClick={() => handleOrdering("solve_count", true)}>
             Most Solved
-          </Button>
-          <Button
-            size="sm"
+          </button>
+          <button className={`px-5 ${order.order_by == "solve_count" && !order.decending && "bg-white" }`} 
             onClick={() => handleOrdering("solve_count", false)}>
             Least Solved
-          </Button>
+          </button>
+          <button className={`px-5 ${order.order_by == "problem_id" && order.decending && "bg-white" }`} 
+            onClick={() => handleOrdering("problem_id", true)}>
+            Latest
+          </button>
+          <button className={`px-5 ${order.order_by == "problem_id" && !order.decending && "bg-white" }`} 
+            onClick={() => handleOrdering("problem_id", false)}>
+            Newest
+          </button>
         </div>
         <TableContainer component={Paper}>
           <Table
