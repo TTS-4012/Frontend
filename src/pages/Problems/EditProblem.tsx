@@ -64,7 +64,7 @@ function EditProblem() {
       editor.current?.dispose();
       editor.current = undefined;
     };
-  }, [problemId, setValue]);
+  }, [contestId, problemId, setValue]);
 
   const [errorMessage, setErrorMessage] = useState<string>();
   const navigate = useNavigate();
@@ -72,7 +72,6 @@ function EditProblem() {
   const onSave = (data: FormDataType) => {
     const body = {
       title: data.name,
-      contest_id: Number(contestId),
       description: content,
     };
     if (problemId) {
