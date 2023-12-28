@@ -15,7 +15,6 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
-import Button from "../../components/Button";
 
 function TablePaginationActions(props: {
   count: number;
