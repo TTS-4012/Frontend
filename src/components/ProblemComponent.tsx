@@ -23,8 +23,7 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
 };
 
 function ProblemComponent({ id, className, ...otherProps }: PropsType) {
-  const { contestId } = useParams();
-  const [data, setData] = useState<ProblemData>();
+  const [data, setdata] = useState<ProblemData>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [copyOpen, setCopyOpen] = useState(false);
   const navigate = useNavigate();
@@ -66,6 +65,7 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
 
   return data ? (
     <div
+      className={`flex flex-col gap-2 ${className}`}
       className={`flex flex-col gap-2 ${className}`}
       {...otherProps}>
       {createPortal(
