@@ -52,8 +52,8 @@ function TablePaginationActions(props: {
 }
 
 type ContestDataType = {
- ContestID : number;
- Title: string;
+ contest_id : number;
+ title: string;
 };
 
 
@@ -74,10 +74,10 @@ function ListContests() {
       .get<ContestDataType[]>("/contests", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
-          Decendig: decsendingTable,
-          Limit: rowsPerPage,
-          Offset: page * rowsPerPage,
-          Statrted: started,
+          descendig: decsendingTable,
+          limit: rowsPerPage,
+          offset: page * rowsPerPage,
+          started: started,
         },
       })
       .then((res) => {
@@ -99,18 +99,12 @@ function ListContests() {
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(0);
   };
-//   const createOrder = (orderMethod: "hardness" | "solve_count" | "problem_id", dec: boolean | undefined) => {
-//     return { order_by: orderMethod, decending: dec };
-//   };
-//   const handleOrdering = (orderMethod: "hardness" | "solve_count" | "problem_id", decending: boolean) => {
-//     setOrder(createOrder(orderMethod, decending));
-//   };
 
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
-        <div className="flex flex-row justify-start gap-2 rounded-sm bg-slate-400 pl-3 shadow-sm">
+        <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
           <p className="px-5 py-2 font-bold">Sort by </p>
           <button
             className={`px-5 ${started && "bg-slate-300"}`}
@@ -123,12 +117,12 @@ function ListContests() {
             Not Started
           </button>
           <button
-            className={`px-5 ${!decsendingTable && "bg-slate-300"}`}
+            className={`px-5 ${!decsendingTable && "bg-slate-200"}`}
             onClick={() => setDecsendingTable(false)}>
             Acsending
           </button>
           <button
-            className={`px-5 ${decsendingTable && "bg-slate-300"}`}
+            className={`px-5 ${decsendingTable && "bg-slate-200"}`}
             onClick={() => setDecsendingTable(true)}>
             Decsending
           </button>
@@ -154,7 +148,7 @@ function ListContests() {
               {tableData?.map((contest, i) => (
                 <TableRow
                   key={i}
-                  onClick={(event) => handleClick(event, contest.ContestID)}
+                  onClick={(event) => handleClick(event, contest.contest_id)}
                   sx={{ cursor: "pointer" }}
                   className="hover:bg-blue-100">
                   <TableCell
@@ -164,7 +158,7 @@ function ListContests() {
                   </TableCell>
                   <TableCell align="center">
                     <p>
-                      {contest.Title.slice(0, 25)} {contest.Title.length > 25 && "..."}
+                      {contest.title.slice(0,25)} {contest.title.length > 25 && "..."}
                     </p>
                   </TableCell>
                 </TableRow>
