@@ -87,8 +87,21 @@ const router = createBrowserRouter([
             Component: NewContest,
           },
           {
-            path: ":contestId/:problemId",
-            Component: ContestProblem,
+            path: ":contestId",
+            children: [
+              {
+                path: "new",
+                Component: EditProblem,
+              },
+              {
+                path: ":problemId",
+                Component: ContestProblem,
+              },
+              {
+                path: ":problemId/edit",
+                Component: EditProblem,
+              },
+            ],
           },
         ],
       },
