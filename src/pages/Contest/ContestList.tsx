@@ -145,7 +145,7 @@ function ListContests() {
                     {page * rowsPerPage + i + 1}
                   </TableCell>
                   <TableCell align="center">
-                    <p className=" font-medium text-lg">
+                    <p className="text-lg·font-medium">
                       {contest.title.slice(0, 25)} {contest.title.length > 25 && "..."}
                     </p>
                   </TableCell>
