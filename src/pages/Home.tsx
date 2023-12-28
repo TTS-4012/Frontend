@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import CodeView from "./Problems/Submissions/CodeView";
 
 function Home() {
   const navigate = useNavigate();
@@ -30,7 +29,6 @@ function Home() {
           New Contest
         </Button>
       </div>
-      <CodeView></CodeView>
     </div>
   );
 }

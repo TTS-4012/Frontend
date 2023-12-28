@@ -20,8 +20,7 @@ module.exports = {
       {
         plugins: ["prettier-plugin-tailwindcss"],
         printWidth: 120,
-        quotePro
-        ps: "consistent",
+        quoteProps: "consistent",
         bracketSameLine: true,
         singleAttributePerLine: true,
       },
