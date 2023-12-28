@@ -86,11 +86,9 @@ function ListContests() {
         console.log(err.message);
         setErrorMessage(err.response?.data.message ?? err.message);
       });
-      console.log(tableData);
   }, [page, rowsPerPage, started, decsendingTable]);
 
   const handleClick = (_: unknown, contest_id: number) => {
-    console.log("/contests/" + String(contest_id) + "/1")
     navigate("/contests/" + String(contest_id) + "/1");
   };
   const handleChangePage = (_: unknown, newPage: number) => {
