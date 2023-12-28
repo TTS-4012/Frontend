@@ -10,12 +10,14 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
   id: string;
 };
 
-function CodeView({ id, ...otherProps }: PropsType) {
+function CodeView({ id , ...otherProps }: PropsType) {
   const [data, setdata] = useState<Code>();
   const [errorMessage, setErrorMessage] = useState<string>();
   useEffect(() => {
     axios
-      .get<Code>(`/submissions/${id}`)
+      .get<Code>(`/submissions/${id}`, {
+        headers: { Authorization: localStorage.getItem("auth.access_token") },
+      })
       .then((res) => {
         console.log(res.data);
         setdata(res.data);
@@ -26,18 +28,20 @@ function CodeView({ id, ...otherProps }: PropsType) {
   }, [id]);
   return data ? (
     <div
-      className="flex flex-col self-center overflow-scroll rounded-md border bg-white p-2 px-2 py-1 shadow"
+      className="flex max-h-full w-5/12 flex-col self-center rounded-md bg-white p-2 shadow"
       {...otherProps}>
-      <Markdown>{`\`\`\`python\n${data}\n\`\`\``}</Markdown>
+      <div className="self-start rounded-t-md border px-2 py-1 ">{data?.file.name}</div>
+      <div className="overflow-scroll rounded-b-md rounded-tr-md border px-2  py-1">
+           <Markdown>{` ${data?.file.text().toString()} `}</Markdown>
+      </div>
     </div>
   ) : (
-    <div className="flex w-full text-indigo-800">
+    <div className="flex h-screen w-full text-indigo-800">
       {errorMessage ? (
         <p className="m-auto text-center text-5xl">{errorMessage}</p>
       ) : (
         <ArrowPathIcon className="m-auto h-20 w-20 animate-spin" />
       )}
-    </div>
-  );
+    </div>);
 }
 export default CodeView;
