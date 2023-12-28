@@ -18,7 +18,7 @@ type ProblemData = {
 };
 
 type ParamsType = {
-  id?: string;
+  problemId?: string;
 };
 
 type FormDataType = {
@@ -32,7 +32,7 @@ const validationSchema = yup
   .required();
 
 function EditProblem() {
-  const { id } = useParams<ParamsType>();
+  const { problemId } = useParams<ParamsType>();
 
   const editorContainer = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -53,9 +53,9 @@ function EditProblem() {
       setContent(editor.current?.getValue());
     });
 
-    if (id)
+    if (problemId)
       axios
-        .get<ProblemData>(`/problems/${id}`, {
+        .get<ProblemData>(`/problems/${problemId}`, {
           headers: { Authorization: localStorage.getItem("auth.access_token") },
         })
         .then((res) => {
@@ -67,7 +67,7 @@ function EditProblem() {
       editor.current?.dispose();
       editor.current = undefined;
     };
-  }, [id, setValue]);
+  }, [problemId, setValue]);
 
   const [errorMessage, setErrorMessage] = useState<string>();
   const navigate = useNavigate();
@@ -83,8 +83,8 @@ function EditProblem() {
       },
     };
     const save = () =>
-      id
-        ? axios.put(`/problems/${id}`, body, config).then(() => id)
+      problemId
+        ? axios.put(`/problems/${problemId}`, body, config).then(() => problemId)
         : axios.post<{ problem_Id: string }>("/problems", body, config).then((res) => res.data.problem_Id);
     save()
       .then((savedId) => {
