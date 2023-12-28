@@ -19,7 +19,7 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
   id: string;
 };
 
-function ProblemComponent({ id, ...otherProps }: PropsType) {
+function ProblemComponent({ id, className, ...otherProps }: PropsType) {
   const [data, setdata] = useState<ProblemData>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ function ProblemComponent({ id, ...otherProps }: PropsType) {
 
   return data ? (
     <div
-      className="m-5 flex flex-col gap-2"
+      className={`flex flex-col gap-2 ${className}`}
       {...otherProps}>
       <div className="relative rounded-t-lg border-black bg-white p-5 text-center align-middle text-3xl font-black shadow-md">
         {data?.title ?? "title"}

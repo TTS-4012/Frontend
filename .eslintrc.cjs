@@ -26,5 +26,6 @@ module.exports = {
       },
     ],
     "@typescript-eslint/no-explicit-any": "off",
+    "prefer-template": "error",
   },
 };
