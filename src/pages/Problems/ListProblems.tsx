@@ -38,24 +38,14 @@ function TablePaginationActions(props: {
       <IconButton
         onClick={handleBackButtonClick}
         disabled={page === 0}
-        aria-label="previous page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
+        aria-label="previous page">
+        {theme.direction === "rtl" ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
         disabled={count != -1 && page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
+        aria-label="next page">
+        {theme.direction === "rtl" ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
     </Box>
   );
@@ -121,91 +111,59 @@ function ListProblems() {
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(0);
   };
-  const createOrder = (
-    orderMethod: "hardness" | "solve_count" | "problem_id",
-    dec: boolean | undefined
-  ) => {
+  const createOrder = (orderMethod: "hardness" | "solve_count" | "problem_id", dec: boolean | undefined) => {
     return { order_by: orderMethod, decending: dec };
   };
-  const handleOrdering = (
-    orderMethod: "hardness" | "solve_count" | "problem_id",
-    decending: boolean
-  ) => {
+  const handleOrdering = (orderMethod: "hardness" | "solve_count" | "problem_id", decending: boolean) => {
     setOrder(createOrder(orderMethod, decending));
   };
 
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
-      <div className="py-2">
-        {errorMessage && (
-          <span className="ml-3 text-red-700">{errorMessage}</span>
-        )}
-      </div>
+      <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-row justify-start gap-2 rounded-sm bg-slate-400 pl-3 shadow-sm">
           <p className="px-5 py-2 font-bold">Sort by </p>
           <button
-            className={`px-5 ${
-              order.order_by == "hardness" && order.decending && "bg-slate-300"
-            }`}
-            onClick={() => handleOrdering("hardness", true)}
-          >
+            className={`px-5 ${order.order_by == "hardness" && order.decending && "bg-slate-300"}`}
+            onClick={() => handleOrdering("hardness", true)}>
             Hardest
           </button>
           <button
-            className={`px-5 ${
-              order.order_by == "hardness" && !order.decending && "bg-slate-300"
-            }`}
-            onClick={() => handleOrdering("hardness", false)}
-          >
+            className={`px-5 ${order.order_by == "hardness" && !order.decending && "bg-slate-300"}`}
+            onClick={() => handleOrdering("hardness", false)}>
             Easiest
           </button>
           <button
-            className={`px-5 ${
-              order.order_by == "solve_count" &&
-              order.decending &&
-              "bg-slate-300"
-            }`}
-            onClick={() => handleOrdering("solve_count", true)}
-          >
+            className={`px-5 ${order.order_by == "solve_count" && order.decending && "bg-slate-300"}`}
+            onClick={() => handleOrdering("solve_count", true)}>
             Most Solved
           </button>
           <button
-            className={`px-5 ${
-              order.order_by == "solve_count" &&
-              !order.decending &&
-              "bg-slate-300"
-            }`}
-            onClick={() => handleOrdering("solve_count", false)}
-          >
+            className={`px-5 ${order.order_by == "solve_count" && !order.decending && "bg-slate-300"}`}
+            onClick={() => handleOrdering("solve_count", false)}>
             Least Solved
           </button>
           <button
-            className={`px-5 ${
-              order.order_by == "problem_id" &&
-              order.decending &&
-              "bg-slate-300"
-            }`}
-            onClick={() => handleOrdering("problem_id", true)}
-          >
+            className={`px-5 ${order.order_by == "problem_id" && order.decending && "bg-slate-300"}`}
+            onClick={() => handleOrdering("problem_id", true)}>
             Latest
           </button>
           <button
-            className={`px-5 ${
-              order.order_by == "problem_id" &&
-              !order.decending &&
-              "bg-slate-300"
-            }`}
-            onClick={() => handleOrdering("problem_id", false)}
-          >
+            className={`px-5 ${order.order_by == "problem_id" && !order.decending && "bg-slate-300"}`}
+            onClick={() => handleOrdering("problem_id", false)}>
             Newest
           </button>
         </div>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size="small">
+          <Table
+            sx={{ minWidth: 650 }}
+            size="small">
             <TableHead>
               <TableRow className="bg-indigo-300">
-                <TableCell align="left" padding="checkbox">
+                <TableCell
+                  align="left"
+                  padding="checkbox">
                   <p className="pl-2 font-bold  ">Number</p>
                 </TableCell>
                 <TableCell align="center">
@@ -225,15 +183,15 @@ function ListProblems() {
                   key={problem.problem_id}
                   onClick={(event) => handleClick(event, problem.problem_id)}
                   sx={{ cursor: "pointer" }}
-                  className="hover:bg-blue-100"
-                >
-                  <TableCell className=" bg-blue-50" align="center">
+                  className="hover:bg-blue-100">
+                  <TableCell
+                    className=" bg-blue-50"
+                    align="center">
                     {page * rowsPerPage + i + 1}
                   </TableCell>
                   <TableCell align="center">
                     <p>
-                      {problem.title.slice(0, 15)}{" "}
-                      {problem.title.length > 15 && "..."}
+                      {problem.title.slice(0, 15)} {problem.title.length > 15 && "..."}
                     </p>
                   </TableCell>
                   <TableCell align="center">{problem.hardness}</TableCell>
