@@ -87,15 +87,19 @@ const router = createBrowserRouter([
             Component: NewContest,
           },
           {
-            path: ":id",
+            path: ":contestId",
             children: [
+              {
+                path: "new",
+                Component: EditProblem,
+              },
               {
                 path: ":problemId",
                 Component: ContestProblem,
               },
               {
-                path: "scoreboard",
-                Component: Leaderboard,
+                path: ":problemId/edit",
+                Component: EditProblem,
               },
             ],
           },
