@@ -28,15 +28,12 @@ function CodeView({ id , ...otherProps }: PropsType) {
   }, [id]);
   return data ? (
     <div
-      className="flex max-h-full w-5/12 flex-col self-center rounded-md bg-white p-2 shadow"
+      className="flex flex-col self-center rounded-md bg-white p-2 shadow overflow-scroll border px-2  py-1"
       {...otherProps}>
-      <div className="self-start rounded-t-md border px-2 py-1 ">{data?.file.name}</div>
-      <div className="overflow-scroll rounded-b-md rounded-tr-md border px-2  py-1">
-           <Markdown>{` ${data?.file.text().toString()} `}</Markdown>
-      </div>
+      <Markdown>{` ${data} `}</Markdown>
     </div>
   ) : (
-    <div className="flex h-screen w-full text-indigo-800">
+    <div className="flex w-full text-indigo-800">
       {errorMessage ? (
         <p className="m-auto text-center text-5xl">{errorMessage}</p>
       ) : (
