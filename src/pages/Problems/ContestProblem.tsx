@@ -38,21 +38,23 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
 
   return (
     <div className="flex flex-col gap-1 rounded-t-lg bg-white p-1 shadow-md">
-      <p className="border-b border-gray-200 p-4 text-3xl font-bold text-gray-900 sm:px-6 mx-auto">{contestData?.title}</p>
+      <p className="border-b border-gray-200 p-4 text-center text-3xl font-bold text-gray-900 sm:px-6">
+        {contestData.title}
+      </p>
       <div className="flex flex-row gap-3 p-2">
-        {contestData.start_time - Math.floor(new Date().valueOf()/1000) > 0 ? (
+        {contestData.start_time - Math.floor(new Date().valueOf() / 1000) > 0 ? (
           <>
-            <CalendarIcon className="m-auto h-6 w-6" />
+            <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
             <p className="flex grow flex-col">
               <p className="text-lg font-medium">
-                {new Date(contestData.start_time*1000).toLocaleDateString("en-GB", {
+                {new Date(contestData.start_time * 1000).toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "short",
                   year: "numeric",
                 })}
               </p>
               <p className="text-lg">
-                {new Date(contestData.start_time*1000).toLocaleString("en-US", {
+                {new Date(contestData.start_time * 1000).toLocaleString("en-US", {
                   hour: "numeric",
                   minute: "numeric",
                   hour12: true,
@@ -60,10 +62,10 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
               </p>
             </p>
           </>
-        ) : contestData.start_time + contestData.duration - Math.floor(new Date().valueOf()/1000) > 0 ? (
+        ) : contestData.start_time + contestData.duration - Math.floor(new Date().valueOf() / 1000) > 0 ? (
           <>
             <div className="mx-auto flex flex-row gap-2 py-2">
-              <ClockIcon className="m-auto h-6 w-6" />
+              <ClockIcon className="m-auto h-6 w-6 shrink-0" />
               <p
                 className={`grow text-lg font-medium flex${
                   (reverseTimer < 600 && reverseTimer >= 600 && "text-yellow-600") ||
@@ -72,15 +74,14 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
                 {Math.floor(reverseTimer / 3600).toString().length == 1 && "0"}
                 {Math.floor(reverseTimer / 3600)}:{" "}
                 {Math.floor((reverseTimer % 3600) / 60).toString().length == 1 && "0"}
-                {Math.floor((reverseTimer % 3600) / 60)}:{" "}
-                {Math.floor((reverseTimer % 60)).toString().length == 1 && "0"}
-                {Math.floor((reverseTimer % 60))}
+                {Math.floor((reverseTimer % 3600) / 60)}: {Math.floor(reverseTimer % 60).toString().length == 1 && "0"}
+                {Math.floor(reverseTimer % 60)}
               </p>
             </div>
           </>
         ) : (
           <>
-            <CalendarIcon className="m-auto h-6 w-6" />
+            <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
             <p className="grow px-2 text-lg italic">This contest is finished</p>
           </>
         )}
@@ -108,31 +109,39 @@ function ContestProblem() {
       });
   }, [contestId]);
 
+  const isValidProblemId = (contestData?.problems?.map((p) => p.ID).indexOf(Number(problemId)) ?? -1) != -1;
+
   return (
     <>
       {contestData && (
-        <div className="m-5 flex flex-row gap-5">
-          <ProblemComponent
-            id={problemId!}
-            className="basis-5/6"
-          />
+        <div className="m-5 flex grow flex-row items-stretch gap-5">
+          {isValidProblemId ? (
+            <ProblemComponent
+              id={problemId!}
+              className="basis-5/6"
+            />
+          ) : (
+            <p className="m-auto basis-5/6 text-center text-5xl text-indigo-800">Invalid problem</p>
+          )}
           <div className="flex basis-1/6 flex-col gap-2">
             <ContestDuration contestData={contestData} />
-            <div className="flex flex-col space-y-1 bg-white p-1 shadow-md">
-              <p className="border-b border-gray-200 p-2 text-gray-900 sm:px-4 font-medium">Problems</p>
-              {contestData?.problems?.map((problem, i) => (
-                <Link
-                  key={i}
-                  to={`/contests/${String(contestId)}/${String(problem.ID)}`}
-                  className={`flex items-center rounded-md px-3 py-2 text-sm font-medium ${
-                    problemId == String(problem.ID)
-                      ? "bg-gray-100 text-gray-900"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                  }`}>
-                  {problem.Title.slice(0, 15)} {problem.Title.length > 15 && "..."}
-                </Link>
-              ))}
-            </div>
+            {contestData.problems?.length > 0 && (
+              <div className="flex flex-col space-y-1 bg-white p-1 shadow-md">
+                <p className="border-b border-gray-200 p-2 font-medium text-gray-900 sm:px-4">Problems</p>
+                {contestData.problems?.map((problem, i) => (
+                  <Link
+                    key={i}
+                    to={`/contests/${String(contestId)}/${String(problem.ID)}`}
+                    className={`flex items-center rounded-md px-3 py-2 text-sm font-medium ${
+                      problemId == String(problem.ID)
+                        ? "bg-gray-100 text-gray-900"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    }`}>
+                    {problem.Title.slice(0, 15)} {problem.Title.length > 15 && "..."}
+                  </Link>
+                ))}
+              </div>
+            )}
             <div className="flex flex-col space-y-1 rounded-b-lg bg-white p-1 shadow-md">
               <Link
                 to={`/contests/${contestId}/scoreboard`}
