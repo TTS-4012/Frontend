@@ -149,7 +149,7 @@ function Leaderboard() {
                   <TableCell align="center">{user.name}</TableCell>
                   {user.problems?.map((problem, k) => (
 
-                    <TableCell align="center">
+                    <TableCell align="center" key={k}>
                         <p>
                         {problem.score}
                         </p>
