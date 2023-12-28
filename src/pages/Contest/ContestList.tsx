@@ -52,7 +52,7 @@ function TablePaginationActions(props: {
 }
 
 type ContestDataType = {
-  contest_id: number;
+  contest_Id: number;
   title: string;
 };
 
@@ -86,10 +86,12 @@ function ListContests() {
         console.log(err.message);
         setErrorMessage(err.response?.data.message ?? err.message);
       });
+      console.log(tableData);
   }, [page, rowsPerPage, started, decsendingTable]);
 
   const handleClick = (_: unknown, contest_id: number) => {
-    navigate("/contests/" + String(contest_id)) + "1";
+    console.log("/contests/" + String(contest_id) + "/1")
+    navigate("/contests/" + String(contest_id) + "/1");
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -146,7 +148,7 @@ function ListContests() {
               {tableData?.map((contest, i) => (
                 <TableRow
                   key={i}
-                  onClick={(event) => handleClick(event, contest.contest_id)}
+                  onClick={(event) => handleClick(event, contest.contest_Id)}
                   sx={{ cursor: "pointer" }}
                   className="hover:bg-blue-100">
                   <TableCell

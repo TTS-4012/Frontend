@@ -78,7 +78,6 @@ const router = createBrowserRouter([
       },
       {
         path: "contests",
-        Component: ListContests,
         children: [
           {
             path: "",
