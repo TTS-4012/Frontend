@@ -52,10 +52,9 @@ function TablePaginationActions(props: {
 }
 
 type ContestDataType = {
- contest_id : number;
- title: string;
+  contest_id: number;
+  title: string;
 };
-
 
 function ListContests() {
   const [decsendingTable, setDecsendingTable] = useState<boolean>(false);
@@ -126,7 +125,6 @@ function ListContests() {
             onClick={() => setDecsendingTable(true)}>
             Decsending
           </button>
-          
         </div>
         <TableContainer component={Paper}>
           <Table
@@ -158,7 +156,7 @@ function ListContests() {
                   </TableCell>
                   <TableCell align="center">
                     <p>
-                      {contest.title.slice(0,25)} {contest.title.length > 25 && "..."}
+                      {contest.title.slice(0, 25)} {contest.title.length > 25 && "..."}
                     </p>
                   </TableCell>
                 </TableRow>
