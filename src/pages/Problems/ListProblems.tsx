@@ -15,7 +15,6 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
-import Button from "../../components/Button";
 
 function TablePaginationActions(props: {
   count: number;
@@ -68,10 +67,7 @@ type OrderDataType = {
 };
 
 function ListProblems() {
-  const [order, setOrder] = useState<OrderDataType>({
-    order_by: "problem_id",
-    decending: false,
-  });
+  const [order, setOrder] = useState<OrderDataType>({ order_by: "problem_id", decending: false });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
@@ -122,59 +118,38 @@ function ListProblems() {
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
-        <div className="flex flex-row justify-start gap-2 rounded-sm bg-slate-400 pl-3 shadow-sm">
-          <p className="my-auto px-5 py-2 font-bold">Sort by </p>
+        <div className="flex flex-row justify-start gap-2 rounded-sm bg-gray-100 pl-3 shadow-sm">
+          <p className="px-5 py-2 font-bold">Sort by </p>
           <button
-            className={`px-5 ${order.order_by == "hardness" && order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "hardness" && order.decending && "bg-white"}`}
             onClick={() => handleOrdering("hardness", true)}>
             Hardest
           </button>
           <button
-            className={`px-5 ${order.order_by == "hardness" && !order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "hardness" && !order.decending && "bg-white"}`}
             onClick={() => handleOrdering("hardness", false)}>
             Easiest
           </button>
           <button
-            className={`px-5 ${order.order_by == "solve_count" && order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "solve_count" && order.decending && "bg-white"}`}
             onClick={() => handleOrdering("solve_count", true)}>
             Most Solved
           </button>
           <button
-            className={`px-5 ${order.order_by == "solve_count" && !order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "solve_count" && !order.decending && "bg-white"}`}
             onClick={() => handleOrdering("solve_count", false)}>
             Least Solved
           </button>
           <button
-            className={`px-5 ${order.order_by == "problem_id" && order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "problem_id" && order.decending && "bg-white"}`}
             onClick={() => handleOrdering("problem_id", true)}>
             Latest
           </button>
           <button
-            className={`px-5 ${order.order_by == "problem_id" && !order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "problem_id" && !order.decending && "bg-white"}`}
             onClick={() => handleOrdering("problem_id", false)}>
             Newest
           </button>
-          <Button
-            size="lg"
-            className="my-1 ml-auto mr-2 flex gap-1"
-            onClick={() => {
-              navigate("/problems/new");
-            }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            create problem
-          </Button>
         </div>
         <TableContainer component={Paper}>
           <Table
