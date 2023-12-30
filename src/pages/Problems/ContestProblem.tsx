@@ -109,7 +109,7 @@ function ContestProblem() {
       });
   }, [contestId]);
 
-  const isValidProblemId = (contestData?.problems?.map((p) => p.ID).indexOf(Number(problemId)) ?? -1) != -1;
+  const isValidProblemId = problemId == "0" || contestData?.problems?.some((p) => String(p.ID) === problemId);
 
   return (
     <>
@@ -117,7 +117,7 @@ function ContestProblem() {
         <div className="m-5 flex grow flex-row items-stretch gap-5">
           {isValidProblemId ? (
             <ProblemComponent
-              id={problemId!}
+              id={String(Number(problemId) || contestData.problems[0].ID)}
               className="basis-5/6"
             />
           ) : (
