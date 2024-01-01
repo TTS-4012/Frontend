@@ -1,7 +1,3 @@
-
-
-
-
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import TableFooter from "@mui/material/TableFooter";
@@ -18,13 +14,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
-
-function TablePaginationActions(props: {
+type propsType = {
   count: number;
   onPageChange: (e: any, n: number) => void;
   page: number;
   rowsPerPage: number;
-}) {
+};
+function TablePaginationActions(props: propsType) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
 
@@ -55,25 +51,40 @@ function TablePaginationActions(props: {
 }
 
 type Problem = {
-    title: string;
-    score: number;
-}
+  title: string;
+  score: number;
+};
 type User = {
-    name: string;
-    problems: Problem[];
-}
-
-
+  name: string;
+  problems: Problem[];
+};
 type LeaderboardDataType = {
-    count: number;
-    users: User[];
-}
+  count: number;
+  users: User[];
+};
 
 function Leaderboard() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
-
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardDataType>({count:3,users:[{name: "ali" , problems:[{title:"title2", score:50},{title:"title2", score:75}]},{name: "mobin" , problems:[{title:"title2", score:40},{title:"title2", score:90}]}]});
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardDataType>({
+    count: 2,
+    users: [
+      {
+        name: "ali",
+        problems: [
+          { title: "title2", score: 50 },
+          { title: "title2", score: 75 },
+        ],
+      },
+      {
+        name: "mobin",
+        problems: [
+          { title: "title2", score: 40 },
+          { title: "title2", score: 90 },
+        ],
+      },
+    ],
+  });
 
   const [errorMessage, setErrorMessage] = useState<string>();
 
@@ -92,13 +103,11 @@ function Leaderboard() {
       })
       .then((res) => {
         setLeaderboardData(res.data);
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessage(err.response?.data.message ?? err.message);
       });
+    // .catch((err: AxiosError<any>) => {
+    //   setErrorMessage(err.response?.data.message ?? err.message);
+    // });
   }, [page, rowsPerPage]);
-
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -112,7 +121,6 @@ function Leaderboard() {
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
-        
         <TableContainer component={Paper}>
           <Table
             sx={{ minWidth: 650 }}
@@ -128,10 +136,13 @@ function Leaderboard() {
                   <p className="font-bold  ">User</p>
                 </TableCell>
                 {leaderboardData?.users[0].problems?.map((problem, j) => (
-
-                    <TableCell align="center" key={j}>
-                        <p className="font-bold">{problem.title.slice(0, 15)} {problem.title.length > 15 && "..."}</p>
-                    </TableCell>
+                  <TableCell
+                    align="center"
+                    key={j}>
+                    <p className="font-bold">
+                      {problem.title.slice(0, 15)} {problem.title.length > 15 && "..."}
+                    </p>
+                  </TableCell>
                 ))}
               </TableRow>
             </TableHead>
@@ -148,13 +159,11 @@ function Leaderboard() {
                   </TableCell>
                   <TableCell align="center">{user.name}</TableCell>
                   {user.problems?.map((problem, k) => (
-
-                    <TableCell align="center" key={k}>
-                        <p>
-                        {problem.score}
-                        </p>
+                    <TableCell
+                      align="center"
+                      key={k}>
+                      <p>{problem.score}</p>
                     </TableCell>
-
                   ))}
                 </TableRow>
               ))}
@@ -165,7 +174,7 @@ function Leaderboard() {
                   className=""
                   rowsPerPageOptions={[20, 50, 100]}
                   colSpan={4}
-                  count={leaderboardData?.count?? -1}
+                  count={leaderboardData?.count ?? -1}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}

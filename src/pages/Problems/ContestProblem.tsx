@@ -25,7 +25,7 @@ function ContestProblem() {
   const { contestId, problemId } = useParams<ParamsType>();
   const contest_bar = ["Ranking", "Uplaod History"];
   const [contestData, setContestmData] = useState<ContestDataType>({
-    contest_Id: 10,
+    contest_Id: 1,
     title: "Contest Name",
     porblems: [
       { problem_id: 1, title: "problem1" },
@@ -93,7 +93,7 @@ function ContestProblem() {
                     // key={j}
                     className="rounded-md py-1 hover:bg-white">
                     <LinkLabel
-                      to={"/" + title}
+                      to={problemId + "/" + title}
                       className="inline w-10 px-2 text-xl">
                       {title}
                     </LinkLabel>
