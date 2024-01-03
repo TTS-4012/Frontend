@@ -25,6 +25,7 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setErrorMessage("");
     axios
       .get<ProblemData>(`/problems/${id}`, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },

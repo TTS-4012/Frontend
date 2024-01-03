@@ -23,6 +23,13 @@ function Home() {
       <Button
         size="md"
         onClick={() => {
+          navigate("/contests");
+        }}>
+        Contest
+      </Button>
+      <Button
+        size="md"
+        onClick={() => {
           navigate("/contests/new");
         }}>
         New Contest
