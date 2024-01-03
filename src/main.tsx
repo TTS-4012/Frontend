@@ -12,9 +12,11 @@ import NewContest from "./pages/Contest/NewContest.tsx";
 import ContestProblem from "./pages/Problems/ContestProblem.tsx";
 import EditProblem from "./pages/Problems/EditProblem.tsx";
 import ListProblems from "./pages/Problems/ListProblems.tsx";
+import ListSubmissions from "./pages/Problems/Submissions/ListSubmissons.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import Home from "./pages/Home.tsx";
 import axios from "axios";
+import ListContests from "./pages/Contest/ContestList.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
@@ -65,6 +67,10 @@ const router = createBrowserRouter([
                 path: "edit",
                 Component: EditProblem,
               },
+              {
+                path: "submissions",
+                Component: ListSubmissions,
+              },
             ],
           },
         ],
@@ -72,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "contests",
         children: [
+          {
+            path: "",
+            Component: ListContests,
+          },
           {
             path: "new",
             Component: NewContest,

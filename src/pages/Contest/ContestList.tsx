@@ -51,30 +51,18 @@ function TablePaginationActions(props: {
   );
 }
 
-type ProblemDataType = {
-  total_count: number;
-  problems: {
-    problem_id: number;
-    title: string;
-    solve_count: number;
-    hardness: number;
-  }[];
+type ContestDataType = {
+  contest_Id: number;
+  title: string;
 };
 
-type OrderDataType = {
-  order_by: "hardness" | "solve_count" | "problem_id" | undefined;
-  decending: boolean | undefined;
-};
-
-function ListProblems() {
-  const [order, setOrder] = useState<OrderDataType>({
-    order_by: "problem_id",
-    decending: false,
-  });
+function ListContests() {
+  const decsendingTable = false;
+  const [started, setStarted] = useState<boolean>(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
-  const [tableData, setTableData] = useState<ProblemDataType>();
+  const [tableData, setTableData] = useState<ContestDataType[]>();
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const navigate = useNavigate();
@@ -82,14 +70,13 @@ function ListProblems() {
   useEffect(() => {
     setErrorMessage("");
     axios
-      .get<ProblemDataType>("/problems", {
+      .get<ContestDataType[]>("/contests", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
+          descendig: decsendingTable,
           limit: rowsPerPage,
           offset: page * rowsPerPage,
-          ordered_by: order?.order_by,
-          decendig: order?.decending,
-          get_count: true,
+          started: started,
         },
       })
       .then((res) => {
@@ -99,10 +86,10 @@ function ListProblems() {
         console.log(err.message);
         setErrorMessage(err.response?.data.message ?? err.message);
       });
-  }, [page, rowsPerPage, order]);
+  }, [page, rowsPerPage, started, decsendingTable]);
 
-  const handleClick = (_: unknown, problem_id: number) => {
-    navigate("/problems/" + String(problem_id));
+  const handleClick = (_: unknown, contest_id: number) => {
+    navigate(`/contests/${String(contest_id)}/0`);
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -111,48 +98,22 @@ function ListProblems() {
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(0);
   };
-  const createOrder = (orderMethod: "hardness" | "solve_count" | "problem_id", dec: boolean | undefined) => {
-    return { order_by: orderMethod, decending: dec };
-  };
-  const handleOrdering = (orderMethod: "hardness" | "solve_count" | "problem_id", decending: boolean) => {
-    setOrder(createOrder(orderMethod, decending));
-  };
 
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
-        <div className="flex flex-row justify-start gap-2 rounded-sm bg-slate-400 pl-3 shadow-sm">
+        <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
           <p className="px-5 py-2 font-bold">Sort by </p>
           <button
-            className={`px-5 ${order.order_by == "hardness" && order.decending && "bg-slate-300"}`}
-            onClick={() => handleOrdering("hardness", true)}>
-            Hardest
+            className={`px-5 ${started && "bg-slate-300"}`}
+            onClick={() => setStarted(true)}>
+            Started
           </button>
           <button
-            className={`px-5 ${order.order_by == "hardness" && !order.decending && "bg-slate-300"}`}
-            onClick={() => handleOrdering("hardness", false)}>
-            Easiest
-          </button>
-          <button
-            className={`px-5 ${order.order_by == "solve_count" && order.decending && "bg-slate-300"}`}
-            onClick={() => handleOrdering("solve_count", true)}>
-            Most Solved
-          </button>
-          <button
-            className={`px-5 ${order.order_by == "solve_count" && !order.decending && "bg-slate-300"}`}
-            onClick={() => handleOrdering("solve_count", false)}>
-            Least Solved
-          </button>
-          <button
-            className={`px-5 ${order.order_by == "problem_id" && order.decending && "bg-slate-300"}`}
-            onClick={() => handleOrdering("problem_id", true)}>
-            Latest
-          </button>
-          <button
-            className={`px-5 ${order.order_by == "problem_id" && !order.decending && "bg-slate-300"}`}
-            onClick={() => handleOrdering("problem_id", false)}>
-            Newest
+            className={`px-5 ${!started && "bg-slate-300"}`}
+            onClick={() => setStarted(false)}>
+            Not Started
           </button>
         </div>
         <TableContainer component={Paper}>
@@ -160,28 +121,22 @@ function ListProblems() {
             sx={{ minWidth: 650 }}
             size="small">
             <TableHead>
-              <TableRow className="bg-indigo-300">
+              <TableRow className=" bg-cyan-600">
                 <TableCell
                   align="left"
                   padding="checkbox">
                   <p className="pl-2 font-bold  ">Number</p>
                 </TableCell>
                 <TableCell align="center">
-                  <p className="font-bold  ">Problem</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold  ">Hardness</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold  ">Solve Count</p>
+                  <p className="font-bold  ">Contest Title</p>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData?.problems.map((problem, i) => (
+              {tableData?.map((contest, i) => (
                 <TableRow
-                  key={problem.problem_id}
-                  onClick={(event) => handleClick(event, problem.problem_id)}
+                  key={i}
+                  onClick={(event) => handleClick(event, contest.contest_Id)}
                   sx={{ cursor: "pointer" }}
                   className="hover:bg-blue-100">
                   <TableCell
@@ -190,12 +145,10 @@ function ListProblems() {
                     {page * rowsPerPage + i + 1}
                   </TableCell>
                   <TableCell align="center">
-                    <p>
-                      {problem.title.slice(0, 15)} {problem.title.length > 15 && "..."}
+                    <p className="text-lg·font-medium">
+                      {contest.title.slice(0, 25)} {contest.title.length > 25 && "..."}
                     </p>
                   </TableCell>
-                  <TableCell align="center">{problem.hardness}</TableCell>
-                  <TableCell align="center">{problem.solve_count}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -205,7 +158,7 @@ function ListProblems() {
                   className=""
                   rowsPerPageOptions={[20, 50, 100]}
                   colSpan={4}
-                  count={tableData?.total_count ?? -1}
+                  count={-1}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
@@ -221,4 +174,4 @@ function ListProblems() {
   );
 }
 
-export default ListProblems;
+export default ListContests;
