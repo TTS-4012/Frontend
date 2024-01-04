@@ -56,7 +56,7 @@ function EditProblem() {
 
     if (problemId)
       axios
-        .get<ProblemData>(`${contestId ? `/contests/${contestId}` : ""}problems/${problemId}`, {
+        .get<ProblemData>(`/problems/${problemId}`, {
           headers: { Authorization: localStorage.getItem("auth.access_token") },
         })
         .then((res) => {
@@ -68,7 +68,7 @@ function EditProblem() {
       editor.current?.dispose();
       editor.current = undefined;
     };
-  }, [contestId, problemId, setValue]);
+  }, [problemId, setValue]);
 
   const [errorMessage, setErrorMessage] = useState<string>();
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ function EditProblem() {
   const onSave = (data: FormDataType) => {
     const body = {
       title: data.name,
-      contest_id: contestId,
+      contest_id: Number(contestId),
       description: content,
     };
     const config = {
