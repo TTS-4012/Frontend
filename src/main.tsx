@@ -15,9 +15,6 @@ import ListProblems from "./pages/Problems/ListProblems.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
-import ListContests from "./pages/Contest/ListContests.tsx";
-import EditContest from "./pages/Contest/EditContest.tsx";
-import ContestProblem from "./pages/Contest/ContestProblem.tsx";
 
 axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
 

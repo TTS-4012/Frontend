@@ -2,7 +2,6 @@ import { HTMLAttributes } from "react";
 import axios, { AxiosError } from "axios";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Button from "./Button";
 import Markdown from "./Markdown";
 import FilePicker from "./FilePicker";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
