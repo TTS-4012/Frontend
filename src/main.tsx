@@ -15,10 +15,8 @@ import Home from "./pages/Home.tsx";
 import Login from "./pages/Auth/Login.tsx";
 import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
-import ListContests from "./pages/Contest/ListContests.tsx";
+import Home from "./pages/Home.tsx";
 import ContestProblem from "./pages/Contest/ContestProblem.tsx";
-
-axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
 
 const router = createBrowserRouter([
   {
@@ -118,7 +116,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-axios.defaults.baseURL = "https://api.ocontest.ir/v1";
+axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
 axios.interceptors.request.use(
   (config) => {
     if (localStorage.getItem("auth.access_token"))

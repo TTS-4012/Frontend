@@ -45,11 +45,7 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
     if (filePicker.current?.files?.length) {
       const data = await filePicker.current?.files[0].text();
       axios
-        .post(`/problems/${id}/submit`, data, {
-          headers: {
-            Authorization: localStorage.getItem("auth.access_token"),
-          },
-        })
+        .post(`/problems/${id}/submit`, data)
         .then(() => {
           navigate("submissions");
         })

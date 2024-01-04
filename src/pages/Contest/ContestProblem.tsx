@@ -106,9 +106,7 @@ function ContestProblem() {
   useEffect(() => {
     setErrorMessage("");
     axios
-      .get<ContestDataType>(`/contests/${contestId}`, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-      })
+      .get<ContestDataType>(`/contests/${contestId}`)
       .then((res) => {
         setContestData(res.data);
       })

@@ -61,37 +61,23 @@ function EditContest() {
   });
 
   useEffect(() => {
-    axios
-      .get<ContestDataType>(`contests/${contestId}`, {
-        headers: {
-          Authorization: localStorage.getItem("auth.access_token"),
-        },
-      })
-      .then((res) => {
-        setContestData(res.data);
-        reset({
-          title: res.data.title,
-          start_time: new Date((res.data.start_time + 210 * 60) * 1000).toISOString().slice(0, -5),
-          duration: res.data.duration,
-        });
+    axios.get<ContestDataType>(`contests/${contestId}`).then((res) => {
+      setContestData(res.data);
+      reset({
+        title: res.data.title,
+        start_time: new Date((res.data.start_time + 210 * 60) * 1000).toISOString().slice(0, -5),
+        duration: res.data.duration,
       });
+    });
   }, [contestId, reset]);
 
   const handleApply = (data: FormData) => {
     axios
-      .put(
-        `contests/${contestId}`,
-        {
-          title: data.title,
-          start_time: data.start_time.getTime() / 1000,
-          Duration: data.duration,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem("auth.access_token"),
-          },
-        },
-      )
+      .put(`contests/${contestId}`, {
+        title: data.title,
+        start_time: data.start_time.getTime() / 1000,
+        Duration: data.duration,
+      })
       .then(() => {
         // TODO Succeed Notification.
       })
@@ -148,11 +134,7 @@ function EditContest() {
               <span className="ml-3 grow text-red-700">{errorMessage}</span>
               <Button
                 onClick={() => {
-                  axios.delete(`/contests/${contestId}`, {
-                    headers: {
-                      Authorization: localStorage.getItem("auth.access_token"),
-                    },
-                  });
+                  axios.delete(`/contests/${contestId}`);
                   navigate("/contests");
                 }}
                 variant="error"
@@ -192,12 +174,9 @@ function EditContest() {
                 size="zero"
                 variant="inline"
                 onClick={() => {
-                  axios.delete(`/contests/${contestId}/problems/${problem.ID}`, {
-                    headers: {
-                      Authorization: localStorage.getItem("auth.access_token"),
-                    },
+                  axios.delete(`/contests/${contestId}/problems/${problem.ID}`).then(() => {
+                    navigate("");
                   });
-                  navigate("");
                 }}>
                 <TrashIcon className="-m-1 h-5 w-5" />
               </Button>
