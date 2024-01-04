@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -19,8 +19,6 @@ import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
 import Leaderboard from "./pages/Contest/Leaderboard.tsx";
-
-axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
 
 const router = createBrowserRouter([
   {
@@ -119,6 +117,22 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
+axios.interceptors.request.use(
+  (config) => {
+    if (localStorage.getItem("auth.access_token"))
+      config.headers["Authorization"] = localStorage.getItem("auth.access_token");
+    return config;
+  },
+  (error: AxiosError) => {
+    if (error.code == "401") {
+      localStorage.removeItem("auth.access_token");
+      localStorage.removeItem("auth.refresh_token");
+      router.navigate("/login");
+    }
+  },
+);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
