@@ -107,7 +107,7 @@ function NewContest() {
             type="submit"
             size="md"
             className="flex-end ml-auto mr-2 font-bold">
-            Login
+            Create
           </Button>
         </div>
       </form>
