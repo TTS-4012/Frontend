@@ -155,7 +155,7 @@ function ContestProblem() {
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}>
                     <Link
-                      to={`/contests/${contestId}/${problem.ID}`}
+                      to={`/contests/${contestId}/problems/${problem.ID}`}
                       className="mr-auto">
                       {problem.Title.slice(0, 15)} {problem.Title.length > 15 && "..."}
                     </Link>
@@ -163,7 +163,7 @@ function ContestProblem() {
                       size="zero"
                       variant="inline"
                       onClick={() => {
-                        navigate(`/contests/${contestId}/${problem.ID}/edit`);
+                        navigate(`${problem.ID}/edit`);
                       }}>
                       <PencilIcon className="-m-1 h-5 w-5" />
                     </Button>
