@@ -20,7 +20,7 @@ import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
 import Leaderboard from "./pages/Contest/Leaderboard.tsx";
 
-axios.defaults.baseURL = "https://api.ocontest.ir/v1";
+axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
 
 const router = createBrowserRouter([
   {
