@@ -3,15 +3,7 @@ import axios, { AxiosError } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Link from "../../components/Link";
-import {
-  CalendarIcon,
-  ClockIcon,
-  PuzzlePieceIcon,
-  TrophyIcon,
-  PencilIcon,
-  PlusCircleIcon,
-  Cog6ToothIcon,
-} from "@heroicons/react/24/outline";
+import { CalendarIcon, ClockIcon, PuzzlePieceIcon, TrophyIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 import Button from "../../components/Button";
 
 type ContestProblemDataType = {

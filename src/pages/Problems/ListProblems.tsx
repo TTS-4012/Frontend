@@ -102,7 +102,7 @@ function ListProblems() {
   }, [page, rowsPerPage, order]);
 
   const handleClick = (_: unknown, problem_id: number) => {
-    navigate("/problems/" + String(problem_id));
+    navigate(`/problems/${String(problem_id)}`);
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
