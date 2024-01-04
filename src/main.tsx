@@ -5,17 +5,21 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Auth from "./layouts/Auth.tsx";
 import Dashboard from "./layouts/Dashboard.tsx";
+import Login from "./pages/Auth/Login.tsx";
+import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 import Register from "./pages/Auth/Register.tsx";
 import Verify from "./pages/Auth/Verify.tsx";
 import NewContest from "./pages/Contest/NewContest.tsx";
 import EditProblem from "./pages/Problems/EditProblem.tsx";
 import ListProblems from "./pages/Problems/ListProblems.tsx";
-import ListSubmissions from "./pages/Problems/Submissions/ListSubmissons.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
+import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
 import ListContests from "./pages/Contest/ListContests.tsx";
-import Login from "./pages/Auth/Login.tsx";
-import OTPLogin from "./pages/Auth/OTPLogin.tsx";
+import EditContest from "./pages/Contest/EditContest.tsx";
+import ContestProblem from "./pages/Contest/ContestProblem.tsx";
+
+axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
 const router = createBrowserRouter([
   {
