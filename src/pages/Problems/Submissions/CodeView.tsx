@@ -15,9 +15,7 @@ function CodeView({ id, ...otherProps }: PropsType) {
   const [errorMessage, setErrorMessage] = useState<string>();
   useEffect(() => {
     axios
-      .get<Code>(`/submissions/${id}`, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-      })
+      .get<Code>(`/submissions/${id}`)
       .then((res) => {
         console.log(res.data);
         setdata(res.data);

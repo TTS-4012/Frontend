@@ -18,13 +18,9 @@ function ListSubmissions() {
   const [data, setData] = useState<ProblemSubmissionListData>();
 
   useEffect(() => {
-    axios
-      .get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-      })
-      .then((res) => {
-        setData(res.data);
-      });
+    axios.get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`).then((res) => {
+      setData(res.data);
+    });
     //   .catch((err: AxiosError<any>) => {
     //     setErrorMessage(err.response?.data.message ?? err.message);
     //   })
