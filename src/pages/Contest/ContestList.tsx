@@ -67,8 +67,8 @@ function ListContests() {
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
   const [tableData, setTableData] = useState<ContestDataType[]>();
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const [errorMessageJoinContest, setErrorMessageJoinContest] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessageJoinContest, setErrorMessageJoinContest] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -137,7 +137,7 @@ function ListContests() {
             Not Started
           </button>
           <button
-            className={`px-5 ${!filterData.joined && "bg-slate-300"}`}
+            className={`px-5 ${filterData.joined && "bg-slate-300"}`}
             onClick={() => setFilterData({ started: filterData.started, joined: true })}>
             Joined Contests
           </button>
@@ -156,13 +156,15 @@ function ListContests() {
                 <TableCell
                   align="left"
                   padding="checkbox">
-                  <p className="pl-2 font-bold  ">Number</p>
+                  <p className="pl-2 font-bold">Number</p>
                 </TableCell>
                 <TableCell align="center">
                   <p className="font-bold  ">Contest Title</p>
                 </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold  ">Joined</p>
+                <TableCell
+                  align="center"
+                  padding="checkbox">
+                  <p className="px-auto font-bold ">Joined</p>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -170,22 +172,29 @@ function ListContests() {
               {tableData?.map((contest, i) => (
                 <TableRow
                   key={i}
-                  onClick={(event) => handleClick(event, contest.contest_Id)}
-                  sx={{ cursor: "pointer" }}
-                  className="hover:bg-blue-100">
+                  sx={{ cursor: "pointer" }}>
                   <TableCell
                     className=" bg-blue-50"
                     align="center">
                     {page * rowsPerPage + i + 1}
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell
+                    align="center"
+                    onClick={(event) => handleClick(event, contest.contest_Id)}
+                    className="hover:bg-blue-100">
                     <p className="text-lg·font-medium">
                       {contest.title.slice(0, 25)} {contest.title.length > 25 && "..."}
                     </p>
                   </TableCell>
                   <TableCell align="center">
-                    {filterData.joined && <p>Allready joined</p>} ||
-                    {<button onClick={() => handleJoindContest(contest.contest_Id)}> Join now</button>}
+                    {filterData.joined && <p>Allready joined</p>}
+                    {!filterData.joined && (
+                      <button
+                        className=" py-auto px-auto hover:bg-slate-200"
+                        onClick={() => handleJoindContest(contest.contest_Id)}>
+                        Join now
+                      </button>
+                    )}
                     {!errorMessageJoinContest && <p> could not join </p>}
                   </TableCell>
                 </TableRow>
