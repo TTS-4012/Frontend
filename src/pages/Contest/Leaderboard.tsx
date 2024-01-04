@@ -42,7 +42,7 @@ function Leaderboard() {
     <>
       <div className="mx-auto w-full p-2">
         {errorMessage ? (
-          <div>errorMessage.message</div>
+          <div>{errorMessage}</div>
         ) : (
           <table className="w-full">
             <thead className="w-full bg-gray-50">
