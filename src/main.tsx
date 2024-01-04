@@ -17,7 +17,7 @@ import ListContests from "./pages/Contest/ListContests.tsx";
 import Login from "./pages/Auth/Login.tsx";
 import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 
-axios.defaults.baseURL = "https://api.ocontest.ir/v1";
+axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
 
 const router = createBrowserRouter([
   {

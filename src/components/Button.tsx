@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, ForwardedRef, forwardRef } from "react";
 
 type PropsType = ButtonHTMLAttributes<HTMLButtonElement> & {
   size: "zero" | "xs" | "sm" | "md" | "lg" | "xl";
-  variant?: "normal" | "inline";
+  variant?: "normal" | "error" | "inline";
 };
 
 const Button = forwardRef(
@@ -24,6 +24,7 @@ const Button = forwardRef(
         ${
           {
             normal: "bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 focus:ring-indigo-500",
+            error: "bg-red-600 text-white shadow-sm hover:bg-red-700 focus:ring-red-500",
             inline: "",
           }[variant ?? "normal"]
         } ${className}`}
