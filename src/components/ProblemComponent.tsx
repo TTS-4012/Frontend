@@ -48,9 +48,9 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
             Authorization: localStorage.getItem("auth.access_token"),
           },
         })
-        // .then(() => {
-        //   navigate("submissions");
-        // })
+        .then(() => {
+          navigate("submissions");
+        })
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
         });

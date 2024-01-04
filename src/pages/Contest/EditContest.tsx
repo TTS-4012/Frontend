@@ -184,7 +184,7 @@ function EditContest() {
                 size="zero"
                 variant="inline"
                 onClick={() => {
-                  navigate(`${problem.ID}/edit`);
+                  navigate(`problems/${problem.ID}/edit`);
                 }}>
                 <PencilIcon className="-m-1 h-5 w-5" />
               </Button>
