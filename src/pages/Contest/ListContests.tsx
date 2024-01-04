@@ -109,30 +109,8 @@ function ListContests() {
     console.log(tableData);
   }, [page, rowsPerPage, filterData, decsendingTable, toggleUpdateData]);
 
-  const handleClick = (_: unknown, contest_id: number, register_status: number) => {
-    if (register_status == 2 || register_status == 1) {
-      navigate(`/contests/${String(contest_id)}/0`);
-    } else {
-      setOpenDialogJoinFirst(true);
-    }
-  };
-  const handleJoinContest = (contest_id: number) => {
-    setErrorMessageJoinContest("");
-    axios
-      .patch(`/contests/${String(contest_id)}`, undefined, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-        params: {
-          action: "register",
-        },
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessageJoinContest(err.response?.data.message ?? err.message);
-      })
-      .then(() => {
-        setOpenDialog(true);
-      });
-    UpdateTableData(!toggleUpdateData);
+  const handleClick = (_: unknown, contest_id: number) => {
+    navigate(`/contests/${String(contest_id)}/problems/0`);
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);

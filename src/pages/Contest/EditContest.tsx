@@ -8,11 +8,12 @@ import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "../../components/Link";
-import { PencilIcon, TrashIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 type FormData = {
   title: string;
-  start_time: string;
+  start_time: Date;
   duration: number;
 };
 
@@ -36,7 +37,7 @@ type ContestDataType = {
 const validationSchema = yup
   .object({
     title: yup.string().required(),
-    start_time: yup.string().required(),
+    start_time: yup.date().required(),
     duration: yup.number().min(1).required(),
   })
   .required();
@@ -45,6 +46,8 @@ function EditContest() {
   const { contestId } = useParams<ParamsType>();
 
   const navigate = useNavigate();
+
+  const [contestData, setContestData] = useState<ContestDataType>();
 
   const {
     control,
@@ -57,61 +60,52 @@ function EditContest() {
     resolver: yupResolver(validationSchema),
   });
 
-  const [contestData, setContestData] = useState<ContestDataType>();
+  useEffect(() => {
+    axios
+      .get<ContestDataType>(`contests/${contestId}`, {
+        headers: {
+          Authorization: localStorage.getItem("auth.access_token"),
+        },
+      })
+      .then((res) => {
+        setContestData(res.data);
+        reset({
+          title: res.data.title,
+          start_time: new Date((res.data.start_time + 210 * 60) * 1000).toISOString().slice(0, -5),
+          duration: res.data.duration,
+        });
+      });
+  }, [contestId, reset]);
+
+  const handleApply = (data: FormData) => {
+    axios
+      .put(
+        `contests/${contestId}`,
+        {
+          title: data.title,
+          start_time: data.start_time.getTime() / 1000,
+          Duration: data.duration,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("auth.access_token"),
+          },
+        },
+      )
+      .then(() => {
+        // TODO Succeed Notification.
+      })
+      .catch((err: AxiosError<any>) => {
+        setErrorMessage(err.response?.data.message ?? err.message);
+      });
+  };
+
   const [errorMessage, setErrorMessage] = useState<string>();
 
   useEffect(() => {
     const subscription = watch(() => setErrorMessage(undefined));
     return () => subscription.unsubscribe();
   }, [watch]);
-
-  useEffect(() => {
-    axios.get<ContestDataType>(`contests/${contestId}`).then((res) => {
-      setContestData(res.data);
-      reset({
-        title: res.data.title,
-        start_time: new Date((res.data.start_time + 210 * 60) * 1000).toISOString().slice(0, -5),
-        duration: res.data.duration,
-      });
-    });
-  }, [contestId, reset]);
-
-  const handleApply = (data: FormData) => {
-    axios
-      .put(`contests/${contestId}`, {
-        title: data.title,
-        start_time: new Date(data.start_time).getTime() / 1000,
-        Duration: data.duration,
-      })
-      .then(() => {
-        navigate("..");
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
-  };
-
-  const handleRemoveProblem = (problemId: number) => {
-    axios
-      .delete(`/contests/${contestId}/problems/${problemId}`)
-      .then(() => {
-        navigate("");
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
-  };
-
-  const handleDelete = () => {
-    axios
-      .delete(`/contests/${contestId}`)
-      .then(() => {
-        navigate("/contests");
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
-  };
 
   return (
     contestData && (
@@ -129,7 +123,9 @@ function EditContest() {
             <Input
               label="start_time"
               type="datetime-local"
-              {...register("start_time")}
+              {...register("start_time", {
+                valueAsDate: true,
+              })}
               error={
                 errors.start_time?.message ==
                 "start_time must be a `date` type, but the final value was: `Invalid Date` (cast from the value `Invalid Date`)."
@@ -149,14 +145,7 @@ function EditContest() {
               )}
             />
             <div className="flex flex-row items-center">
-              <span className="ml-3 grow text-red-700">{errorMessage}</span>
-              <Button
-                onClick={handleDelete}
-                variant="error"
-                size="md"
-                className="flex-end ml-auto mr-2 font-bold">
-                Delete Contest
-              </Button>
+              <span className="ml-3 text-red-700">{errorMessage}</span>
               <Button
                 type="submit"
                 size="md"
@@ -181,14 +170,21 @@ function EditContest() {
                 size="zero"
                 variant="inline"
                 onClick={() => {
-                  navigate(`problems/${problem.ID}/edit`);
+                  navigate(`${problem.ID}/edit`);
                 }}>
                 <PencilIcon className="-m-1 h-5 w-5" />
               </Button>
               <Button
                 size="zero"
                 variant="inline"
-                onClick={() => handleRemoveProblem(problem.ID)}>
+                onClick={() => {
+                  axios.delete(`/contests/${contestId}/problems/${problem.ID}`, {
+                    headers: {
+                      Authorization: localStorage.getItem("auth.access_token"),
+                    },
+                  });
+                  navigate("");
+                }}>
                 <TrashIcon className="-m-1 h-5 w-5" />
               </Button>
             </div>
