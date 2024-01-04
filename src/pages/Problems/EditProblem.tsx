@@ -84,17 +84,21 @@ function EditProblem() {
         Authorization: localStorage.getItem("auth.access_token"),
       },
     };
-    const save = () =>
-      problemId
-        ? axios.put(`/problems/${problemId}`, body, config).then(() => problemId)
-        : axios.post<{ problem_Id: string }>("/problems", body, config).then((res) => res.data.problem_Id);
-    save()
-      .then((savedId) => {
-        navigate(`/problems/${savedId}`);
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
+    if (problemId) {
+      axios
+        .put(`/problems/${problemId}`, body, config)
+        .then(() => navigate(-1))
+        .catch((err: AxiosError<any>) => {
+          setErrorMessage(err.response?.data.message ?? err.message);
+        });
+    } else {
+      axios
+        .post<{ problem_Id: string }>("/problems", body, config)
+        .then((res) => navigate(`../${res.data.problem_Id}`))
+        .catch((err: AxiosError<any>) => {
+          setErrorMessage(err.response?.data.message ?? err.message);
+        });
+    }
   };
 
   return (
