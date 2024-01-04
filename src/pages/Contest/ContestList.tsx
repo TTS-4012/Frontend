@@ -55,16 +55,20 @@ type ContestDataType = {
   contest_Id: number;
   title: string;
 };
+type FilterDataType = {
+  started: boolean;
+  joined: boolean;
+};
 
 function ListContests() {
   const decsendingTable = false;
-  const [started, setStarted] = useState<boolean>(false);
+  const [filterData, setFilterData] = useState<FilterDataType>({ started: false, joined: false });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
   const [tableData, setTableData] = useState<ContestDataType[]>();
   const [errorMessage, setErrorMessage] = useState<string>();
-
+  const [errorMessageJoinContest, setErrorMessageJoinContest] = useState<string>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,7 +80,8 @@ function ListContests() {
           descendig: decsendingTable,
           limit: rowsPerPage,
           offset: page * rowsPerPage,
-          started: started,
+          started: filterData.started,
+          // joined: filterData.joined
         },
       })
       .then((res) => {
@@ -86,10 +91,26 @@ function ListContests() {
         console.log(err.message);
         setErrorMessage(err.response?.data.message ?? err.message);
       });
-  }, [page, rowsPerPage, started, decsendingTable]);
+  }, [page, rowsPerPage, filterData, decsendingTable]);
 
   const handleClick = (_: unknown, contest_id: number) => {
-    navigate("/contests/" + String(contest_id));
+    navigate(`/contests/${String(contest_id)}/0`);
+  };
+  const handleJoindContest = (contest_id: number) => {
+    setErrorMessageJoinContest("");
+    //TO DO:
+    // add api contest join
+    axios
+      .post<number>("/contests", {
+        headers: { Authorization: localStorage.getItem("auth.access_token") },
+        params: {
+          contest_id: contest_id,
+        },
+      })
+      .catch((err: AxiosError<any>) => {
+        console.log(err.message);
+        setErrorMessageJoinContest(err.response?.data.message ?? err.message);
+      });
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -106,14 +127,24 @@ function ListContests() {
         <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
           <p className="px-5 py-2 font-bold">Sort by </p>
           <button
-            className={`px-5 ${started && "bg-slate-300"}`}
-            onClick={() => setStarted(true)}>
+            className={`px-5 ${filterData.started && "bg-slate-300"}`}
+            onClick={() => setFilterData({ started: true, joined: filterData.joined })}>
             Started
           </button>
           <button
-            className={`px-5 ${!started && "bg-slate-300"}`}
-            onClick={() => setStarted(false)}>
+            className={`px-5 ${!filterData.started && "bg-slate-300"}`}
+            onClick={() => setFilterData({ started: false, joined: filterData.joined })}>
             Not Started
+          </button>
+          <button
+            className={`px-5 ${!filterData.joined && "bg-slate-300"}`}
+            onClick={() => setFilterData({ started: filterData.started, joined: true })}>
+            Joined Contests
+          </button>
+          <button
+            className={`px-5 ${!filterData.joined && "bg-slate-300"}`}
+            onClick={() => setFilterData({ started: filterData.started, joined: false })}>
+            Not Joined Contests
           </button>
         </div>
         <TableContainer component={Paper}>
@@ -129,6 +160,9 @@ function ListContests() {
                 </TableCell>
                 <TableCell align="center">
                   <p className="font-bold  ">Contest Title</p>
+                </TableCell>
+                <TableCell align="center">
+                  <p className="font-bold  ">Joined</p>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -148,6 +182,11 @@ function ListContests() {
                     <p className="text-lg·font-medium">
                       {contest.title.slice(0, 25)} {contest.title.length > 25 && "..."}
                     </p>
+                  </TableCell>
+                  <TableCell align="center">
+                    {filterData.joined && <p>Allready joined</p>} ||
+                    {<button onClick={() => handleJoindContest(contest.contest_Id)}> Join now</button>}
+                    {!errorMessageJoinContest && <p> could not join </p>}
                   </TableCell>
                 </TableRow>
               ))}
