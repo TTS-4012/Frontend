@@ -37,19 +37,11 @@ function NewContest() {
 
   const handleCreate = (data: FormData) => {
     axios
-      .post(
-        "contests",
-        {
-          title: data.title,
-          start_time: data.start_time.getTime() / 1000,
-          Duration: data.duration,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem("auth.access_token"),
-          },
-        },
-      )
+      .post("contests", {
+        title: data.title,
+        start_time: data.start_time.getTime() / 1000,
+        Duration: data.duration,
+      })
       .then(() => {
         //later add push notification
         navigate("/home");

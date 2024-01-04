@@ -55,14 +55,10 @@ function EditProblem() {
     });
 
     if (problemId)
-      axios
-        .get<ProblemData>(`/problems/${problemId}`, {
-          headers: { Authorization: localStorage.getItem("auth.access_token") },
-        })
-        .then((res) => {
-          setValue("name", res.data.title);
-          editor.current?.setValue(res.data.description);
-        });
+      axios.get<ProblemData>(`/problems/${problemId}`).then((res) => {
+        setValue("name", res.data.title);
+        editor.current?.setValue(res.data.description);
+      });
 
     return () => {
       editor.current?.dispose();
@@ -79,21 +75,16 @@ function EditProblem() {
       contest_id: Number(contestId),
       description: content,
     };
-    const config = {
-      headers: {
-        Authorization: localStorage.getItem("auth.access_token"),
-      },
-    };
     if (problemId) {
       axios
-        .put(`/problems/${problemId}`, body, config)
+        .put(`/problems/${problemId}`, body)
         .then(() => navigate(-1))
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
         });
     } else {
       axios
-        .post<{ problem_Id: string }>("/problems", body, config)
+        .post<{ problem_Id: string }>("/problems", body)
         .then((res) => navigate(`../${res.data.problem_Id}`))
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
