@@ -89,7 +89,11 @@ function ListContests() {
   }, [page, rowsPerPage, started, decsendingTable]);
 
   const handleClick = (_: unknown, contest_id: number) => {
+<<<<<<< HEAD
     navigate(`/contests/${String(contest_id)}/0`);
+=======
+    navigate("/contests/" + String(contest_id) + "/0");
+>>>>>>> 67dd149 (fix: bug path fixed)
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);

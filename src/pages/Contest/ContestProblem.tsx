@@ -1,10 +1,9 @@
 import ProblemComponent from "../../components/ProblemComponent";
 import axios, { AxiosError } from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Link from "../../components/Link";
-import { CalendarIcon, ClockIcon, PuzzlePieceIcon, TrophyIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
-import Button from "../../components/Button";
+import { CalendarIcon, ClockIcon, PuzzlePieceIcon, TrophyIcon } from "@heroicons/react/24/outline";
 
 type ContestProblemDataType = {
   ID: number;
@@ -38,49 +37,55 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
   }, [contestData]);
 
   return (
-    <div className="flex flex-row gap-3 p-2">
-      {contestData.start_time - Math.floor(new Date().valueOf() / 1000) > 0 ? (
-        <>
-          <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
-          <p className="flex grow flex-col">
-            <p className="text-lg font-medium">
-              {new Date(contestData.start_time * 1000).toLocaleDateString("en-GB", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
+    <div className="flex flex-col gap-1 rounded-t-lg bg-white p-1 shadow-md">
+      <p className="border-b border-gray-200 p-4 text-center text-3xl font-bold text-gray-900 sm:px-6">
+        {contestData.title}
+      </p>
+      <div className="flex flex-row gap-3 p-2">
+        {contestData.start_time - Math.floor(new Date().valueOf() / 1000) > 0 ? (
+          <>
+            <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
+            <p className="flex grow flex-col">
+              <p className="text-lg font-medium">
+                {new Date(contestData.start_time * 1000).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </p>
+              <p className="text-lg">
+                {new Date(contestData.start_time * 1000).toLocaleString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                })}
+              </p>
             </p>
-            <p className="text-lg">
-              {new Date(contestData.start_time * 1000).toLocaleString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-              })}
-            </p>
-          </p>
-        </>
-      ) : contestData.start_time + contestData.duration - Math.floor(new Date().valueOf() / 1000) > 0 ? (
-        <>
-          <div className="mx-auto flex flex-row gap-2 py-2">
-            <ClockIcon className="m-auto h-6 w-6 shrink-0" />
-            <p
-              className={`grow text-lg font-medium flex${
-                (reverseTimer < 600 && reverseTimer >= 600 && "text-yellow-600") ||
-                (reverseTimer < 60 && "text-red-600")
-              }`}>
-              {Math.floor(reverseTimer / 3600).toString().length == 1 && "0"}
-              {Math.floor(reverseTimer / 3600)}: {Math.floor((reverseTimer % 3600) / 60).toString().length == 1 && "0"}
-              {Math.floor((reverseTimer % 3600) / 60)}: {Math.floor(reverseTimer % 60).toString().length == 1 && "0"}
-              {Math.floor(reverseTimer % 60)}
-            </p>
-          </div>
-        </>
-      ) : (
-        <>
-          <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
-          <p className="grow px-2 text-lg italic">This contest is finished</p>
-        </>
-      )}
+          </>
+        ) : contestData.start_time + contestData.duration - Math.floor(new Date().valueOf() / 1000) > 0 ? (
+          <>
+            <div className="mx-auto flex flex-row gap-2 py-2">
+              <ClockIcon className="m-auto h-6 w-6 shrink-0" />
+              <p
+                className={`grow text-lg font-medium flex${
+                  (reverseTimer < 600 && reverseTimer >= 600 && "text-yellow-600") ||
+                  (reverseTimer < 60 && "text-red-600")
+                }`}>
+                {Math.floor(reverseTimer / 3600).toString().length == 1 && "0"}
+                {Math.floor(reverseTimer / 3600)}:{" "}
+                {Math.floor((reverseTimer % 3600) / 60).toString().length == 1 && "0"}
+                {Math.floor((reverseTimer % 3600) / 60)}: {Math.floor(reverseTimer % 60).toString().length == 1 && "0"}
+                {Math.floor(reverseTimer % 60)}
+              </p>
+            </div>
+          </>
+        ) : (
+          <>
+            <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
+            <p className="grow px-2 text-lg italic">This contest is finished</p>
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -90,12 +95,12 @@ function ContestProblem() {
   const [contestData, setContestData] = useState<ContestDataType>();
   const [errorMessage, setErrorMessage] = useState<string>();
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     setErrorMessage("");
     axios
-      .get<ContestDataType>(`/contests/${contestId}`)
+      .get<ContestDataType>(`/contests/${contestId}`, {
+        headers: { Authorization: localStorage.getItem("auth.access_token") },
+      })
       .then((res) => {
         setContestData(res.data);
       })
@@ -112,35 +117,21 @@ function ContestProblem() {
         <div className="m-5 flex grow flex-row items-stretch gap-5">
           {isValidProblemId ? (
             <ProblemComponent
-              id={String(Number(problemId) || contestData.problems[0]?.ID)}
+              id={String(Number(problemId) || contestData.problems[0].ID)}
               className="basis-5/6"
             />
           ) : (
             <p className="m-auto basis-5/6 text-center text-5xl text-indigo-800">Invalid problem</p>
           )}
-          <div className="flex min-w-[16rem] basis-1/6 flex-col gap-2">
-            <div className="flex flex-col gap-1 rounded-t-lg bg-white p-1 shadow-md">
-              <div className="relative border-b border-gray-200 p-4 text-center text-3xl font-bold text-gray-900 sm:px-6">
-                {contestData.title}
-                <Button
-                  className="absolute inset-y-0 right-4 my-auto"
-                  size="zero"
-                  variant="inline"
-                  onClick={() => {
-                    navigate(`/contests/${contestId}/edit`);
-                  }}>
-                  <Cog6ToothIcon className="h-5 w-5" />
-                </Button>
-              </div>
-              <ContestDuration contestData={contestData} />
-            </div>
+          <div className="flex basis-1/6 flex-col gap-2">
+            <ContestDuration contestData={contestData} />
             {contestData.problems?.length > 0 && (
               <div className="flex flex-col space-y-1 bg-white p-1 shadow-md">
-                <div className="border-b border-gray-200 p-2 font-medium text-gray-900 sm:px-4">Problems</div>
+                <p className="border-b border-gray-200 p-2 font-medium text-gray-900 sm:px-4">Problems</p>
                 {contestData.problems?.map((problem, i) => (
                   <Link
                     key={i}
-                    to={`/contests/${contestId}/problems/${problem.ID}`}
+                    to={`/contests/${String(contestId)}/${String(problem.ID)}`}
                     className={`flex items-center rounded-md px-3 py-2 text-sm font-medium ${
                       problemId == String(problem.ID)
                         ? "bg-gray-100 text-gray-900"
