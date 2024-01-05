@@ -18,8 +18,6 @@ import ListProblems from "./pages/Problems/ListProblems.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
-import Leaderboard from "./pages/Contest/Leaderboard.tsx";
-
 const router = createBrowserRouter([
   {
     Component: Auth,
