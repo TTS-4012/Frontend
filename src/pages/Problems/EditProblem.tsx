@@ -24,6 +24,7 @@ type ParamsType = {
 
 type FormDataType = {
   name: string;
+  file: File;
 };
 
 const validationSchema = yup
@@ -96,7 +97,7 @@ function EditProblem() {
         setErrorMessage(err.response?.data.message ?? err.message);
       });
   };
-
+  const filePicker = useRef<HTMLInputElement>(null);
   return (
     <div className="flex h-full w-full p-1">
       <div className="flex grow flex-col overflow-hidden p-1">
@@ -138,7 +139,12 @@ function EditProblem() {
           label="Problem Name"
           {...register("name")}
         />
-        <FilePicker></FilePicker>
+        <div className="rounded-md bg-white shadow-sm">
+          <FilePicker
+            type="file"
+            accept=".zip"
+            ref={filePicker}></FilePicker>
+        </div>
         <div className="flex flex-row items-center">
           <span className="ml-3 text-red-700">{errorMessage}</span>
           <Button
