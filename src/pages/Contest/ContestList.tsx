@@ -89,7 +89,7 @@ function ListContests() {
   }, [page, rowsPerPage, started, decsendingTable]);
 
   const handleClick = (_: unknown, contest_id: number) => {
-    navigate("/contests/" + String(contest_id) + "/0");
+    navigate(`/contests/${String(contest_id)}/0`);
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
