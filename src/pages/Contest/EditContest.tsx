@@ -8,12 +8,11 @@ import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "../../components/Link";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, TrashIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 
 type FormData = {
   title: string;
-  start_time: Date;
+  start_time: string;
   duration: number;
 };
 
@@ -37,7 +36,7 @@ type ContestDataType = {
 const validationSchema = yup
   .object({
     title: yup.string().required(),
-    start_time: yup.date().required(),
+    start_time: yup.string().required(),
     duration: yup.number().min(1).required(),
   })
   .required();
@@ -75,7 +74,7 @@ function EditContest() {
     axios
       .put(`contests/${contestId}`, {
         title: data.title,
-        start_time: data.start_time.getTime() / 1000,
+        start_time: new Date(data.start_time).getTime() / 1000,
         Duration: data.duration,
       })
       .then(() => {
@@ -109,9 +108,7 @@ function EditContest() {
             <Input
               label="start_time"
               type="datetime-local"
-              {...register("start_time", {
-                valueAsDate: true,
-              })}
+              {...register("start_time")}
               error={
                 errors.start_time?.message ==
                 "start_time must be a `date` type, but the final value was: `Invalid Date` (cast from the value `Invalid Date`)."
