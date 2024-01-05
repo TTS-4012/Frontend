@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Link from "../../components/Link";
 import { CalendarIcon, ClockIcon, PuzzlePieceIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 type ContestProblemDataType = {
   ID: number;
@@ -94,6 +95,7 @@ function ContestProblem() {
   const { contestId, problemId } = useParams<ParamsType>();
   const [contestData, setContestData] = useState<ContestDataType>();
   const [errorMessage, setErrorMessage] = useState<string>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setErrorMessage("");
@@ -107,7 +109,10 @@ function ContestProblem() {
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
       });
-  }, [contestId]);
+    if (problemId == "0" && contestData && contestData.problems.length > 0) {
+      navigate(`/contests/${contestId}/${contestData?.problems[0].ID}`);
+    }
+  }, [contestData, contestId, navigate, problemId]);
 
   const isValidProblemId = problemId == "0" || contestData?.problems?.some((p) => String(p.ID) === problemId);
 
@@ -121,7 +126,10 @@ function ContestProblem() {
               className="basis-5/6"
             />
           ) : (
-            <p className="m-auto basis-5/6 text-center text-5xl text-indigo-800">Invalid problem</p>
+            <p className="m-auto basis-5/6 text-center text-5xl text-indigo-800">
+              {problemId != "0" && "Invalid problem"}
+              {problemId == "0" && "No problems to show"}
+            </p>
           )}
           <div className="flex basis-1/6 flex-col gap-2">
             <ContestDuration contestData={contestData} />
