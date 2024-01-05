@@ -18,6 +18,12 @@ function Header() {
           onClick={handleLogOut}>
           Log Out
         </Button>
+        <Button
+          size="lg"
+          className="ml-auto"
+          onClick={() => navigate("/contests")}>
+          Contests
+        </Button>
       </nav>
     </header>
   );
