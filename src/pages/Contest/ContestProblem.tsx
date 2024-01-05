@@ -101,10 +101,7 @@ function ContestProblem() {
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
       });
-    if (problemId == "0" && contestData && contestData.problems.length > 0) {
-      navigate(`/contests/${contestId}/${contestData?.problems[0].ID}`);
-    }
-  }, [contestData, contestId, navigate, problemId]);
+  }, [contestId]);
 
   const isValidProblemId = problemId == "0" || contestData?.problems?.some((p) => String(p.ID) === problemId);
 

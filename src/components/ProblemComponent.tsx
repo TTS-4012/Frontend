@@ -68,7 +68,7 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
           open={copyOpen}
           onClose={setCopyOpen}
           title="Copy problem to contest">
-          <CopyToContest />
+          <CopyToContest onClose={() => setCopyOpen(false)} />
         </Dialog>,
         document.body,
         `Copy`,
