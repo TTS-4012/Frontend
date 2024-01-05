@@ -117,7 +117,7 @@ function ListContests() {
         setErrorMessage(err.response?.data.message ?? err.message);
       });
     console.log(tableData);
-  }, [page, rowsPerPage, filterData, decsendingTable, toggleUpdateData, tableData]);
+  }, [page, rowsPerPage, filterData, decsendingTable, toggleUpdateData]);
 
   const handleClick = (_: unknown, contest_id: number, register_status: number) => {
     if (register_status == 2 || register_status == 1) {
