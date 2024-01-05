@@ -120,8 +120,6 @@ function ListContests() {
     } else {
       setOpenDialogJoinFirst(true);
     }
-    // delete
-    console.log(register_status);
   };
   const handleJoinContest = (contest_id: number) => {
     setErrorMessageJoinContest("");
@@ -246,7 +244,6 @@ function ListContests() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* tableData?.contests?.map */}
               {tableData?.contests.length == 0 && (
                 <>
                   <TableRow>
@@ -294,7 +291,6 @@ function ListContests() {
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  className=""
                   rowsPerPageOptions={[20, 50, 100]}
                   colSpan={4}
                   count={tableData?.total_count || -1}
