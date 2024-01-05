@@ -22,7 +22,6 @@ function Leaderboard() {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [rowPerPage, setRowPerPage] = useState<number>(100);
   useEffect(() => {
-    console.log(id);
     axios
       .get<pageData>(`/contests/${id}/scoreboard`, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
@@ -45,19 +44,19 @@ function Leaderboard() {
         {errorMessage ? (
           <div>{errorMessage}</div>
         ) : (
-          <table className="w-full">
-            <thead className="w-full bg-gray-50">
-              <tr>
-                <th
+          <table className="overflow-y-scroll">
+            <thead className="bg-gray-50">
+              <tr className=" rounded-t-md">
+                <td
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                  className="py-3.5 text-sm font-semibold text-gray-900 ">
                   Number
-                </th>
-                <th
+                </td>
+                <td
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                  className="py-3.5 text-sm font-semibold text-gray-900 ">
                   User
-                </th>
+                </td>
                 {data?.problems.map((question) => (
                   <th
                     scope="col"
@@ -67,19 +66,17 @@ function Leaderboard() {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="overflow-scroll">
               {data?.users.map((user, idx) => (
                 <TableRow
                   index={idx}
                   user={user}
                 />
               ))}
-            </tbody>
-            <tfoot className="w-full bg-gray-50">
-              <tr className="flex flex-row">
+              <tr>
                 {data?.problems && (
                   <td
-                    colSpan={data?.problems.length + 1}
+                    colSpan={data?.problems.length + 2}
                     className="m-1 flex flex-row gap-2 self-end">
                     <p className="my-auto">page number</p>
                     <input
@@ -96,7 +93,7 @@ function Leaderboard() {
                   </td>
                 )}
               </tr>
-            </tfoot>
+            </tbody>
           </table>
         )}
       </div>
