@@ -15,6 +15,7 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
+import Button from "../../components/Button";
 
 function TablePaginationActions(props: {
   count: number;
@@ -70,8 +71,7 @@ function ListContests() {
   useEffect(() => {
     setErrorMessage("");
     axios
-      .get<ContestDataType[]>("/contests", {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
+      .get<{ contests: ContestDataType[] }>("/contests", {
         params: {
           descendig: decsendingTable,
           limit: rowsPerPage,
@@ -80,7 +80,7 @@ function ListContests() {
         },
       })
       .then((res) => {
-        setTableData(res.data);
+        setTableData(res.data.contests);
       })
       .catch((err: AxiosError<any>) => {
         console.log(err.message);
@@ -89,7 +89,7 @@ function ListContests() {
   }, [page, rowsPerPage, started, decsendingTable]);
 
   const handleClick = (_: unknown, contest_id: number) => {
-    navigate(`/contests/${String(contest_id)}/0`);
+    navigate(`/contests/${contest_id}/problems/0`);
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -104,7 +104,7 @@ function ListContests() {
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
-          <p className="px-5 py-2 font-bold">Sort by </p>
+          <p className="my-auto px-5 py-2 font-bold">Sort by </p>
           <button
             className={`px-5 ${started && "bg-slate-300"}`}
             onClick={() => setStarted(true)}>
@@ -115,6 +115,27 @@ function ListContests() {
             onClick={() => setStarted(false)}>
             Not Started
           </button>
+          <Button
+            size="lg"
+            className="my-1 ml-auto mr-2 flex gap-1"
+            onClick={() => {
+              navigate("/contests/new");
+            }}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            create contest
+          </Button>
         </div>
         <TableContainer component={Paper}>
           <Table
