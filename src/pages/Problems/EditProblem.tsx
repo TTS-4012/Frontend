@@ -9,7 +9,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios, { AxiosError } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import FilePicker from "../../components/FilePicker";
 
 type ProblemData = {
   title: string;
@@ -24,13 +23,11 @@ type ParamsType = {
 
 type FormDataType = {
   name: string;
-  file: HTMLInputElement;
 };
 
 const validationSchema = yup
   .object({
     name: yup.string().required(),
-    file: yup.mixed().required(),
   })
   .required();
 
@@ -78,7 +75,6 @@ function EditProblem() {
   const onSave = (data: FormDataType) => {
     const body = {
       title: data.name,
-      testcase: data.file,
       description: content,
     };
     const config = {
@@ -98,6 +94,7 @@ function EditProblem() {
         setErrorMessage(err.response?.data.message ?? err.message);
       });
   };
+
   return (
     <div className="flex h-full w-full p-1">
       <div className="flex grow flex-col overflow-hidden p-1">
@@ -133,20 +130,12 @@ function EditProblem() {
         </Tab.Group>
       </div>
       <form
-        className="flex w-96 flex-col gap-3 px-1 pt-8"
+        className="w-96 px-1 pt-8"
         onSubmit={handleSubmit(onSave)}>
         <Input
           label="Problem Name"
           {...register("name")}
         />
-        <label className="block text-base font-medium text-gray-700">Testcase</label>
-        <div className="rounded-md bg-white shadow-sm">
-          <FilePicker
-            type="file"
-            accept=".zip"
-            {...register("file")}
-          />
-        </div>
         <div className="flex flex-row items-center">
           <span className="ml-3 text-red-700">{errorMessage}</span>
           <Button
