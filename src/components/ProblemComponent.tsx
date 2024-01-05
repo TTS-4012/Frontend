@@ -23,6 +23,7 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
 };
 
 function ProblemComponent({ id, className, ...otherProps }: PropsType) {
+  const { contestId } = useParams();
   const [data, setData] = useState<ProblemData>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [copyOpen, setCopyOpen] = useState(false);
