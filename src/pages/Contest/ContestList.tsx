@@ -15,12 +15,7 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import Button from "@material-ui/core/Button";
+import Dialog from "../../components/Dialog";
 
 function TablePaginationActions(props: {
   count: number;
@@ -124,7 +119,7 @@ function ListContests() {
   const handleJoinContest = (contest_id: number) => {
     setErrorMessageJoinContest("");
     axios
-      .patch(`/contests/${String(contest_id)}`, {
+      .patch(`/contests/${String(contest_id)}`, undefined, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           action: "register",
@@ -153,39 +148,20 @@ function ListContests() {
       <div className="flex flex-col gap-2">
         <Dialog
           open={openDialog}
-          onClose={() => setOpenDialog(false)}>
-          <DialogTitle
-            className={`${!errorMessageJoinContest && "bg-green-800"} ${errorMessageJoinContest && "bg-red-800"}`}>
-            {"Joining the Contest"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText className=" text-lg font-medium">
+          onClose={() => setOpenDialog(false)}
+          title="Join Contest">
+          <div>
+            <p>
               {errorMessageJoinContest && "Could not join the contest"}
               {!errorMessageJoinContest && "Succesfuly joined the contest"}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => setOpenDialog(false)}
-              autoFocus>
-              Close
-            </Button>
-          </DialogActions>
+            </p>
+          </div>
         </Dialog>
         <Dialog
           open={openDialogJoinFirst}
-          onClose={() => setOpenDialogJoinFirst(false)}>
-          <DialogTitle className=" bg-yellow-600">{"Joining the Contest"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText className=" text-lg font-medium">Please first join the contest</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => setOpenDialogJoinFirst(false)}
-              autoFocus>
-              Close
-            </Button>
-          </DialogActions>
+          onClose={() => setOpenDialogJoinFirst(false)}
+          title="Join Contest">
+          <p>Please first join the contest</p>
         </Dialog>
         <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
           <p className="px-5 py-2 font-bold">Filter by </p>
@@ -267,21 +243,21 @@ function ListContests() {
                   <TableCell
                     align="center"
                     onClick={(event) => handleClick(event, contest.contest_Id, contest.register_status)}
-                    className="hover:bg-blue-100">
+                    className="rounded-sm hover:bg-blue-100">
                     <p className="text-lg·font-medium">
                       {contest.title.slice(0, 25)} {contest.title.length > 25 && "..."}
                     </p>
                   </TableCell>
                   <TableCell align="center">
                     {contest.register_status == 1 && <p className="py-1">EDIT</p>}
-                    {contest.register_status == 2 && <p className=" italic">Joined</p>}
+                    {contest.register_status == 2 && <p className="py-1 italic">Joined</p>}
                     {contest.register_status == 3 && (
                       <>
-                        <Button
-                          className=" py-auto px-auto hover:bg-slate-200"
+                        <button
+                          className=" rounded-md px-3 py-2 text-base hover:bg-slate-100"
                           onClick={() => handleJoinContest(contest.contest_Id)}>
                           Join
-                        </Button>
+                        </button>
                       </>
                     )}
                   </TableCell>
