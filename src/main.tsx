@@ -13,11 +13,11 @@ import ListProblems from "./pages/Problems/ListProblems.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissons.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import Home from "./pages/Home.tsx";
-import ListContests from "./pages/Contest/ContestList.tsx";
-import Login from "./pages/Auth/Login.tsx";
-import OTPLogin from "./pages/Auth/OTPLogin.tsx";
+import ListContests from "./pages/Contest/ListContest.tsx";
 import EditContest from "./pages/Contest/EditContest.tsx";
 import ContestProblem from "./pages/Contest/ContestProblem.tsx";
+import Login from "./pages/Auth/Login.tsx";
+import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
