@@ -71,8 +71,7 @@ function ListContests() {
   useEffect(() => {
     setErrorMessage("");
     axios
-      .get<ContestDataType[]>("/contests", {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
+      .get<{ contests: ContestDataType[] }>("/contests", {
         params: {
           descendig: decsendingTable,
           limit: rowsPerPage,
@@ -81,7 +80,7 @@ function ListContests() {
         },
       })
       .then((res) => {
-        setTableData(res.data);
+        setTableData(res.data.contests);
       })
       .catch((err: AxiosError<any>) => {
         console.log(err.message);
