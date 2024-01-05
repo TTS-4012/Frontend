@@ -3,11 +3,8 @@ import axios, { AxiosError } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Link from "../../components/Link";
-<<<<<<< HEAD:src/pages/Problems/ContestProblem.tsx
-=======
 import { CalendarIcon, ClockIcon, PuzzlePieceIcon, TrophyIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 import Button from "../../components/Button";
->>>>>>> develop:src/pages/Contest/ContestProblem.tsx
 
 type ContestProblemDataType = {
   ID: number;
