@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios, { AxiosError } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import FilePicker from "../../components/FilePicker";
 
 type ProblemData = {
   title: string;
@@ -75,6 +76,7 @@ function EditProblem() {
   const onSave = (data: FormDataType) => {
     const body = {
       title: data.name,
+      testcase: File,
       description: content,
     };
     const config = {
@@ -130,12 +132,13 @@ function EditProblem() {
         </Tab.Group>
       </div>
       <form
-        className="w-96 px-1 pt-8"
+        className="flex w-96 flex-col gap-3 px-1 pt-8"
         onSubmit={handleSubmit(onSave)}>
         <Input
           label="Problem Name"
           {...register("name")}
         />
+        <FilePicker></FilePicker>
         <div className="flex flex-row items-center">
           <span className="ml-3 text-red-700">{errorMessage}</span>
           <Button
