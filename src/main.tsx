@@ -16,7 +16,7 @@ import ListSubmissions from "./pages/Problems/Submissions/ListSubmissons.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import Home from "./pages/Home.tsx";
 import axios from "axios";
-import ListContests from "./pages/Contest/ListContest.tsx";
+import ListContests from "./pages/Contest/ListContests.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
