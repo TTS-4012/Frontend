@@ -10,6 +10,7 @@ import { PencilIcon, Square2StackIcon } from "@heroicons/react/24/outline";
 import { createPortal } from "react-dom";
 import Dialog from "./Dialog";
 import CopyToContest from "./CopyToContest";
+import Button from "./Button";
 
 type ProblemData = {
   title: string;
@@ -23,7 +24,7 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
 };
 
 function ProblemComponent({ id, className, ...otherProps }: PropsType) {
-  const [data, setdata] = useState<ProblemData>();
+  const [data, setData] = useState<ProblemData>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [copyOpen, setCopyOpen] = useState(false);
   const navigate = useNavigate();

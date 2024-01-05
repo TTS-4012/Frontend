@@ -1,14 +1,13 @@
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Button from "./Button";
 
 type ContestDataType = {
   contest_Id: number;
   title: string;
 };
 
-function CopyToContest(props: { onClose: () => void }) {
+function CopyToContest() {
   const { problemId } = useParams();
 
   const [contests, setContests] = useState<ContestDataType[]>();
@@ -31,35 +30,24 @@ function CopyToContest(props: { onClose: () => void }) {
   }, []);
 
   const handleAdd = (contestId: number) => {
-    axios
-      .post(`contests/${contestId}/problems/${problemId}`)
-      .then(() => {
-        props.onClose();
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
+    console.log(contestId, problemId);
   };
 
   return (
     <div>
       Choose a contest from list below:
-      <div
+      <ul
         role="list"
-        className="flex flex-col divide-y divide-gray-200">
+        className="divide-y divide-gray-200">
         {contests?.map((contest) => (
-          <Button
-            size="lg"
-            variant="inline"
+          <li
             key={contest.contest_Id}
-            onClick={() => handleAdd(contest.contest_Id)}
-            className="font-medium text-gray-900">
-            {contest.title}
-          </Button>
+            onClick={() => handleAdd(contest.contest_Id)}>
+            <p className="py-4 text-sm font-medium text-gray-900">{contest.title}</p>
+          </li>
         ))}
-      </div>
-      <p>{errorMessage}</p>
+        <p>{errorMessage}</p>
+      </ul>
     </div>
   );
 }
