@@ -167,7 +167,7 @@ function ListContests() {
         <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
           <p className="px-5 py-2 font-bold">Filter by </p>
           <button
-            className={`px-5 ${filterData.started && "bg-slate-300"}`}
+            className={`px-4 ${filterData.started && "bg-slate-300"}`}
             onClick={() =>
               setFilterData({
                 started: true,
