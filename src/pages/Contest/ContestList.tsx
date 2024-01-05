@@ -126,7 +126,7 @@ function ListContests() {
   const handleJoinContest = (contest_id: number) => {
     setErrorMessageJoinContest("");
     axios
-      .post(`/contests/${String(contest_id)}`, {
+      .patch(`/contests/${String(contest_id)}`, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           action: "register",
