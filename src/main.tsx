@@ -115,7 +115,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
+axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 axios.interceptors.request.use(
   (config) => {
     if (localStorage.getItem("auth.access_token"))
