@@ -1,9 +1,17 @@
 import ProblemComponent from "../../components/ProblemComponent";
 import axios, { AxiosError } from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Link from "../../components/Link";
-import { CalendarIcon, ClockIcon, PuzzlePieceIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import {
+  CalendarIcon,
+  ClockIcon,
+  PuzzlePieceIcon,
+  TrophyIcon,
+  PencilIcon,
+  PlusCircleIcon,
+} from "@heroicons/react/24/outline";
+import Button from "../../components/Button";
 
 type ContestProblemDataType = {
   ID: number;
@@ -95,12 +103,12 @@ function ContestProblem() {
   const [contestData, setContestData] = useState<ContestDataType>();
   const [errorMessage, setErrorMessage] = useState<string>();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     setErrorMessage("");
     axios
-      .get<ContestDataType>(`/contests/${contestId}`, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-      })
+      .get<ContestDataType>(`/contests/${contestId}`)
       .then((res) => {
         setContestData(res.data);
       })
@@ -109,7 +117,7 @@ function ContestProblem() {
       });
   }, [contestId]);
 
-  const isValidProblemId = (contestData?.problems?.map((p) => p.ID).indexOf(Number(problemId)) ?? -1) != -1;
+  const isValidProblemId = problemId == "0" || contestData?.problems?.some((p) => String(p.ID) === problemId);
 
   return (
     <>
@@ -117,7 +125,7 @@ function ContestProblem() {
         <div className="m-5 flex grow flex-row items-stretch gap-5">
           {isValidProblemId ? (
             <ProblemComponent
-              id={problemId!}
+              id={String(Number(problemId) || contestData.problems[0].ID)}
               className="basis-5/6"
             />
           ) : (
@@ -127,18 +135,41 @@ function ContestProblem() {
             <ContestDuration contestData={contestData} />
             {contestData.problems?.length > 0 && (
               <div className="flex flex-col space-y-1 bg-white p-1 shadow-md">
-                <p className="border-b border-gray-200 p-2 font-medium text-gray-900 sm:px-4">Problems</p>
+                <div className="relative border-b border-gray-200 p-2 font-medium text-gray-900 sm:px-4">
+                  Problems
+                  <div className="absolute inset-y-0 right-4 my-auto flex gap-2">
+                    <Button
+                      size="zero"
+                      variant="inline"
+                      onClick={() => {
+                        navigate(`/contests/${contestId}/new`);
+                      }}>
+                      <PlusCircleIcon className="h-5 w-5" />
+                    </Button>
+                  </div>
+                </div>
                 {contestData.problems?.map((problem, i) => (
-                  <Link
+                  <div
                     key={i}
-                    to={`/contests/${String(contestId)}/${String(problem.ID)}`}
                     className={`flex items-center rounded-md px-3 py-2 text-sm font-medium ${
                       problemId == String(problem.ID)
                         ? "bg-gray-100 text-gray-900"
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}>
-                    {problem.Title.slice(0, 15)} {problem.Title.length > 15 && "..."}
-                  </Link>
+                    <Link
+                      to={`/contests/${contestId}/${problem.ID}`}
+                      className="mr-auto">
+                      {problem.Title.slice(0, 15)} {problem.Title.length > 15 && "..."}
+                    </Link>
+                    <Button
+                      size="zero"
+                      variant="inline"
+                      onClick={() => {
+                        navigate(`/contests/${contestId}/${problem.ID}/edit`);
+                      }}>
+                      <PencilIcon className="-m-1 h-5 w-5" />
+                    </Button>
+                  </div>
                 ))}
               </div>
             )}

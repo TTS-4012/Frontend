@@ -6,7 +6,10 @@ import Button from "./Button";
 import Markdown from "./Markdown";
 import FilePicker from "./FilePicker";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
-import { PencilIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, Square2StackIcon } from "@heroicons/react/24/outline";
+import { createPortal } from "react-dom";
+import Dialog from "./Dialog";
+import CopyToContest from "./CopyToContest";
 
 type ProblemData = {
   title: string;
@@ -20,17 +23,17 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
 };
 
 function ProblemComponent({ id, className, ...otherProps }: PropsType) {
-  const [data, setdata] = useState<ProblemData>();
+  const [data, setData] = useState<ProblemData>();
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [copyOpen, setCopyOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setErrorMessage("");
     axios
-      .get<ProblemData>(`/problems/${id}`, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-      })
+      .get<ProblemData>(`/problems/${id}`)
       .then((res) => {
-        setdata(res.data);
+        setData(res.data);
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
@@ -42,19 +45,15 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
     if (filePicker.current?.files?.length) {
       const data = await filePicker.current?.files[0].text();
       axios
-        .post(`/problems/${id}/submit`, data, {
-          headers: {
-            Authorization: localStorage.getItem("auth.access_token"),
-          },
+        .post(`/problems/${id}/submit`, data)
+        .then(() => {
+          navigate("submissions");
         })
-        // .then(() => {
-        //   navigate("submissions");
-        // })
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
         });
     } else {
-      setErrorMessage("no file seleced");
+      setErrorMessage("no file selected");
     }
   };
 
@@ -64,6 +63,16 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
     <div
       className={`flex flex-col gap-2 ${className}`}
       {...otherProps}>
+      {createPortal(
+        <Dialog
+          open={copyOpen}
+          onClose={setCopyOpen}
+          title="Copy problem to contest">
+          <CopyToContest onClose={() => setCopyOpen(false)} />
+        </Dialog>,
+        document.body,
+        `Copy`,
+      )}
       <div className="relative rounded-t-lg border-black bg-white p-5 text-center align-middle text-3xl font-black shadow-md">
         {data?.title ?? "title"}
         <div className="absolute right-4 top-4 flex gap-2">
@@ -74,6 +83,14 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
               navigate("edit");
             }}>
             <PencilIcon className="h-5 w-5" />
+          </Button>
+          <Button
+            size="xs"
+            variant="inline"
+            onClick={() => {
+              setCopyOpen(true);
+            }}>
+            <Square2StackIcon className="h-5 w-5" />
           </Button>
         </div>
       </div>
