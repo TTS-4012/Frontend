@@ -71,7 +71,6 @@ function ListContests() {
     setErrorMessage("");
     axios
       .get<ContestDataType[]>("/contests", {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           descendig: decsendingTable,
           limit: rowsPerPage,
@@ -89,7 +88,7 @@ function ListContests() {
   }, [page, rowsPerPage, started, decsendingTable]);
 
   const handleClick = (_: unknown, contest_id: number) => {
-    navigate(`/contests/${String(contest_id)}/0`);
+    navigate(`/contests/${contest_id}/problems/0`);
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);

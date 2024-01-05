@@ -25,7 +25,7 @@ function Home() {
         onClick={() => {
           navigate("/contests");
         }}>
-        Contest
+        Contests
       </Button>
       <Button
         size="md"

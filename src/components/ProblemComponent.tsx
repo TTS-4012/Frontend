@@ -27,9 +27,7 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
   useEffect(() => {
     setErrorMessage("");
     axios
-      .get<ProblemData>(`/problems/${id}`, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-      })
+      .get<ProblemData>(`/problems/${id}`)
       .then((res) => {
         setdata(res.data);
       })
@@ -43,14 +41,10 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
     if (filePicker.current?.files?.length) {
       const data = await filePicker.current?.files[0].text();
       axios
-        .post(`/problems/${id}/submit`, data, {
-          headers: {
-            Authorization: localStorage.getItem("auth.access_token"),
-          },
+        .post(`/problems/${id}/submit`, data)
+        .then(() => {
+          navigate("submissions");
         })
-        // .then(() => {
-        //   navigate("submissions");
-        // })
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
         });
