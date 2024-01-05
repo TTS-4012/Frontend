@@ -71,6 +71,7 @@ function ListContests() {
     setErrorMessage("");
     axios
       .get<ContestDataType[]>("/contests", {
+        headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           descendig: decsendingTable,
           limit: rowsPerPage,
