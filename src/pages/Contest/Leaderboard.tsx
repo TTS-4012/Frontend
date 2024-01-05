@@ -22,12 +22,13 @@ function Leaderboard() {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [rowPerPage, setRowPerPage] = useState<number>(100);
   useEffect(() => {
+    console.log(id);
     axios
       .get<pageData>(`/contests/${id}/scoreboard`, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           limit: rowPerPage,
-          offset: pageNumber * rowPerPage,
+          offset: (pageNumber - 1) * rowPerPage,
         },
       })
       .then((res) => {
