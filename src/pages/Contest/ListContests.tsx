@@ -15,6 +15,7 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
+import Button from "../../components/Button";
 
 function TablePaginationActions(props: {
   count: number;
@@ -114,6 +115,27 @@ function ListContests() {
             onClick={() => setStarted(false)}>
             Not Started
           </button>
+          <Button
+            size="lg"
+            className="my-1 ml-auto mr-2 flex gap-1"
+            onClick={() => {
+              navigate("/contests/new");
+            }}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            create contest
+          </Button>
         </div>
         <TableContainer component={Paper}>
           <Table
