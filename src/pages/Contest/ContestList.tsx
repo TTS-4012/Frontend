@@ -49,7 +49,7 @@ function TablePaginationActions(props: {
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={count != -1 && page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="next page">
         {theme.direction === "rtl" ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
@@ -57,19 +57,13 @@ function TablePaginationActions(props: {
   );
 }
 
-// type ContestDataType = {
-//   total_count: number;
-//   contests: {
-//     contest_Id: number;
-//     title: string;
-//     register_status: number;
-//   }[];
-// };
-
 type ContestDataType = {
-  contest_Id: number;
-  title: string;
-  register_status: number;
+  total_count: number;
+  contests: {
+    contest_Id: number;
+    title: string;
+    register_status: number;
+  }[];
 };
 
 type FilterDataType = {
@@ -88,8 +82,9 @@ function ListContests() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogJoinFirst, setOpenDialogJoinFirst] = useState(false);
 
-  const [tableData, setTableData] = useState<ContestDataType[]>();
+  const [tableData, setTableData] = useState<ContestDataType>();
 
   const [toggleUpdateData, UpdateTableData] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -99,7 +94,7 @@ function ListContests() {
   useEffect(() => {
     setErrorMessage("");
     axios
-      .get<ContestDataType[]>("/contests", {
+      .get<ContestDataType>("/contests", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           descendig: decsendingTable,
@@ -123,14 +118,15 @@ function ListContests() {
     if (register_status == 2 || register_status == 1) {
       navigate(`/contests/${String(contest_id)}/0`);
     } else {
-      console.log("please first register");
+      setOpenDialogJoinFirst(true);
     }
+    // delete
     console.log(register_status);
   };
   const handleJoinContest = (contest_id: number) => {
     setErrorMessageJoinContest("");
     axios
-      .post<number>(`/contests/${String(contest_id)}`, {
+      .post(`/contests/${String(contest_id)}`, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           action: "register",
@@ -143,7 +139,6 @@ function ListContests() {
       .then(() => {
         setOpenDialog(true);
       });
-    // setOpenDialog(true);
     UpdateTableData(!toggleUpdateData);
   };
   const handleChangePage = (_: unknown, newPage: number) => {
@@ -179,8 +174,23 @@ function ListContests() {
             </Button>
           </DialogActions>
         </Dialog>
+        <Dialog
+          open={openDialogJoinFirst}
+          onClose={() => setOpenDialogJoinFirst(false)}>
+          <DialogTitle className=" bg-yellow-600">{"Joining the Contest"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText className=" text-lg font-medium">Please first join the contest</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setOpenDialogJoinFirst(false)}
+              autoFocus>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
         <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
-          <p className="px-5 py-2 font-bold">Sort by </p>
+          <p className="px-5 py-2 font-bold">Filter by </p>
           <button
             className={`px-5 ${filterData.started && "bg-slate-300"}`}
             onClick={() =>
@@ -201,7 +211,7 @@ function ListContests() {
                 owned_contest: filterData.owned_contest,
               })
             }>
-            Not Started
+            Not Started yet
           </button>
           <button
             className={`px-5 ${filterData.my_contest && "bg-slate-300"}`}
@@ -237,7 +247,7 @@ function ListContests() {
             </TableHead>
             <TableBody>
               {/* tableData?.contests?.map */}
-              {tableData?.length == 0 && (
+              {tableData?.contests.length == 0 && (
                 <>
                   <TableRow>
                     <TableCell>#</TableCell>
@@ -248,7 +258,7 @@ function ListContests() {
                   </TableRow>
                 </>
               )}
-              {tableData?.map((contest, i) => (
+              {tableData?.contests?.map((contest, i) => (
                 <TableRow
                   key={i}
                   sx={{ cursor: "pointer" }}>
@@ -266,9 +276,9 @@ function ListContests() {
                     </p>
                   </TableCell>
                   <TableCell align="center">
-                    {contest.register_status == 1 && <p>Open and edit</p>}
-                    {contest.register_status == 2 && <p>Allready joined</p>}
-                    {true && (
+                    {contest.register_status == 1 && <p className="py-1">EDIT</p>}
+                    {contest.register_status == 2 && <p className=" italic">Joined</p>}
+                    {contest.register_status == 3 && (
                       <>
                         <Button
                           className=" py-auto px-auto hover:bg-slate-200"
@@ -277,7 +287,6 @@ function ListContests() {
                         </Button>
                       </>
                     )}
-                    {/* {errorMessageJoinContest && <p> could not join </p>} */}
                   </TableCell>
                 </TableRow>
               ))}
@@ -288,8 +297,7 @@ function ListContests() {
                   className=""
                   rowsPerPageOptions={[20, 50, 100]}
                   colSpan={4}
-                  // tableData?.total_count || -1
-                  count={-1}
+                  count={tableData?.total_count || -1}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
