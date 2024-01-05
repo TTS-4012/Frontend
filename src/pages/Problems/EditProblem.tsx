@@ -24,12 +24,13 @@ type ParamsType = {
 
 type FormDataType = {
   name: string;
-  file: File;
+  file: HTMLInputElement;
 };
 
 const validationSchema = yup
   .object({
     name: yup.string().required(),
+    file: yup.mixed().required(),
   })
   .required();
 
@@ -77,7 +78,7 @@ function EditProblem() {
   const onSave = (data: FormDataType) => {
     const body = {
       title: data.name,
-      testcase: File,
+      testcase: data.file,
       description: content,
     };
     const config = {
@@ -97,7 +98,6 @@ function EditProblem() {
         setErrorMessage(err.response?.data.message ?? err.message);
       });
   };
-  const filePicker = useRef<HTMLInputElement>(null);
   return (
     <div className="flex h-full w-full p-1">
       <div className="flex grow flex-col overflow-hidden p-1">
@@ -139,11 +139,13 @@ function EditProblem() {
           label="Problem Name"
           {...register("name")}
         />
+        <label className="block text-base font-medium text-gray-700">Testcase</label>
         <div className="rounded-md bg-white shadow-sm">
           <FilePicker
             type="file"
             accept=".zip"
-            ref={filePicker}></FilePicker>
+            {...register("file")}
+          />
         </div>
         <div className="flex flex-row items-center">
           <span className="ml-3 text-red-700">{errorMessage}</span>
