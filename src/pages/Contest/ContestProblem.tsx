@@ -43,28 +43,28 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
       {contestData.start_time - Math.floor(new Date().valueOf() / 1000) > 0 ? (
         <>
           <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
-          <p className="flex grow flex-col">
-            <p className="text-lg font-medium">
+          <div className="flex grow flex-col">
+            <div className="text-lg font-medium">
               {new Date(contestData.start_time * 1000).toLocaleDateString("en-GB", {
                 day: "numeric",
                 month: "short",
                 year: "numeric",
               })}
-            </p>
-            <p className="text-lg">
+            </div>
+            <div className="text-lg">
               {new Date(contestData.start_time * 1000).toLocaleString("en-US", {
                 hour: "numeric",
                 minute: "numeric",
                 hour12: true,
               })}
-            </p>
-          </p>
+            </div>
+          </div>
         </>
       ) : contestData.start_time + contestData.duration - Math.floor(new Date().valueOf() / 1000) > 0 ? (
         <>
           <div className="mx-auto flex flex-row gap-2 py-2">
             <ClockIcon className="m-auto h-6 w-6 shrink-0" />
-            <p
+            <div
               className={`grow text-lg font-medium flex${
                 (reverseTimer < 600 && reverseTimer >= 600 && "text-yellow-600") ||
                 (reverseTimer < 60 && "text-red-600")
@@ -73,18 +73,26 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
               {Math.floor(reverseTimer / 3600)}: {Math.floor((reverseTimer % 3600) / 60).toString().length == 1 && "0"}
               {Math.floor((reverseTimer % 3600) / 60)}: {Math.floor(reverseTimer % 60).toString().length == 1 && "0"}
               {Math.floor(reverseTimer % 60)}
-            </p>
+            </div>
           </div>
         </>
       ) : (
         <>
           <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
-          <p className="grow px-2 text-lg italic">This contest is finished</p>
+          <div className="grow px-2 text-lg italic">This contest is finished</div>
         </>
       )}
     </div>
   );
 }
+
+const getActualProblemId = (problemId: string, contestData?: ContestDataType) => {
+  if (contestData?.problems?.length) {
+    if (contestData.problems.some((p) => String(p.ID) === problemId)) return problemId;
+    return String(contestData.problems[0].ID);
+  }
+  return -1;
+};
 
 function ContestProblem() {
   const { contestId, problemId } = useParams<ParamsType>();
@@ -103,22 +111,19 @@ function ContestProblem() {
       });
   }, [contestId]);
 
-  const isValidProblemId = problemId == "0" || contestData?.problems?.some((p) => String(p.ID) === problemId);
+  const actualProblemId = getActualProblemId(problemId ?? "", contestData);
 
   return (
     <>
       {contestData && (
         <div className="m-5 flex grow flex-row items-stretch gap-5">
-          {isValidProblemId ? (
+          {actualProblemId == -1 ? (
+            <p className="m-auto basis-5/6 text-center text-5xl text-indigo-800">Invalid problem</p>
+          ) : (
             <ProblemComponent
-              id={String(Number(problemId) || contestData.problems[0]?.ID)}
+              id={actualProblemId}
               className="basis-5/6"
             />
-          ) : (
-            <p className="m-auto basis-5/6 text-center text-5xl text-indigo-800">
-              {problemId != "0" && "Invalid problem"}
-              {problemId == "0" && "No problems to show"}
-            </p>
           )}
           <div className="flex min-w-[16rem] basis-1/6 flex-col gap-2">
             <div className="flex flex-col gap-1 rounded-t-lg bg-white p-1 shadow-md">
