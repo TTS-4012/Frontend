@@ -106,8 +106,14 @@ function ListContests() {
         <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
           <p className="my-auto px-5 py-2 font-bold">Sort by </p>
           <button
-            className={`px-5 ${started && "bg-slate-300"}`}
-            onClick={() => setStarted(true)}>
+            className={`px-5 ${filterData.started && "bg-slate-300"}`}
+            onClick={() =>
+              setFilterData({
+                started: true,
+                my_contest: filterData.my_contest,
+                owned_contest: filterData.owned_contest,
+              })
+            }>
             Started
           </button>
           <button
