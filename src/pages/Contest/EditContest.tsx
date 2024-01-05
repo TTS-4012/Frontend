@@ -151,14 +151,7 @@ function EditContest() {
             <div className="flex flex-row items-center">
               <span className="ml-3 grow text-red-700">{errorMessage}</span>
               <Button
-                onClick={() => {
-                  axios.delete(`/contests/${contestId}`, {
-                    headers: {
-                      Authorization: localStorage.getItem("auth.access_token"),
-                    },
-                  });
-                  navigate("/contests");
-                }}
+                onClick={handleDelete}
                 variant="error"
                 size="md"
                 className="flex-end ml-auto mr-2 font-bold">
