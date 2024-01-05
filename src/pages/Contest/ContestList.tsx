@@ -15,6 +15,7 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
+import Button from "../../components/Button";
 
 function TablePaginationActions(props: {
   count: number;
@@ -104,7 +105,7 @@ function ListContests() {
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
-          <p className="px-5 py-2 font-bold">Sort by </p>
+          <p className="my-auto px-5 py-2 font-bold">Sort by </p>
           <button
             className={`px-5 ${started && "bg-slate-300"}`}
             onClick={() => setStarted(true)}>
@@ -115,6 +116,14 @@ function ListContests() {
             onClick={() => setStarted(false)}>
             Not Started
           </button>
+          <Button
+            size="lg"
+            className="my-1 ml-auto mr-2"
+            onClick={() => {
+              navigate("/contests/new");
+            }}>
+            create contest
+          </Button>
         </div>
         <TableContainer component={Paper}>
           <Table
