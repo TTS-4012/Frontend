@@ -46,8 +46,6 @@ function EditContest() {
 
   const navigate = useNavigate();
 
-  const [contestData, setContestData] = useState<ContestDataType>();
-
   const {
     control,
     watch,
@@ -58,6 +56,14 @@ function EditContest() {
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
   });
+
+  const [contestData, setContestData] = useState<ContestDataType>();
+  const [errorMessage, setErrorMessage] = useState<string>();
+
+  useEffect(() => {
+    const subscription = watch(() => setErrorMessage(undefined));
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   useEffect(() => {
     axios.get<ContestDataType>(`contests/${contestId}`).then((res) => {
@@ -78,19 +84,34 @@ function EditContest() {
         Duration: data.duration,
       })
       .then(() => {
-        // TODO Succeed Notification.
+        navigate("..");
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
       });
   };
 
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const handleRemoveProblem = (problemId: number) => {
+    axios
+      .delete(`/contests/${contestId}/problems/${problemId}`)
+      .then(() => {
+        navigate("");
+      })
+      .catch((err: AxiosError<any>) => {
+        setErrorMessage(err.response?.data.message ?? err.message);
+      });
+  };
 
-  useEffect(() => {
-    const subscription = watch(() => setErrorMessage(undefined));
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  const handleDelete = () => {
+    axios
+      .delete(`/contests/${contestId}`)
+      .then(() => {
+        navigate("/contests");
+      })
+      .catch((err: AxiosError<any>) => {
+        setErrorMessage(err.response?.data.message ?? err.message);
+      });
+  };
 
   return (
     contestData && (
@@ -130,10 +151,7 @@ function EditContest() {
             <div className="flex flex-row items-center">
               <span className="ml-3 grow text-red-700">{errorMessage}</span>
               <Button
-                onClick={() => {
-                  axios.delete(`/contests/${contestId}`);
-                  navigate("/contests");
-                }}
+                onClick={handleDelete}
                 variant="error"
                 size="md"
                 className="flex-end ml-auto mr-2 font-bold">
@@ -170,11 +188,7 @@ function EditContest() {
               <Button
                 size="zero"
                 variant="inline"
-                onClick={() => {
-                  axios.delete(`/contests/${contestId}/problems/${problem.ID}`).then(() => {
-                    navigate("");
-                  });
-                }}>
+                onClick={() => handleRemoveProblem(problem.ID)}>
                 <TrashIcon className="-m-1 h-5 w-5" />
               </Button>
             </div>
