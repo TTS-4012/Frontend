@@ -1,8 +1,7 @@
 import { HTMLAttributes } from "react";
 import axios, { AxiosError } from "axios";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "./Button";
+import { useNavigate, useParams } from "react-router-dom";
 import Markdown from "./Markdown";
 import FilePicker from "./FilePicker";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
@@ -10,6 +9,7 @@ import { PencilIcon, Square2StackIcon } from "@heroicons/react/24/outline";
 import { createPortal } from "react-dom";
 import Dialog from "./Dialog";
 import CopyToContest from "./CopyToContest";
+import Button from "./Button";
 
 type ProblemData = {
   title: string;
@@ -23,6 +23,7 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
 };
 
 function ProblemComponent({ id, className, ...otherProps }: PropsType) {
+  const { contestId } = useParams();
   const [data, setData] = useState<ProblemData>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [copyOpen, setCopyOpen] = useState(false);
@@ -45,7 +46,11 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
     if (filePicker.current?.files?.length) {
       const data = await filePicker.current?.files[0].text();
       axios
-        .post(`/problems/${id}/submit`, data)
+        .post(`/problems/${id}/submit`, data, {
+          params: {
+            contest_id: contestId,
+          },
+        })
         .then(() => {
           navigate("submissions");
         })

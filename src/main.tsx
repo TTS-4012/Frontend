@@ -19,6 +19,8 @@ import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
 
+axios.defaults.baseURL = "https://api.ocontest.ir/v1";
+
 const router = createBrowserRouter([
   {
     Component: Auth,
