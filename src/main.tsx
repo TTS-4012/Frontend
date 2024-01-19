@@ -9,15 +9,15 @@ import Login from "./pages/Auth/Login.tsx";
 import OTPLogin from "./pages/Auth/OTPLogin.tsx";
 import Register from "./pages/Auth/Register.tsx";
 import Verify from "./pages/Auth/Verify.tsx";
+import ContestProblem from "./pages/Contest/ContestProblem.tsx";
+import EditContest from "./pages/Contest/EditContest.tsx";
+import ListContests from "./pages/Contest/ListContests.tsx";
 import NewContest from "./pages/Contest/NewContest.tsx";
 import EditProblem from "./pages/Problems/EditProblem.tsx";
 import ListProblems from "./pages/Problems/ListProblems.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
-import ListContests from "./pages/Contest/ListContests.tsx";
-import EditContest from "./pages/Contest/EditContest.tsx";
-import ContestProblem from "./pages/Contest/ContestProblem.tsx";
 
 axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
 
