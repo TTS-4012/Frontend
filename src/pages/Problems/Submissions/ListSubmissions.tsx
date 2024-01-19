@@ -18,7 +18,7 @@ function ListSubmissions() {
   const [data, setData] = useState<ProblemSubmissionListData>();
 
   useEffect(() => {
-    axios.get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`).then((res) => {
+    axios.get<ProblemSubmissionListData>(`/problems/${id}/submissions`).then((res) => {
       setData(res.data);
     });
     //   .catch((err: AxiosError<any>) => {
