@@ -132,6 +132,7 @@ function ListContests() {
       })
       .then(() => {
         setOpenDialog(true);
+        UpdateTableData(!toggleUpdateData);
       });
   };
   const handleChangePage = (_: unknown, newPage: number) => {
@@ -141,7 +142,7 @@ function ListContests() {
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(0);
   };
-  UpdateTableData(!toggleUpdateData);
+
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
