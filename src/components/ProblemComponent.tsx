@@ -105,7 +105,10 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
         className="flex flex-col items-start gap-2 rounded-b-lg bg-white p-5 shadow-md">
         <p className="text-xl font-bold text-indigo-800">Submit here</p>
         <div className="flex flex-row gap-3">
-          <FilePicker ref={filePicker} />
+          <FilePicker
+            accept=".py"
+            ref={filePicker}
+          />
           <div className="flex flex-row justify-between">
             <Button
               type="submit"

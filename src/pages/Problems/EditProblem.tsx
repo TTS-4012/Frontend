@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, SyntheticEvent, useEffect, useRef, useState } from "react";
 import * as monaco from "monaco-editor";
 import Markdown from "../../components/Markdown";
 import { Tab } from "@headlessui/react";
@@ -9,6 +9,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios, { AxiosError } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { createPortal } from "react-dom";
+import Dialog from "../../components/Dialog";
+import FilePicker from "../../components/FilePicker";
 
 type ProblemData = {
   title: string;
@@ -31,6 +34,36 @@ const validationSchema = yup
     name: yup.string().required(),
   })
   .required();
+
+function ChooseTestCase(props: { onClose: () => void; problemId: string }) {
+  const filePickerRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    if (filePickerRef.current?.files?.length) {
+      const formData = new FormData();
+      formData.append("testcases", filePickerRef.current.files[0]);
+      axios.post(`/problems/${props.problemId}/testcase`, formData).then(props.onClose);
+    }
+  };
+
+  return (
+    <form
+      className="flex flex-col"
+      onSubmit={handleSubmit}>
+      <FilePicker
+        ref={filePickerRef}
+        accept=".zip"
+      />
+      <Button
+        type="submit"
+        size="md"
+        className="self-end">
+        Submit
+      </Button>
+    </form>
+  );
+}
 
 function EditProblem() {
   const { contestId, problemId } = useParams<ParamsType>();
@@ -92,6 +125,8 @@ function EditProblem() {
     }
   };
 
+  const [testCaseOpen, setTestCaseOpen] = useState(false);
+
   return (
     <div className="flex h-full w-full p-1">
       <div className="flex grow flex-col overflow-hidden p-1">
@@ -133,16 +168,42 @@ function EditProblem() {
           label="Problem Name"
           {...register("name")}
         />
-        <div className="flex flex-row items-center">
-          <span className="ml-3 text-red-700">{errorMessage}</span>
+        <div className="flex flex-row items-center gap-2">
+          <span className="ml-3 mr-auto text-red-700">{errorMessage}</span>
+          {problemId && (
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                setTestCaseOpen(true);
+              }}
+              size="md"
+              className="flex-end font-bold">
+              Set TestCases
+            </Button>
+          )}
           <Button
             type="submit"
             size="md"
-            className="flex-end ml-auto font-bold">
+            className="flex-end font-bold">
             Save
           </Button>
         </div>
       </form>
+      {problemId &&
+        createPortal(
+          <Dialog
+            open={testCaseOpen}
+            onClose={setTestCaseOpen}
+            title={`Choose test cases`}>
+            <ChooseTestCase
+              problemId={problemId}
+              onClose={() => {
+                setTestCaseOpen(false);
+              }}
+            />
+          </Dialog>,
+          document.body,
+        )}
     </div>
   );
 }
