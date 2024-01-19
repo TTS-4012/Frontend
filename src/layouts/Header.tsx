@@ -93,18 +93,6 @@ function Header() {
             />
           </svg>
         </Button>
-        <Button
-          size="lg"
-          className="ml-auto"
-          onClick={() => navigate("/contests")}>
-          Contests
-        </Button>
-        <Button
-          size="lg"
-          className="ml-auto"
-          onClick={() => navigate("/contests")}>
-          Contests
-        </Button>
       </nav>
     </header>
   );

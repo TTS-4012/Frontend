@@ -67,7 +67,6 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
   return data ? (
     <div
       className={`flex flex-col gap-2 ${className}`}
-      className={`flex flex-col gap-2 ${className}`}
       {...otherProps}>
       {createPortal(
         <Dialog

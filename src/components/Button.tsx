@@ -13,7 +13,6 @@ const Button = forwardRef(
         ${
           {
             zero: "rounded-md p-0 text-sm",
-            zero: "rounded-md p-0 text-sm",
             xs: "rounded-md px-2.5 py-1.5 text-sm",
             sm: "rounded-md px-3 py-2 text-sm",
             md: "rounded-md px-4 py-2 text-sm",
