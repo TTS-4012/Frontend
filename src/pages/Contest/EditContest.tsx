@@ -84,7 +84,7 @@ function EditContest() {
         Duration: data.duration,
       })
       .then(() => {
-        navigate("..");
+        navigate("../problems/0");
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
@@ -181,7 +181,7 @@ function EditContest() {
                 size="zero"
                 variant="inline"
                 onClick={() => {
-                  navigate(`problems/${problem.ID}/edit`);
+                  navigate(`/problems/${problem.ID}/edit`);
                 }}>
                 <PencilIcon className="-m-1 h-5 w-5" />
               </Button>
