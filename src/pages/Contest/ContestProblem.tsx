@@ -97,7 +97,6 @@ function ContestProblem() {
   const { contestId, problemId } = useParams<ParamsType>();
   const [contestData, setContestData] = useState<ContestDataType>();
   const [errorMessage, setErrorMessage] = useState<string>();
-  const navigate = useNavigate();
 
   useEffect(() => {
     setErrorMessage("");
