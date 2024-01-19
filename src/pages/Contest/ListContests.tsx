@@ -132,8 +132,8 @@ function ListContests() {
       })
       .then(() => {
         setOpenDialog(true);
+        UpdateTableData(!toggleUpdateData);
       });
-    UpdateTableData(!toggleUpdateData);
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
