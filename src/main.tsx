@@ -18,6 +18,8 @@ import ListProblems from "./pages/Problems/ListProblems.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
+import ChangeProfile from "./pages/Auth/ChangeProfile.tsx";
+import ChangePassword from "./pages/Auth/ChangePassword.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
@@ -108,6 +110,19 @@ const router = createBrowserRouter([
                 ],
               },
             ],
+          },
+        ],
+      },
+      {
+        path: "/profile",
+        children: [
+          {
+            path: "edit",
+            Component: ChangeProfile,
+          },
+          {
+            path: "change-password",
+            Component: ChangePassword,
           },
         ],
       },
