@@ -146,13 +146,14 @@ function ListContests() {
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col">
         <Dialog
           open={openDialog}
           onClose={() => setOpenDialog(false)}
           title="Join Contest">
-          <div>
-            <p>
+          <div className="flex flex-col">
+            <span className="m-auto"></span>
+            <p className="m-auto flex text-lg">
               {errorMessageJoinContest && "Could not join the contest"}
               {!errorMessageJoinContest && "Succesfuly joined the contest"}
             </p>
@@ -164,43 +165,45 @@ function ListContests() {
           title="Join Contest">
           <p>Please first join the contest</p>
         </Dialog>
-        <div className="flex flex-row justify-start rounded-sm bg-slate-400 pl-3 shadow-sm">
-          <p className="px-5 py-2 font-bold">Filter by </p>
-          <button
-            className={`px-4 ${filterData.started && "bg-slate-300"}`}
-            onClick={() =>
-              setFilterData({
-                started: true,
-                my_contest: filterData.my_contest,
-                owned_contest: filterData.owned_contest,
-              })
-            }>
-            Started
-          </button>
-          <button
-            className={`px-5 ${!filterData.started && "bg-slate-300"}`}
-            onClick={() =>
-              setFilterData({
-                started: false,
-                my_contest: filterData.my_contest,
-                owned_contest: filterData.owned_contest,
-              })
-            }>
-            Not Started yet
-          </button>
-          <button
-            className={`px-5 ${filterData.my_contest && "bg-slate-300"}`}
-            onClick={() => setFilterData({ started: filterData.started, my_contest: true, owned_contest: true })}>
-            My Contests
-          </button>
-          <button
-            className={`px-5 ${!filterData.my_contest && "bg-slate-300"}`}
-            onClick={() => setFilterData({ started: filterData.started, my_contest: false, owned_contest: false })}>
-            Other Contests
-          </button>
+        <div className="flex flex-row py-2">
+          <span className="m-auto"></span>
+          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-400">
+            <button
+              className={`px-5 ${filterData.started && "rounded-md bg-slate-300"}`}
+              onClick={() =>
+                setFilterData({
+                  started: true,
+                  my_contest: filterData.my_contest,
+                  owned_contest: filterData.owned_contest,
+                })
+              }>
+              Started
+            </button>
+            <button
+              className={`px-5 ${!filterData.started && "rounded-md bg-slate-300"}`}
+              onClick={() =>
+                setFilterData({
+                  started: false,
+                  my_contest: filterData.my_contest,
+                  owned_contest: filterData.owned_contest,
+                })
+              }>
+              Not Started yet
+            </button>
+            <button
+              className={`px-5 ${filterData.my_contest && "rounded-md bg-slate-300"}`}
+              onClick={() => setFilterData({ started: filterData.started, my_contest: true, owned_contest: true })}>
+              My Contests
+            </button>
+            <button
+              className={`px-5 ${!filterData.my_contest && "rounded-md bg-slate-300"}`}
+              onClick={() => setFilterData({ started: filterData.started, my_contest: false, owned_contest: false })}>
+              Other Contests
+            </button>
+          </div>
           <Button
             size="lg"
-            className="my-1 ml-auto mr-2 flex gap-1"
+            className="ml-auto mr-2 flex gap-1"
             onClick={() => {
               navigate("/contests/new");
             }}>
@@ -225,19 +228,19 @@ function ListContests() {
             sx={{ minWidth: 650 }}
             size="small">
             <TableHead>
-              <TableRow className=" bg-cyan-600">
+              <TableRow className=" bg-indigo-500 text-lg">
                 <TableCell
                   align="left"
                   padding="checkbox">
-                  <p className="pl-2 font-bold">Number</p>
+                  <p className="pl-2 font-bold text-white">Number</p>
                 </TableCell>
                 <TableCell align="center">
-                  <p className="font-bold  ">Contest Title</p>
+                  <p className="font-bold text-white  ">Contest Title</p>
                 </TableCell>
                 <TableCell
                   align="center"
                   padding="checkbox">
-                  <p className="px-auto font-bold ">Joined</p>
+                  <p className="px-auto font-bold text-white">Status</p>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -247,7 +250,7 @@ function ListContests() {
                   <TableRow>
                     <TableCell>#</TableCell>
                     <TableCell align="center">
-                      <p className=" text-lg font-medium italic text-slate-500"> no problems</p>
+                      <p className=" text-lg font-medium italic text-slate-500"> no contests</p>
                     </TableCell>
                     <TableCell>-</TableCell>
                   </TableRow>
@@ -257,22 +260,20 @@ function ListContests() {
                 <TableRow
                   key={i}
                   sx={{ cursor: "pointer" }}>
-                  <TableCell
-                    className=" bg-blue-50"
-                    align="center">
-                    {page * rowsPerPage + i + 1}
+                  <TableCell align="center">
+                    <p className="text-lg">{page * rowsPerPage + i + 1}</p>
                   </TableCell>
                   <TableCell
                     align="center"
                     onClick={(event) => handleClick(event, contest.contest_Id, contest.register_status)}
                     className="rounded-sm hover:bg-blue-100">
-                    <p className="text-lg·font-medium">
+                    <p className="text-lg font-medium">
                       {contest.title.slice(0, 25)} {contest.title.length > 25 && "..."}
                     </p>
                   </TableCell>
                   <TableCell align="center">
-                    {contest.register_status == 1 && <p className="py-1">EDIT</p>}
-                    {contest.register_status == 2 && <p className="py-1 italic">Joined</p>}
+                    {contest.register_status == 1 && <p className="py-1 text-lg italic">Owned</p>}
+                    {contest.register_status == 2 && <p className="py-1 text-lg italic">Joined</p>}
                     {contest.register_status == 3 && (
                       <>
                         <button

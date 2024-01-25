@@ -118,7 +118,7 @@ function ContestProblem() {
       {contestData && (
         <div className="m-5 flex grow flex-row items-stretch gap-5">
           {actualProblemId == -1 ? (
-            <p className="m-auto basis-5/6 text-center text-5xl text-indigo-800">Invalid problem</p>
+            <p className="m-auto basis-5/6 text-center text-5xl italic text-gray-500">No problems</p>
           ) : (
             <ProblemComponent
               id={actualProblemId}
