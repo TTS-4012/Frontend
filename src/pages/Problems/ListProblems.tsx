@@ -64,13 +64,13 @@ type ProblemDataType = {
 
 type OrderDataType = {
   order_by: "hardness" | "solve_count" | "problem_id" | undefined;
-  decending: boolean | undefined;
+  descending: boolean | undefined;
 };
 
 function ListProblems() {
   const [order, setOrder] = useState<OrderDataType>({
     order_by: "problem_id",
-    decending: false,
+    descending: false,
   });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -88,7 +88,7 @@ function ListProblems() {
           limit: rowsPerPage,
           offset: page * rowsPerPage,
           ordered_by: order?.order_by,
-          decendig: order?.decending,
+          descending: order?.descending,
           get_count: true,
         },
       })
@@ -112,10 +112,10 @@ function ListProblems() {
     setPage(0);
   };
   const createOrder = (orderMethod: "hardness" | "solve_count" | "problem_id", dec: boolean | undefined) => {
-    return { order_by: orderMethod, decending: dec };
+    return { order_by: orderMethod, descending: dec };
   };
-  const handleOrdering = (orderMethod: "hardness" | "solve_count" | "problem_id", decending: boolean) => {
-    setOrder(createOrder(orderMethod, decending));
+  const handleOrdering = (orderMethod: "hardness" | "solve_count" | "problem_id", descending: boolean) => {
+    setOrder(createOrder(orderMethod, descending));
   };
 
   return (
@@ -125,32 +125,32 @@ function ListProblems() {
         <div className="flex flex-row justify-start gap-2 rounded-sm bg-slate-400 pl-3 shadow-sm">
           <p className="my-auto px-5 py-2 font-bold">Sort by </p>
           <button
-            className={`px-5 ${order.order_by == "hardness" && order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "hardness" && order.descending && "bg-slate-300"}`}
             onClick={() => handleOrdering("hardness", true)}>
             Hardest
           </button>
           <button
-            className={`px-5 ${order.order_by == "hardness" && !order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "hardness" && !order.descending && "bg-slate-300"}`}
             onClick={() => handleOrdering("hardness", false)}>
             Easiest
           </button>
           <button
-            className={`px-5 ${order.order_by == "solve_count" && order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "solve_count" && order.descending && "bg-slate-300"}`}
             onClick={() => handleOrdering("solve_count", true)}>
             Most Solved
           </button>
           <button
-            className={`px-5 ${order.order_by == "solve_count" && !order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "solve_count" && !order.descending && "bg-slate-300"}`}
             onClick={() => handleOrdering("solve_count", false)}>
             Least Solved
           </button>
           <button
-            className={`px-5 ${order.order_by == "problem_id" && order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "problem_id" && order.descending && "bg-slate-300"}`}
             onClick={() => handleOrdering("problem_id", true)}>
             Latest
           </button>
           <button
-            className={`px-5 ${order.order_by == "problem_id" && !order.decending && "bg-slate-300"}`}
+            className={`px-5 ${order.order_by == "problem_id" && !order.descending && "bg-slate-300"}`}
             onClick={() => handleOrdering("problem_id", false)}>
             Newest
           </button>

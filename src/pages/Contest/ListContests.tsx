@@ -69,7 +69,7 @@ type FilterDataType = {
 };
 
 function ListContests() {
-  const decsendingTable = false;
+  const descendingTable = false;
   const [filterData, setFilterData] = useState<FilterDataType>({
     started: false,
     my_contest: false,
@@ -93,7 +93,7 @@ function ListContests() {
       .get<ContestDataType>("/contests", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
-          descendig: decsendingTable,
+          descending: descendingTable,
           limit: rowsPerPage,
           offset: page * rowsPerPage,
           started: filterData.started,
@@ -108,7 +108,7 @@ function ListContests() {
         setErrorMessage(err.response?.data.message ?? err.message);
       });
     console.log(tableData);
-  }, [page, rowsPerPage, filterData, decsendingTable, toggleUpdateData]);
+  }, [page, rowsPerPage, filterData, descendingTable, toggleUpdateData]);
 
   const handleClick = (_: unknown, contest_id: number, register_status: number) => {
     if (register_status == 2 || register_status == 1) {
