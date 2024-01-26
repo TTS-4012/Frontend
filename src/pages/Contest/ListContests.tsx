@@ -112,7 +112,7 @@ function ListContests() {
 
   const handleClick = (_: unknown, contest_id: number, register_status: number) => {
     if (register_status == 2 || register_status == 1) {
-      navigate(`/contests/${String(contest_id)}/0`);
+      navigate(`/contests/${String(contest_id)}/problems/0`);
     } else {
       setOpenDialogJoinFirst(true);
     }
