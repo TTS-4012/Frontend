@@ -11,7 +11,6 @@ type FormDataType = {
   username: string;
   email: string;
 };
-
 const validationSchema = yup
   .object({
     username: yup.string().required(),
@@ -29,6 +28,7 @@ function UpdateProfile() {
     resolver: yupResolver(validationSchema),
   });
   const [errorMessage, setErrorMessage] = useState<string>(" ");
+  const [userData, setUserData] = useState<FormDataType>({ email: "", username: "" });
 
   const handleConfirm = (data: FormDataType) => {
     setErrorMessage("waiting for respond");
@@ -48,6 +48,14 @@ function UpdateProfile() {
   };
 
   useEffect(() => {
+    axios
+      .get<FormDataType>("/auth", {})
+      .then((res) => {
+        setUserData(res.data);
+      })
+      .catch((err: AxiosError<any>) => {
+        setErrorMessage(err.response?.data.message ?? err.message);
+      });
     const subscription = watch(() => setErrorMessage(" "));
     return () => subscription.unsubscribe();
   }, [watch]);
@@ -62,11 +70,13 @@ function UpdateProfile() {
           label="Username"
           {...register("username")}
           error={errors.username?.message}
+          value={userData.username}
         />
         <Input
           label="Email"
           {...register("email")}
           error={errors.email?.message}
+          value={userData.email}
         />
         <p className="m-2 text-sm">
           <Link to="/profile/change-password">Change Your Password</Link>

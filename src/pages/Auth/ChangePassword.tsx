@@ -38,7 +38,7 @@ function ChangePassword() {
   const [errorMessage, setErrorMessage] = useState<string>(" ");
 
   const handleConfirm = (data: FormDataType) => {
-    setErrorMessage("waiting for responde");
+    setErrorMessage("waiting for respond");
     axios
       .post("/auth/edit_user", {
         password: data.password,
