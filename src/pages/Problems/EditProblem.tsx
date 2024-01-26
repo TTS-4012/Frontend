@@ -18,6 +18,7 @@ type ProblemData = {
   hardness: number;
   solve_count: number;
   description: string;
+  is_owned: boolean;
 };
 
 type ParamsType = {
@@ -69,6 +70,7 @@ function ChooseTestCase(props: { onClose: () => void; problemId: string }) {
 
 function EditProblem() {
   const { contestId, problemId } = useParams<ParamsType>();
+  const navigate = useNavigate();
 
   const editorContainer = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -91,6 +93,10 @@ function EditProblem() {
 
     if (problemId)
       axios.get<ProblemData>(`/problems/${problemId}`).then((res) => {
+        if (!res.data.is_owned) {
+          navigate(-1);
+          return;
+        }
         setValue("name", res.data.title);
         setValue("hardness", res.data.hardness);
         editor.current?.setValue(res.data.description);
@@ -100,10 +106,9 @@ function EditProblem() {
       editor.current?.dispose();
       editor.current = undefined;
     };
-  }, [problemId, setValue]);
+  }, [problemId, setValue, navigate]);
 
   const [errorMessage, setErrorMessage] = useState<string>();
-  const navigate = useNavigate();
 
   const onSave = (data: FormDataType) => {
     const body = {
