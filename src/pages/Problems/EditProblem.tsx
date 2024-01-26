@@ -27,11 +27,13 @@ type ParamsType = {
 
 type FormDataType = {
   name: string;
+  hardness: number;
 };
 
 const validationSchema = yup
   .object({
     name: yup.string().required(),
+    hardness: yup.number().required(),
   })
   .required();
 
@@ -90,6 +92,7 @@ function EditProblem() {
     if (problemId)
       axios.get<ProblemData>(`/problems/${problemId}`).then((res) => {
         setValue("name", res.data.title);
+        setValue("hardness", res.data.hardness);
         editor.current?.setValue(res.data.description);
       });
 
@@ -107,6 +110,7 @@ function EditProblem() {
       title: data.name,
       contest_id: Number(contestId),
       description: content,
+      hardness: data.hardness,
     };
     if (problemId) {
       axios
@@ -167,6 +171,10 @@ function EditProblem() {
         <Input
           label="Problem Name"
           {...register("name")}
+        />
+        <Input
+          label="Hardness"
+          {...register("hardness")}
         />
         <div className="flex flex-row items-center gap-2">
           <span className="ml-3 mr-auto text-red-700">{errorMessage}</span>
