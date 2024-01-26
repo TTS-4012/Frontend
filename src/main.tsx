@@ -19,8 +19,6 @@ import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
 
-axios.defaults.baseURL = "https://api.ocontest.ir/v1";
-
 const router = createBrowserRouter([
   {
     Component: Auth,
@@ -120,17 +118,20 @@ const router = createBrowserRouter([
 ]);
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
-axios.interceptors.request.use(
-  (config) => {
-    if (localStorage.getItem("auth.access_token"))
-      config.headers["Authorization"] = localStorage.getItem("auth.access_token");
-    return config;
-  },
+axios.interceptors.request.use((config) => {
+  if (localStorage.getItem("auth.access_token"))
+    config.headers["Authorization"] = localStorage.getItem("auth.access_token");
+  return config;
+});
+axios.interceptors.response.use(
+  (response) => response,
   (error: AxiosError) => {
-    if (error.code == "401") {
+    if (error.response?.status == 401) {
       localStorage.removeItem("auth.access_token");
       localStorage.removeItem("auth.refresh_token");
       router.navigate("/login");
+    } else {
+      throw error;
     }
   },
 );
