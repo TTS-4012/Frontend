@@ -12,18 +12,15 @@ type problem = {
   id: number;
   title: string;
 };
-type ParamsType = {
-  id: string;
-};
 function Leaderboard() {
-  const { id } = useParams<ParamsType>();
+  const { contestId } = useParams();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [data, setData] = useState<pageData>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [rowPerPage, setRowPerPage] = useState<number>(100);
   useEffect(() => {
     axios
-      .get<pageData>(`/contests/${id}/scoreboard`, {
+      .get<pageData>(`/contests/${contestId}/scoreboard`, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           limit: rowPerPage,
@@ -36,7 +33,7 @@ function Leaderboard() {
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
       });
-  }, [id, pageNumber, rowPerPage]);
+  }, [contestId, pageNumber, rowPerPage]);
 
   return (
     <div className="w-screen p-2">
@@ -60,7 +57,7 @@ function Leaderboard() {
                 <th
                   scope="col"
                   className="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6">
-                  <Link to={`/contests/${id}/${question.id}`}> {question.title}</Link>
+                  <Link to={`/contests/${contestId}/${question.id}`}> {question.title}</Link>
                 </th>
               ))}
             </tr>
