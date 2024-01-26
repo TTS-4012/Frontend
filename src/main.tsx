@@ -18,6 +18,7 @@ import ListProblems from "./pages/Problems/ListProblems.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
+import Leaderboard from "./pages/Contest/Leaderboard.tsx";
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 
@@ -26,19 +27,19 @@ const router = createBrowserRouter([
     Component: Auth,
     children: [
       {
-        path: "/register",
+        path: "register",
         Component: Register,
       },
       {
-        path: "/verify",
+        path: "verify",
         Component: Verify,
       },
       {
-        path: "/login",
+        path: "login",
         Component: Login,
       },
       {
-        path: "/otp-login",
+        path: "otp-login",
         Component: OTPLogin,
       },
     ],
@@ -80,7 +81,7 @@ const router = createBrowserRouter([
         path: "contests",
         children: [
           {
-            path: "",
+            index: true,
             Component: ListContests,
           },
           {
@@ -98,14 +99,32 @@ const router = createBrowserRouter([
                 path: "problems",
                 children: [
                   {
+                    index: true,
+                    Component: ContestProblem,
+                  },
+                  {
                     path: "new",
                     Component: EditProblem,
                   },
                   {
                     path: ":problemId",
                     Component: ContestProblem,
+                    children: [
+                      {
+                        index: true,
+                        Component: ContestProblem,
+                      },
+                      {
+                        path: "submissions",
+                        Component: ListSubmissions,
+                      },
+                    ],
                   },
                 ],
+              },
+              {
+                path: "scoreboard",
+                Component: Leaderboard,
               },
             ],
           },
