@@ -31,7 +31,7 @@ function UpdateProfile() {
   const [errorMessage, setErrorMessage] = useState<string>(" ");
 
   const handleConfirm = (data: FormDataType) => {
-    setErrorMessage("waiting for responde");
+    setErrorMessage("waiting for respond");
     axios
       .post("/auth/edit_user", {
         username: data.username,
@@ -39,10 +39,12 @@ function UpdateProfile() {
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
+      })
+      .then(() => {
+        if (errorMessage == "waiting for respond") {
+          setErrorMessage("");
+        }
       });
-    if (errorMessage == "waiting for responde") {
-      setErrorMessage("");
-    }
   };
 
   useEffect(() => {
@@ -71,8 +73,8 @@ function UpdateProfile() {
         </p>
         <div className="flex flex-row items-center">
           {!errorMessage && <span className="ml-3 text-green-400">Confirmed</span>}
-          {errorMessage == "waiting for responde" && (
-            <span className={`ml-3 ${errorMessage == "waiting for responde" ? "text-yellow-400" : "text-red-700"}`}>
+          {errorMessage == "waiting for respond" && (
+            <span className={`ml-3 ${errorMessage == "waiting for respond" ? "text-yellow-400" : "text-red-700"}`}>
               {errorMessage}
             </span>
           )}

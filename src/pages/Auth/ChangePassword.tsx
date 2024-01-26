@@ -45,10 +45,12 @@ function ChangePassword() {
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
+      })
+      .then(() => {
+        if (errorMessage == "waiting for respond") {
+          setErrorMessage("");
+        }
       });
-    if (errorMessage == "waiting for responde") {
-      setErrorMessage("");
-    }
   };
 
   useEffect(() => {
