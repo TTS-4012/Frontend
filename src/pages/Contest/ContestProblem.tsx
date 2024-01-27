@@ -11,12 +11,19 @@ type ContestProblemDataType = {
   Title: string;
 };
 
+enum RegistrationStatus {
+  Owner,
+  Registered,
+  NonRegistered,
+}
+
 type ContestDataType = {
   contest_Id: number;
   title: string;
   start_time: number;
-  problems: ContestProblemDataType[];
   duration: number;
+  register_status: RegistrationStatus;
+  problems: ContestProblemDataType[];
 };
 
 type ParamsType = {
@@ -129,15 +136,17 @@ function ContestProblem() {
             <div className="flex flex-col gap-1 rounded-t-lg bg-white p-1 shadow-md">
               <div className="relative border-b border-gray-200 p-4 text-center text-3xl font-bold text-gray-900 sm:px-6">
                 {contestData.title}
-                <Button
-                  className="absolute inset-y-0 right-4 my-auto"
-                  size="zero"
-                  variant="inline"
-                  onClick={() => {
-                    navigate(`/contests/${contestId}/edit`);
-                  }}>
-                  <Cog6ToothIcon className="h-5 w-5" />
-                </Button>
+                {contestData.register_status == RegistrationStatus.Owner && (
+                  <Button
+                    className="absolute inset-y-0 right-4 my-auto"
+                    size="zero"
+                    variant="inline"
+                    onClick={() => {
+                      navigate(`/contests/${contestId}/edit`);
+                    }}>
+                    <Cog6ToothIcon className="h-5 w-5" />
+                  </Button>
+                )}
               </div>
               <ContestDuration contestData={contestData} />
             </div>
@@ -166,7 +175,7 @@ function ContestProblem() {
                 Scoreboard
               </Link>
               <Link
-                to={`/contests/${contestId}/submissions`}
+                to={`/problems/${problemId}/submissions`}
                 className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                 <PuzzlePieceIcon className="h-5 w-5" />
                 Submissions

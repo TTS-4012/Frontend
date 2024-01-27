@@ -18,27 +18,26 @@ import ListProblems from "./pages/Problems/ListProblems.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
-
-axios.defaults.baseURL = "https://api.ocontest.ir/v1";
+import Leaderboard from "./pages/Contest/Leaderboard.tsx";
 
 const router = createBrowserRouter([
   {
     Component: Auth,
     children: [
       {
-        path: "/register",
+        path: "register",
         Component: Register,
       },
       {
-        path: "/verify",
+        path: "verify",
         Component: Verify,
       },
       {
-        path: "/login",
+        path: "login",
         Component: Login,
       },
       {
-        path: "/otp-login",
+        path: "otp-login",
         Component: OTPLogin,
       },
     ],
@@ -80,7 +79,7 @@ const router = createBrowserRouter([
         path: "contests",
         children: [
           {
-            path: "",
+            index: true,
             Component: ListContests,
           },
           {
@@ -98,14 +97,32 @@ const router = createBrowserRouter([
                 path: "problems",
                 children: [
                   {
+                    index: true,
+                    Component: ContestProblem,
+                  },
+                  {
                     path: "new",
                     Component: EditProblem,
                   },
                   {
                     path: ":problemId",
                     Component: ContestProblem,
+                    children: [
+                      {
+                        index: true,
+                        Component: ContestProblem,
+                      },
+                      {
+                        path: "submissions",
+                        Component: ListSubmissions,
+                      },
+                    ],
                   },
                 ],
+              },
+              {
+                path: "scoreboard",
+                Component: Leaderboard,
               },
             ],
           },
@@ -120,17 +137,20 @@ const router = createBrowserRouter([
 ]);
 
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
-axios.interceptors.request.use(
-  (config) => {
-    if (localStorage.getItem("auth.access_token"))
-      config.headers["Authorization"] = localStorage.getItem("auth.access_token");
-    return config;
-  },
+axios.interceptors.request.use((config) => {
+  if (localStorage.getItem("auth.access_token"))
+    config.headers["Authorization"] = localStorage.getItem("auth.access_token");
+  return config;
+});
+axios.interceptors.response.use(
+  (response) => response,
   (error: AxiosError) => {
-    if (error.code == "401") {
+    if (error.response?.status == 401) {
       localStorage.removeItem("auth.access_token");
       localStorage.removeItem("auth.refresh_token");
       router.navigate("/login");
+    } else {
+      throw error;
     }
   },
 );

@@ -16,6 +16,7 @@ type ProblemData = {
   hardness: number;
   solve_count: number;
   description: string;
+  is_owned: boolean;
 };
 
 type PropsType = HTMLAttributes<HTMLDivElement> & {
@@ -81,14 +82,16 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
       <div className="relative rounded-t-lg border-black bg-white p-5 text-center align-middle text-3xl font-black shadow-md">
         {data?.title ?? "title"}
         <div className="absolute right-4 top-4 flex gap-2">
-          <Button
-            size="xs"
-            variant="inline"
-            onClick={() => {
-              navigate("edit");
-            }}>
-            <PencilIcon className="h-5 w-5" />
-          </Button>
+          {data.is_owned && (
+            <Button
+              size="xs"
+              variant="inline"
+              onClick={() => {
+                navigate("edit");
+              }}>
+              <PencilIcon className="h-5 w-5" />
+            </Button>
+          )}
           <Button
             size="xs"
             variant="inline"

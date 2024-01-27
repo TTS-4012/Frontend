@@ -25,12 +25,19 @@ type ContestProblemDataType = {
   Title: string;
 };
 
+enum RegistrationStatus {
+  Owner,
+  Registered,
+  NonRegistered,
+}
+
 type ContestDataType = {
   contest_Id: number;
   title: string;
   start_time: number;
-  problems: ContestProblemDataType[];
   duration: number;
+  register_status: RegistrationStatus;
+  problems: ContestProblemDataType[];
 };
 
 const validationSchema = yup
@@ -67,6 +74,10 @@ function EditContest() {
 
   useEffect(() => {
     axios.get<ContestDataType>(`contests/${contestId}`).then((res) => {
+      if (res.data.register_status != RegistrationStatus.Owner) {
+        navigate(`contests/${contestId}/problems/0`);
+        return;
+      }
       setContestData(res.data);
       reset({
         title: res.data.title,
@@ -74,7 +85,7 @@ function EditContest() {
         duration: res.data.duration,
       });
     });
-  }, [contestId, reset]);
+  }, [contestId, reset, navigate]);
 
   const handleApply = (data: FormData) => {
     axios
@@ -84,7 +95,7 @@ function EditContest() {
         Duration: data.duration,
       })
       .then(() => {
-        navigate("../problems/0");
+        navigate(`contests/${contestId}/problems/0`);
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
