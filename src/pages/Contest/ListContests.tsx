@@ -15,8 +15,8 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
-import Dialog from "../../components/Dialog";
 import Button from "../../components/Button";
+import toast, { Toaster } from "react-hot-toast";
 
 function TablePaginationActions(props: {
   count: number;
@@ -77,8 +77,6 @@ function ListContests() {
   });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [openDialogJoinFirst, setOpenDialogJoinFirst] = useState(false);
 
   const [tableData, setTableData] = useState<ContestDataType>();
 
@@ -114,26 +112,32 @@ function ListContests() {
     if (register_status == 2 || register_status == 1) {
       navigate(`/contests/${String(contest_id)}/problems/0`);
     } else {
-      setOpenDialogJoinFirst(true);
+      toast("Please first join the contest.");
     }
   };
   const handleJoinContest = (contest_id: number) => {
     setErrorMessageJoinContest("");
-    axios
-      .patch(`/contests/${String(contest_id)}`, undefined, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-        params: {
-          action: "register",
-        },
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessageJoinContest(err.response?.data.message ?? err.message);
-      })
-      .then(() => {
-        setOpenDialog(true);
-        UpdateTableData(!toggleUpdateData);
-      });
+    toast.promise(
+      axios
+        .patch(`/contests/${String(contest_id)}`, undefined, {
+          headers: { Authorization: localStorage.getItem("auth.access_token") },
+          params: {
+            action: "register",
+          },
+        })
+        .catch((err: AxiosError<any>) => {
+          console.log(err.message);
+          setErrorMessageJoinContest(err.response?.data.message ?? err.message);
+        })
+        .then(() => {
+          UpdateTableData(!toggleUpdateData);
+        }),
+      {
+        loading: "Loading...",
+        success: "Successfully joined",
+        error: () => errorMessageJoinContest,
+      },
+    );
   };
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -145,26 +149,9 @@ function ListContests() {
 
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
-      <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
+      <div className="flex py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col">
-        <Dialog
-          open={openDialog}
-          onClose={() => setOpenDialog(false)}
-          title="Join Contest">
-          <div className="flex flex-col">
-            <span className="m-auto"></span>
-            <p className="m-auto flex text-lg">
-              {errorMessageJoinContest && "Could not join the contest"}
-              {!errorMessageJoinContest && "Successfully joined the contest"}
-            </p>
-          </div>
-        </Dialog>
-        <Dialog
-          open={openDialogJoinFirst}
-          onClose={() => setOpenDialogJoinFirst(false)}
-          title="Join Contest">
-          <p>Please first join the contest</p>
-        </Dialog>
+        <Toaster />
         <div className="flex flex-row py-2">
           <span className="m-auto"></span>
           <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-400">
