@@ -23,9 +23,9 @@ jobs:
 
       - name: Build Docker Image
         run: |
-            docker build -t ghcr.io/tts-4012/ocontest-frontend .
+            docker build -t ghcr.io/ocontest/ocontest-frontend .
       
       - name: Push Docker Image
         run: |
-            docker push ghcr.io/tts-4012/ocontest-frontend
+            docker push ghcr.io/ocontest/ocontest-frontend
       
