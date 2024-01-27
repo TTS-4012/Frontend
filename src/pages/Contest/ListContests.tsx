@@ -268,7 +268,7 @@ function ListContests() {
                     onClick={(event) => handleClick(event, contest.contest_Id, contest.register_status)}
                     className="rounded-sm hover:bg-blue-100">
                     <p className="text-lg font-medium">
-                      {contest.title.slice(0, 25)} {contest.title.length > 25 && "..."}
+                      {contest.title.slice(0, 50)} {contest.title.length > 50 && "..."}
                     </p>
                   </TableCell>
                   <TableCell align="center">

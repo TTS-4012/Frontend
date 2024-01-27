@@ -214,7 +214,7 @@ function ListProblems() {
                   </TableCell>
                   <TableCell align="center">
                     <p className=" text-lg">
-                      {problem.title.slice(0, 15)} {problem.title.length > 15 && "..."}
+                      {problem.title.slice(0, 50)} {problem.title.length > 50 && " ..."}
                     </p>
                   </TableCell>
                   <TableCell align="center">
