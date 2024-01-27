@@ -1,5 +1,5 @@
 import ProblemComponent from "../../components/ProblemComponent";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { CalendarIcon, ClockIcon, PuzzlePieceIcon, TrophyIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { useNavigate, useParams } from "react-router-dom";
@@ -103,19 +103,12 @@ const getActualProblemId = (problemId: string, contestData?: ContestDataType) =>
 function ContestProblem() {
   const { contestId, problemId } = useParams<ParamsType>();
   const [contestData, setContestData] = useState<ContestDataType>();
-  const [errorMessage, setErrorMessage] = useState<string>();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setErrorMessage("");
-    axios
-      .get<ContestDataType>(`/contests/${contestId}`)
-      .then((res) => {
-        setContestData(res.data);
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
+    axios.get<ContestDataType>(`/contests/${contestId}`).then((res) => {
+      setContestData(res.data);
+    });
   }, [contestId]);
 
   const actualProblemId = getActualProblemId(problemId ?? "", contestData);
@@ -184,7 +177,6 @@ function ContestProblem() {
           </div>
         </div>
       )}
-      {errorMessage && <p className="m-auto text-center text-5xl text-indigo-800">{errorMessage}</p>}
     </>
   );
 }

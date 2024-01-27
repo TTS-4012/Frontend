@@ -13,7 +13,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import Button from "../../components/Button";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
@@ -77,12 +77,9 @@ function ListProblems() {
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
   const [tableData, setTableData] = useState<ProblemDataType>();
-  const [errorMessage, setErrorMessage] = useState<string>();
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    setErrorMessage("");
     axios
       .get<ProblemDataType>("/problems", {
         params: {
@@ -95,10 +92,6 @@ function ListProblems() {
       })
       .then((res) => {
         setTableData(res.data);
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessage(err.response?.data.message ?? err.message);
       });
   }, [page, rowsPerPage, order]);
 
@@ -121,7 +114,6 @@ function ListProblems() {
 
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
-      <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-row">
           <span className="m-auto"></span>

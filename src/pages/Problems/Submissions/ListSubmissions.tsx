@@ -22,9 +22,6 @@ function ListSubmissions() {
     axios.get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`).then((res) => {
       setData(res.data);
     });
-    //   .catch((err: AxiosError<any>) => {
-    //     setErrorMessage(err.response?.data.message ?? err.message);
-    //   })
   }, [problemId]);
 
   return (

@@ -13,10 +13,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import Button from "../../components/Button";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 function TablePaginationActions(props: {
@@ -79,11 +79,9 @@ function ListContests() {
   const [tableData, setTableData] = useState<ContestDataType>();
 
   const [toggleUpdateData, UpdateTableData] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    setErrorMessage("");
     axios
       .get<ContestDataType>("/contests", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
@@ -96,9 +94,6 @@ function ListContests() {
       })
       .then((res) => {
         setTableData(res.data);
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
       });
   }, [page, rowsPerPage, filterData.started, filterData.my_contest, toggleUpdateData]);
 
@@ -125,7 +120,7 @@ function ListContests() {
       {
         loading: "Loading...",
         success: "Successfully joined",
-        error: (err: AxiosError<any>) => err.response?.data.message ?? err.message,
+        error: "Could not join contest. Please try again",
       },
     );
   };
@@ -141,9 +136,7 @@ function ListContests() {
 
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
-      <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
-        <Toaster />
         <div className="flex flex-row">
           <span className="m-auto"></span>
           <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-400">

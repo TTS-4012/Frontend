@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Button from "./Button";
@@ -12,9 +12,7 @@ function CopyToContest(props: { onClose: () => void }) {
   const { problemId } = useParams();
 
   const [contests, setContests] = useState<ContestDataType[]>();
-  const [errorMessage, setErrorMessage] = useState<string>();
   useEffect(() => {
-    setErrorMessage("");
     axios
       .get<{ contests: ContestDataType[] }>("/contests", {
         params: {
@@ -23,23 +21,13 @@ function CopyToContest(props: { onClose: () => void }) {
       })
       .then((res) => {
         setContests(res.data.contests);
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessage(err.response?.data.message ?? err.message);
       });
   }, []);
 
   const handleAdd = (contestId: number) => {
-    axios
-      .post(`contests/${contestId}/problems/${problemId}`)
-      .then(() => {
-        props.onClose();
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
+    axios.post(`contests/${contestId}/problems/${problemId}`).then(() => {
+      props.onClose();
+    });
   };
 
   return (
@@ -59,7 +47,6 @@ function CopyToContest(props: { onClose: () => void }) {
           </Button>
         ))}
       </div>
-      <p>{errorMessage}</p>
     </div>
   );
 }

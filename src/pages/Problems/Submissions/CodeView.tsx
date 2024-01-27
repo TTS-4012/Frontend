@@ -1,7 +1,7 @@
 import { HTMLAttributes, useEffect, useState } from "react";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import Markdown from "../../../components/Markdown";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 type Code = {
   file: File;
@@ -11,18 +11,12 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
 };
 
 function CodeView({ id, ...otherProps }: PropsType) {
-  const [data, setdata] = useState<Code>();
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [data, setData] = useState<Code>();
   useEffect(() => {
-    axios
-      .get<Code>(`/submissions/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        setdata(res.data);
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
+    axios.get<Code>(`/submissions/${id}`).then((res) => {
+      console.log(res.data);
+      setData(res.data);
+    });
   }, [id]);
   return data ? (
     <div
@@ -32,11 +26,7 @@ function CodeView({ id, ...otherProps }: PropsType) {
     </div>
   ) : (
     <div className="flex w-full text-indigo-800">
-      {errorMessage ? (
-        <p className="m-auto text-center text-5xl">{errorMessage}</p>
-      ) : (
-        <ArrowPathIcon className="m-auto h-20 w-20 animate-spin" />
-      )}
+      <ArrowPathIcon className="m-auto h-20 w-20 animate-spin" />
     </div>
   );
 }
