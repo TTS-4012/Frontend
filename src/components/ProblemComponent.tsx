@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Markdown from "./Markdown";
 import FilePicker from "./FilePicker";
-import { ArrowPathIcon } from "@heroicons/react/20/solid";
+import { ArrowPathIcon, PuzzlePieceIcon } from "@heroicons/react/20/solid";
 import { PencilIcon, Square2StackIcon } from "@heroicons/react/24/outline";
 import { createPortal } from "react-dom";
 import Dialog from "./Dialog";
@@ -78,6 +78,20 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
         `Copy`,
       )}
       <div className="relative rounded-t-lg border-black bg-white p-5 text-center align-middle text-3xl font-black shadow-md">
+        {!contestId && (
+          <div className="absolute left-4 top-4 flex gap-2">
+            <Button
+              size="xs"
+              className="flex gap-1 text-indigo-600"
+              variant="inline"
+              onClick={() => {
+                navigate(`/problems/${id}/submissions`);
+              }}>
+              <PuzzlePieceIcon className="h-5 w-5" />
+              Submissions
+            </Button>
+          </div>
+        )}
         {data?.title ?? "title"}
         <div className="absolute right-4 top-4 flex gap-2">
           {data.is_owned && (
