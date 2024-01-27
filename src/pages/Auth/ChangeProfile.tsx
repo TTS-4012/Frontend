@@ -3,9 +3,10 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import Link from "../../components/Link";
+import toast, { Toaster } from "react-hot-toast";
 
 type FormDataType = {
   username: string;
@@ -27,25 +28,22 @@ function UpdateProfile() {
   } = useForm<FormDataType>({
     resolver: yupResolver(validationSchema),
   });
-  const [errorMessage, setErrorMessage] = useState<string>(" ");
+  // const [errorMessage, setErrorMessage] = useState<string>(" ");
   // const [userData, setUserData] = useState<FormDataType>({ email: "", username: "" });
 
   const handleConfirm = (data: FormDataType) => {
-    setErrorMessage("waiting for respond");
-    axios
-      .post("/auth/edit_user", {
+    toast.promise(
+      axios.post("/auth/edit_user", {
         username: data.username,
         email: data.email,
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-        console.log(errorMessage);
-      })
-      .then(() => {
-        if (errorMessage == "waiting for respond") {
-          setErrorMessage("");
-        }
-      });
+        password: "",
+      }),
+      {
+        loading: "Loading...",
+        success: "Success",
+        error: (err) => err?.response?.data?.msg ?? "Something went wrong, please try again",
+      },
+    );
   };
 
   useEffect(() => {
@@ -63,6 +61,7 @@ function UpdateProfile() {
 
   return (
     <div className="m-auto w-full max-w-md rounded-lg bg-white p-3 shadow">
+      <Toaster />
       <form
         onSubmit={handleSubmit(handleConfirm)}
         className="flex flex-col">
@@ -81,12 +80,12 @@ function UpdateProfile() {
           <Link to="/profile/change-password">Change Your Password</Link>
         </p>
         <div className="flex flex-row items-center">
-          {!errorMessage && <span className="ml-3 text-green-400">Confirmed</span>}
+          {/* {!errorMessage && <span className="ml-3 text-green-400">Confirmed</span>}
           {errorMessage == "waiting for respond" && (
             <span className={`ml-3 ${errorMessage == "waiting for respond" ? "text-yellow-400" : "text-red-700"}`}>
               {errorMessage}
             </span>
-          )}
+          )} */}
           <Button
             type="submit"
             size="md"

@@ -41,6 +41,8 @@ function ChangePassword() {
     setErrorMessage("waiting for respond");
     axios
       .post("/auth/edit_user", {
+        email: "",
+        username: "",
         password: data.password,
       })
       .catch((err: AxiosError<any>) => {
