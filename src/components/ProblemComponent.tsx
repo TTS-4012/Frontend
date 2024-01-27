@@ -10,6 +10,7 @@ import { createPortal } from "react-dom";
 import Dialog from "./Dialog";
 import CopyToContest from "./CopyToContest";
 import Button from "./Button";
+import toast from "react-hot-toast";
 
 type ProblemData = {
   title: string;
@@ -54,12 +55,9 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
         })
         .then(() => {
           navigate("submissions");
-        })
-        .catch((err: AxiosError<any>) => {
-          setErrorMessage(err.response?.data.message ?? err.message);
         });
     } else {
-      setErrorMessage("no file selected");
+      toast("no file selected");
     }
   };
 

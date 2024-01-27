@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Duration from "../../components/Duration";
 import { Controller, useForm } from "react-hook-form";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
+import toast from "react-hot-toast";
 
 type FormData = {
   title: string;
@@ -25,7 +25,6 @@ const validationSchema = yup
 function NewContest() {
   const {
     control,
-    watch,
     register,
     formState: { errors },
     handleSubmit,
@@ -43,20 +42,10 @@ function NewContest() {
         Duration: data.duration,
       })
       .then(() => {
-        //later add push notification
+        toast("Contest created successfully.");
         navigate("/home");
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
       });
   };
-
-  const [errorMessage, setErrorMessage] = useState<string>();
-
-  useEffect(() => {
-    const subscription = watch(() => setErrorMessage(undefined));
-    return () => subscription.unsubscribe();
-  }, [watch]);
 
   return (
     <div className="m-auto w-5/12 rounded-md bg-white p-5">
@@ -94,7 +83,6 @@ function NewContest() {
           )}
         />
         <div className="flex flex-row items-center">
-          <span className="ml-3 text-red-700">{errorMessage}</span>
           <Button
             type="submit"
             size="md"

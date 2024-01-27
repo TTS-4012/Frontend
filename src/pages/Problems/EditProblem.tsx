@@ -7,11 +7,12 @@ import Button from "../../components/Button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { createPortal } from "react-dom";
 import Dialog from "../../components/Dialog";
 import FilePicker from "../../components/FilePicker";
+import toast from "react-hot-toast";
 
 type ProblemData = {
   title: string;
@@ -108,8 +109,6 @@ function EditProblem() {
     };
   }, [problemId, setValue, navigate]);
 
-  const [errorMessage, setErrorMessage] = useState<string>();
-
   const onSave = (data: FormDataType) => {
     const body = {
       title: data.name,
@@ -118,19 +117,15 @@ function EditProblem() {
       hardness: data.hardness,
     };
     if (problemId) {
-      axios
-        .put(`/problems/${problemId}`, body)
-        .then(() => navigate(-1))
-        .catch((err: AxiosError<any>) => {
-          setErrorMessage(err.response?.data.message ?? err.message);
-        });
+      axios.put(`/problems/${problemId}`, body).then(() => {
+        toast("Problem edited successfully.");
+        navigate(-1);
+      });
     } else {
-      axios
-        .post<{ problem_Id: string }>("/problems", body)
-        .then((res) => navigate(`../${res.data.problem_Id}`))
-        .catch((err: AxiosError<any>) => {
-          setErrorMessage(err.response?.data.message ?? err.message);
-        });
+      axios.post("/problems", body).then(() => {
+        toast("Problem created successfully.");
+        navigate(-1);
+      });
     }
   };
 
@@ -182,7 +177,6 @@ function EditProblem() {
           {...register("hardness")}
         />
         <div className="flex flex-row items-center gap-2">
-          <span className="ml-3 mr-auto text-red-700">{errorMessage}</span>
           {problemId && (
             <Button
               onClick={(e) => {
