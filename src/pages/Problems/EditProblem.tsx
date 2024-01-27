@@ -126,8 +126,8 @@ function EditProblem() {
         });
     } else {
       axios
-        .post<{ problem_Id: string }>("/problems", body)
-        .then((res) => navigate(`../${res.data.problem_Id}`))
+        .post("/problems", body)
+        .then(() => navigate(-1))
         .catch((err: AxiosError<any>) => {
           setErrorMessage(err.response?.data.message ?? err.message);
         });

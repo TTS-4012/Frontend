@@ -12,7 +12,7 @@ type ContestProblemDataType = {
 };
 
 enum RegistrationStatus {
-  Owner,
+  Owner = 1,
   Registered,
   NonRegistered,
 }

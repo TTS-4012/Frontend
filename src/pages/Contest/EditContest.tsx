@@ -26,7 +26,7 @@ type ContestProblemDataType = {
 };
 
 enum RegistrationStatus {
-  Owner,
+  Owner = 1,
   Registered,
   NonRegistered,
 }
@@ -75,7 +75,7 @@ function EditContest() {
   useEffect(() => {
     axios.get<ContestDataType>(`contests/${contestId}`).then((res) => {
       if (res.data.register_status != RegistrationStatus.Owner) {
-        navigate(`contests/${contestId}/problems/0`);
+        navigate(`/contests/${contestId}/problems/0`);
         return;
       }
       setContestData(res.data);
@@ -95,7 +95,7 @@ function EditContest() {
         Duration: data.duration,
       })
       .then(() => {
-        navigate(`contests/${contestId}/problems/0`);
+        navigate(`/contests/${contestId}/problems/0`);
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);
