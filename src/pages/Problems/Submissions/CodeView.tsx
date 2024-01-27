@@ -14,7 +14,6 @@ function CodeView({ id, ...otherProps }: PropsType) {
   const [data, setData] = useState<Code>();
   useEffect(() => {
     axios.get<Code>(`/submissions/${id}`).then((res) => {
-      console.log(res.data);
       setData(res.data);
     });
   }, [id]);
