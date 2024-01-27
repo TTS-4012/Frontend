@@ -1,7 +1,7 @@
 import { HTMLAttributes, useEffect, useState } from "react";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import Markdown from "../../../components/Markdown";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 type Code = {
   file: File;
@@ -12,10 +12,16 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
 
 function CodeView({ id, ...otherProps }: PropsType) {
   const [data, setData] = useState<Code>();
+  const [errorMessage, setErrorMessage] = useState<string>();
   useEffect(() => {
-    axios.get<Code>(`/submissions/${id}`).then((res) => {
-      setData(res.data);
-    });
+    axios
+      .get<Code>(`/submissions/${id}`)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err: AxiosError<any>) => {
+        setErrorMessage(err.response?.data.message ?? err.message);
+      });
   }, [id]);
   return data ? (
     <div
@@ -25,7 +31,11 @@ function CodeView({ id, ...otherProps }: PropsType) {
     </div>
   ) : (
     <div className="flex w-full text-indigo-800">
-      <ArrowPathIcon className="m-auto h-20 w-20 animate-spin" />
+      {errorMessage ? (
+        <p className="m-auto text-center text-5xl">{errorMessage}</p>
+      ) : (
+        <ArrowPathIcon className="m-auto h-20 w-20 animate-spin" />
+      )}
     </div>
   );
 }
