@@ -138,20 +138,23 @@ function ListContests() {
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="flex flex-col gap-2">
         <div className="flex flex-row">
-          <span className="m-auto"></span>
-          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-400">
+          <span className="mx-auto" />
+          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
             <button
-              className={`px-5 ${filterData.started && "rounded-md bg-slate-300"}`}
-              onClick={() =>
-                setFilterData({
-                  started: true,
-                  my_contest: filterData.my_contest,
-                })
-              }>
-              Started
+              className={`px-5 ${!filterData.my_contest && "rounded-md bg-slate-400"}`}
+              onClick={() => setFilterData({ started: filterData.started, my_contest: false })}>
+              All
             </button>
             <button
-              className={`px-5 ${!filterData.started && "rounded-md bg-slate-300"}`}
+              className={`px-5 ${filterData.my_contest && "rounded-md bg-slate-400"}`}
+              onClick={() => setFilterData({ started: filterData.started, my_contest: true })}>
+              Joined
+            </button>
+          </div>
+          <span className="px-1.5"></span>
+          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
+            <button
+              className={`px-5 ${!filterData.started && "rounded-md bg-slate-400"}`}
               onClick={() =>
                 setFilterData({
                   started: false,
@@ -160,18 +163,15 @@ function ListContests() {
               }>
               Not Started yet
             </button>
-          </div>
-          <span className="px-1.5"></span>
-          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-400">
             <button
-              className={`px-5 ${filterData.my_contest && "rounded-md bg-slate-300"}`}
-              onClick={() => setFilterData({ started: filterData.started, my_contest: true })}>
-              Joined
-            </button>
-            <button
-              className={`px-5 ${!filterData.my_contest && "rounded-md bg-slate-300"}`}
-              onClick={() => setFilterData({ started: filterData.started, my_contest: false })}>
-              All
+              className={`px-5 ${filterData.started && "rounded-md bg-slate-400"}`}
+              onClick={() =>
+                setFilterData({
+                  started: true,
+                  my_contest: filterData.my_contest,
+                })
+              }>
+              Started
             </button>
           </div>
           <Button

@@ -117,36 +117,36 @@ function ListProblems() {
       <div className="flex flex-col gap-2">
         <div className="flex flex-row">
           <span className="m-auto"></span>
-          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-400 shadow-sm ">
+          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300 shadow-sm ">
             <button
-              className={`px-5 ${order.order_by == "hardness" && order.descending && "rounded-md bg-slate-300"}`}
-              onClick={() => handleOrdering("hardness", true)}>
-              Hardest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "hardness" && !order.descending && "rounded-md bg-slate-300 "}`}
-              onClick={() => handleOrdering("hardness", false)}>
-              Easiest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "solve_count" && order.descending && "rounded-md bg-slate-300"}`}
-              onClick={() => handleOrdering("solve_count", true)}>
-              Most Solved
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "solve_count" && !order.descending && "rounded-md  bg-slate-300"}`}
-              onClick={() => handleOrdering("solve_count", false)}>
-              Least Solved
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "problem_id" && order.descending && "rounded-md bg-slate-300"}`}
+              className={`px-5 ${order.order_by == "problem_id" && order.descending && "rounded-md bg-slate-400"}`}
               onClick={() => handleOrdering("problem_id", true)}>
               Latest
             </button>
             <button
-              className={`px-5 ${order.order_by == "problem_id" && !order.descending && "rounded-md bg-slate-300"}`}
+              className={`px-5 ${order.order_by == "problem_id" && !order.descending && "rounded-md bg-slate-400"}`}
               onClick={() => handleOrdering("problem_id", false)}>
               Oldest
+            </button>
+            <button
+              className={`px-5 ${order.order_by == "hardness" && order.descending && "rounded-md bg-slate-400"}`}
+              onClick={() => handleOrdering("hardness", true)}>
+              Hardest
+            </button>
+            <button
+              className={`px-5 ${order.order_by == "hardness" && !order.descending && "rounded-md bg-slate-400 "}`}
+              onClick={() => handleOrdering("hardness", false)}>
+              Easiest
+            </button>
+            <button
+              className={`px-5 ${order.order_by == "solve_count" && order.descending && "rounded-md bg-slate-400"}`}
+              onClick={() => handleOrdering("solve_count", true)}>
+              Most Solved
+            </button>
+            <button
+              className={`px-5 ${order.order_by == "solve_count" && !order.descending && "rounded-md  bg-slate-400"}`}
+              onClick={() => handleOrdering("solve_count", false)}>
+              Least Solved
             </button>
           </div>
 
