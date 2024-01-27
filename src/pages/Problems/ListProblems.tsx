@@ -116,7 +116,6 @@ function ListProblems() {
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="flex flex-col gap-2">
         <div className="flex flex-row">
-          <span className="m-auto"></span>
           <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300 shadow-sm ">
             <button
               className={`px-5 ${order.order_by == "problem_id" && order.descending && "rounded-md bg-slate-400"}`}

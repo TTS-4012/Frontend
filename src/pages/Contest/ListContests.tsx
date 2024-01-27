@@ -137,8 +137,7 @@ function ListContests() {
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
       <div className="flex flex-col gap-2">
-        <div className="flex flex-row">
-          <span className="mx-auto" />
+        <div className="flex flex-row gap-3">
           <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
             <button
               className={`px-5 ${!filterData.my_contest && "rounded-md bg-slate-400"}`}
@@ -151,7 +150,6 @@ function ListContests() {
               Joined
             </button>
           </div>
-          <span className="px-1.5"></span>
           <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
             <button
               className={`px-5 ${!filterData.started && "rounded-md bg-slate-400"}`}
