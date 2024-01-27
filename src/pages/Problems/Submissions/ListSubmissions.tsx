@@ -60,7 +60,7 @@ function ListSubmissions() {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                  {data?.submissions.map((submission, idx) => (
+                  {data?.submissions?.map((submission, idx) => (
                     <SubmissionsRow
                       key={submission.metadata.submission_id}
                       data={submission}
