@@ -13,9 +13,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import Button from "../../components/Button";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 function TablePaginationActions(props: {
   count: number;
@@ -64,40 +65,33 @@ type ProblemDataType = {
 
 type OrderDataType = {
   order_by: "hardness" | "solve_count" | "problem_id" | undefined;
-  decending: boolean | undefined;
+  descending: boolean | undefined;
 };
 
 function ListProblems() {
   const [order, setOrder] = useState<OrderDataType>({
     order_by: "problem_id",
-    decending: false,
+    descending: true,
   });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
   const [tableData, setTableData] = useState<ProblemDataType>();
-  const [errorMessage, setErrorMessage] = useState<string>();
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    setErrorMessage("");
     axios
       .get<ProblemDataType>("/problems", {
         params: {
           limit: rowsPerPage,
           offset: page * rowsPerPage,
           ordered_by: order?.order_by,
-          decendig: order?.decending,
+          descending: order?.descending,
           get_count: true,
         },
       })
       .then((res) => {
         setTableData(res.data);
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessage(err.response?.data.message ?? err.message);
       });
   }, [page, rowsPerPage, order]);
 
@@ -112,70 +106,57 @@ function ListProblems() {
     setPage(0);
   };
   const createOrder = (orderMethod: "hardness" | "solve_count" | "problem_id", dec: boolean | undefined) => {
-    return { order_by: orderMethod, decending: dec };
+    return { order_by: orderMethod, descending: dec };
   };
-  const handleOrdering = (orderMethod: "hardness" | "solve_count" | "problem_id", decending: boolean) => {
-    setOrder(createOrder(orderMethod, decending));
+  const handleOrdering = (orderMethod: "hardness" | "solve_count" | "problem_id", descending: boolean) => {
+    setOrder(createOrder(orderMethod, descending));
   };
 
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
-      <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-row">
-          <span className="m-auto"></span>
-          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-400 shadow-sm ">
+          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300 shadow-sm ">
             <button
-              className={`px-5 ${order.order_by == "hardness" && order.decending && "rounded-md bg-slate-300"}`}
+              className={`px-5 ${order.order_by == "problem_id" && order.descending && "rounded-md bg-slate-400"}`}
+              onClick={() => handleOrdering("problem_id", true)}>
+              Latest
+            </button>
+            <button
+              className={`px-5 ${order.order_by == "problem_id" && !order.descending && "rounded-md bg-slate-400"}`}
+              onClick={() => handleOrdering("problem_id", false)}>
+              Oldest
+            </button>
+            <button
+              className={`px-5 ${order.order_by == "hardness" && order.descending && "rounded-md bg-slate-400"}`}
               onClick={() => handleOrdering("hardness", true)}>
               Hardest
             </button>
             <button
-              className={`px-5 ${order.order_by == "hardness" && !order.decending && "rounded-md bg-slate-300 "}`}
+              className={`px-5 ${order.order_by == "hardness" && !order.descending && "rounded-md bg-slate-400 "}`}
               onClick={() => handleOrdering("hardness", false)}>
               Easiest
             </button>
             <button
-              className={`px-5 ${order.order_by == "solve_count" && order.decending && "rounded-md bg-slate-300"}`}
+              className={`px-5 ${order.order_by == "solve_count" && order.descending && "rounded-md bg-slate-400"}`}
               onClick={() => handleOrdering("solve_count", true)}>
               Most Solved
             </button>
             <button
-              className={`px-5 ${order.order_by == "solve_count" && !order.decending && "rounded-md  bg-slate-300"}`}
+              className={`px-5 ${order.order_by == "solve_count" && !order.descending && "rounded-md  bg-slate-400"}`}
               onClick={() => handleOrdering("solve_count", false)}>
               Least Solved
             </button>
-            <button
-              className={`px-5 ${order.order_by == "problem_id" && order.decending && "rounded-md bg-slate-300"}`}
-              onClick={() => handleOrdering("problem_id", true)}>
-              Oldest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "problem_id" && !order.decending && "rounded-md bg-slate-300"}`}
-              onClick={() => handleOrdering("problem_id", false)}>
-              Latest
-            </button>
           </div>
+
           <Button
             size="lg"
             className=" ml-auto flex gap-1"
             onClick={() => {
               navigate("/problems/new");
             }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            create problem
+            <PlusCircleIcon className="h-6 w-6" />
+            Create problem
           </Button>
         </div>
         <TableContainer component={Paper}>

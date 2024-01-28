@@ -11,14 +11,13 @@ type PropsType = HTMLAttributes<HTMLDivElement> & {
 };
 
 function CodeView({ id, ...otherProps }: PropsType) {
-  const [data, setdata] = useState<Code>();
+  const [data, setData] = useState<Code>();
   const [errorMessage, setErrorMessage] = useState<string>();
   useEffect(() => {
     axios
       .get<Code>(`/submissions/${id}`)
       .then((res) => {
-        console.log(res.data);
-        setdata(res.data);
+        setData(res.data);
       })
       .catch((err: AxiosError<any>) => {
         setErrorMessage(err.response?.data.message ?? err.message);

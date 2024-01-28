@@ -13,10 +13,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useState, useEffect } from "react";
-import Dialog from "../../components/Dialog";
 import Button from "../../components/Button";
+import toast from "react-hot-toast";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 function TablePaginationActions(props: {
   count: number;
@@ -65,35 +66,26 @@ type ContestDataType = {
 type FilterDataType = {
   started: boolean | undefined;
   my_contest: boolean | undefined;
-  owned_contest: boolean | undefined;
 };
 
 function ListContests() {
-  const decsendingTable = false;
   const [filterData, setFilterData] = useState<FilterDataType>({
     started: false,
     my_contest: false,
-    owned_contest: false,
   });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [openDialogJoinFirst, setOpenDialogJoinFirst] = useState(false);
 
   const [tableData, setTableData] = useState<ContestDataType>();
 
   const [toggleUpdateData, UpdateTableData] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [errorMessageJoinContest, setErrorMessageJoinContest] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    setErrorMessage("");
     axios
       .get<ContestDataType>("/contests", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
-          descendig: decsendingTable,
           limit: rowsPerPage,
           offset: page * rowsPerPage,
           started: filterData.started,
@@ -102,42 +94,41 @@ function ListContests() {
       })
       .then((res) => {
         setTableData(res.data);
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessage(err.response?.data.message ?? err.message);
       });
-    console.log(tableData);
-  }, [page, rowsPerPage, filterData, decsendingTable, toggleUpdateData]);
+  }, [page, rowsPerPage, filterData.started, filterData.my_contest, toggleUpdateData]);
 
   const handleClick = (_: unknown, contest_id: number, register_status: number) => {
     if (register_status == 2 || register_status == 1) {
       navigate(`/contests/${String(contest_id)}/problems/0`);
     } else {
-      setOpenDialogJoinFirst(true);
+      toast("Please first join the contest.");
     }
   };
+
   const handleJoinContest = (contest_id: number) => {
-    setErrorMessageJoinContest("");
-    axios
-      .patch(`/contests/${String(contest_id)}`, undefined, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-        params: {
-          action: "register",
-        },
-      })
-      .catch((err: AxiosError<any>) => {
-        console.log(err.message);
-        setErrorMessageJoinContest(err.response?.data.message ?? err.message);
-      })
-      .then(() => {
-        setOpenDialog(true);
-        UpdateTableData(!toggleUpdateData);
-      });
+    toast.promise(
+      axios
+        .patch(`/contests/${String(contest_id)}`, undefined, {
+          headers: { Authorization: localStorage.getItem("auth.access_token") },
+          params: {
+            action: "register",
+          },
+        })
+        .then(() => {
+          UpdateTableData(!toggleUpdateData);
+        }),
+      {
+        loading: "Loading...",
+        success: "Successfully joined",
+        error: "Could not join contest. Please try again",
+      },
+    );
   };
+
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
+
   const handleChangeRowsPerPage = (e: any) => {
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(0);
@@ -145,82 +136,50 @@ function ListContests() {
 
   return (
     <div className="mx-auto w-full max-w-7xl p-2">
-      <div className="py-2">{errorMessage && <span className="ml-3 text-red-700">{errorMessage}</span>}</div>
-      <div className="flex flex-col">
-        <Dialog
-          open={openDialog}
-          onClose={() => setOpenDialog(false)}
-          title="Join Contest">
-          <div className="flex flex-col">
-            <span className="m-auto"></span>
-            <p className="m-auto flex text-lg">
-              {errorMessageJoinContest && "Could not join the contest"}
-              {!errorMessageJoinContest && "Succesfuly joined the contest"}
-            </p>
-          </div>
-        </Dialog>
-        <Dialog
-          open={openDialogJoinFirst}
-          onClose={() => setOpenDialogJoinFirst(false)}
-          title="Join Contest">
-          <p>Please first join the contest</p>
-        </Dialog>
-        <div className="flex flex-row py-2">
-          <span className="m-auto"></span>
-          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-400">
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-row gap-3">
+          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
             <button
-              className={`px-5 ${filterData.started && "rounded-md bg-slate-300"}`}
-              onClick={() =>
-                setFilterData({
-                  started: true,
-                  my_contest: filterData.my_contest,
-                  owned_contest: filterData.owned_contest,
-                })
-              }>
-              Started
+              className={`px-5 ${!filterData.my_contest && "rounded-md bg-slate-400"}`}
+              onClick={() => setFilterData({ started: filterData.started, my_contest: false })}>
+              All
             </button>
             <button
-              className={`px-5 ${!filterData.started && "rounded-md bg-slate-300"}`}
+              className={`px-5 ${filterData.my_contest && "rounded-md bg-slate-400"}`}
+              onClick={() => setFilterData({ started: filterData.started, my_contest: true })}>
+              Joined
+            </button>
+          </div>
+          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
+            <button
+              className={`px-5 ${!filterData.started && "rounded-md bg-slate-400"}`}
               onClick={() =>
                 setFilterData({
                   started: false,
                   my_contest: filterData.my_contest,
-                  owned_contest: filterData.owned_contest,
                 })
               }>
               Not Started yet
             </button>
             <button
-              className={`px-5 ${filterData.my_contest && "rounded-md bg-slate-300"}`}
-              onClick={() => setFilterData({ started: filterData.started, my_contest: true, owned_contest: true })}>
-              My Contests
-            </button>
-            <button
-              className={`px-5 ${!filterData.my_contest && "rounded-md bg-slate-300"}`}
-              onClick={() => setFilterData({ started: filterData.started, my_contest: false, owned_contest: false })}>
-              Other Contests
+              className={`px-5 ${filterData.started && "rounded-md bg-slate-400"}`}
+              onClick={() =>
+                setFilterData({
+                  started: true,
+                  my_contest: filterData.my_contest,
+                })
+              }>
+              Started
             </button>
           </div>
           <Button
             size="lg"
-            className="ml-auto mr-2 flex gap-1"
+            className="ml-auto flex gap-1"
             onClick={() => {
               navigate("/contests/new");
             }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            create contest
+            <PlusCircleIcon className="h-6 w-6" />
+            Create contest
           </Button>
         </div>
         <TableContainer component={Paper}>
@@ -272,16 +231,22 @@ function ListContests() {
                     </p>
                   </TableCell>
                   <TableCell align="center">
-                    {contest.register_status == 1 && <p className="py-1 text-lg italic">Owned</p>}
-                    {contest.register_status == 2 && <p className="py-1 text-lg italic">Joined</p>}
+                    {contest.register_status == 1 && (
+                      <button
+                        className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
+                        onClick={() => {
+                          navigate(`/contests/${contest.contest_Id}/edit`);
+                        }}>
+                        EDIT
+                      </button>
+                    )}
+                    {contest.register_status == 2 && <p className="italic">Joined</p>}
                     {contest.register_status == 3 && (
-                      <>
-                        <button
-                          className=" rounded-md px-3 py-2 text-base hover:bg-slate-100"
-                          onClick={() => handleJoinContest(contest.contest_Id)}>
-                          Join
-                        </button>
-                      </>
+                      <button
+                        className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
+                        onClick={() => handleJoinContest(contest.contest_Id)}>
+                        JOIN
+                      </button>
                     )}
                   </TableCell>
                 </TableRow>

@@ -18,12 +18,11 @@ function ListSubmissions() {
   const [data, setData] = useState<ProblemSubmissionListData>();
 
   useEffect(() => {
-    axios.get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`).then((res) => {
-      setData(res.data);
-    });
-    //   .catch((err: AxiosError<any>) => {
-    //     setErrorMessage(err.response?.data.message ?? err.message);
-    //   })
+    axios
+      .get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`, { params: { descending: true } })
+      .then((res) => {
+        setData(res.data);
+      });
   }, [problemId]);
 
   return (
@@ -63,7 +62,7 @@ function ListSubmissions() {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                  {data?.submissions.map((submission, idx) => (
+                  {data?.submissions?.map((submission, idx) => (
                     <SubmissionsRow
                       key={submission.metadata.submission_id}
                       data={submission}

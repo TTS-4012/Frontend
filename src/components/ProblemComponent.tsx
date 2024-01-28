@@ -5,17 +5,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import Markdown from "./Markdown";
 import FilePicker from "./FilePicker";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
-import { PencilIcon, Square2StackIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, Square2StackIcon, PuzzlePieceIcon } from "@heroicons/react/24/outline";
 import { createPortal } from "react-dom";
 import Dialog from "./Dialog";
 import CopyToContest from "./CopyToContest";
 import Button from "./Button";
+import toast from "react-hot-toast";
 
 type ProblemData = {
   title: string;
   hardness: number;
   solve_count: number;
   description: string;
+  is_owned: boolean;
 };
 
 type PropsType = HTMLAttributes<HTMLDivElement> & {
@@ -53,12 +55,9 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
         })
         .then(() => {
           navigate("submissions");
-        })
-        .catch((err: AxiosError<any>) => {
-          setErrorMessage(err.response?.data.message ?? err.message);
         });
     } else {
-      setErrorMessage("no file selected");
+      toast("no file selected");
     }
   };
 
@@ -79,16 +78,32 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
         `Copy`,
       )}
       <div className="relative rounded-t-lg border-black bg-white p-5 text-center align-middle text-3xl font-black shadow-md">
+        {!contestId && (
+          <div className="absolute left-4 top-4 flex gap-2">
+            <Button
+              size="xs"
+              className="flex gap-1 text-indigo-600"
+              variant="inline"
+              onClick={() => {
+                navigate(`/problems/${id}/submissions`);
+              }}>
+              <PuzzlePieceIcon className="h-5 w-5" />
+              Submissions
+            </Button>
+          </div>
+        )}
         {data?.title ?? "title"}
         <div className="absolute right-4 top-4 flex gap-2">
-          <Button
-            size="xs"
-            variant="inline"
-            onClick={() => {
-              navigate("edit");
-            }}>
-            <PencilIcon className="h-5 w-5" />
-          </Button>
+          {data.is_owned && (
+            <Button
+              size="xs"
+              variant="inline"
+              onClick={() => {
+                navigate("edit");
+              }}>
+              <PencilIcon className="h-5 w-5" />
+            </Button>
+          )}
           <Button
             size="xs"
             variant="inline"

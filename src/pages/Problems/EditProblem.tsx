@@ -7,17 +7,19 @@ import Button from "../../components/Button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { createPortal } from "react-dom";
 import Dialog from "../../components/Dialog";
 import FilePicker from "../../components/FilePicker";
+import toast from "react-hot-toast";
 
 type ProblemData = {
   title: string;
   hardness: number;
   solve_count: number;
   description: string;
+  is_owned: boolean;
 };
 
 type ParamsType = {
@@ -27,11 +29,13 @@ type ParamsType = {
 
 type FormDataType = {
   name: string;
+  hardness: number;
 };
 
 const validationSchema = yup
   .object({
     name: yup.string().required(),
+    hardness: yup.number().required(),
   })
   .required();
 
@@ -67,6 +71,7 @@ function ChooseTestCase(props: { onClose: () => void; problemId: string }) {
 
 function EditProblem() {
   const { contestId, problemId } = useParams<ParamsType>();
+  const navigate = useNavigate();
 
   const editorContainer = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -89,7 +94,12 @@ function EditProblem() {
 
     if (problemId)
       axios.get<ProblemData>(`/problems/${problemId}`).then((res) => {
+        if (!res.data.is_owned) {
+          navigate(-1);
+          return;
+        }
         setValue("name", res.data.title);
+        setValue("hardness", res.data.hardness);
         editor.current?.setValue(res.data.description);
       });
 
@@ -97,38 +107,39 @@ function EditProblem() {
       editor.current?.dispose();
       editor.current = undefined;
     };
-  }, [problemId, setValue]);
-
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const navigate = useNavigate();
+  }, [problemId, setValue, navigate]);
 
   const onSave = (data: FormDataType) => {
     const body = {
       title: data.name,
       contest_id: Number(contestId),
       description: content,
+      hardness: data.hardness,
     };
     if (problemId) {
-      axios
-        .put(`/problems/${problemId}`, body)
-        .then(() => navigate(-1))
-        .catch((err: AxiosError<any>) => {
-          setErrorMessage(err.response?.data.message ?? err.message);
-        });
+      axios.put(`/problems/${problemId}`, body).then(() => {
+        toast("Problem edited successfully.");
+        navigate(-1);
+      });
     } else {
-      axios
-        .post<{ problem_Id: string }>("/problems", body)
-        .then((res) => navigate(`../${res.data.problem_Id}`))
-        .catch((err: AxiosError<any>) => {
-          setErrorMessage(err.response?.data.message ?? err.message);
-        });
+      axios.post("/problems", body).then(() => {
+        toast("Problem created successfully.");
+        navigate(-1);
+      });
     }
+  };
+
+  const handleDelete = () => {
+    axios.delete(`/problems/${problemId}`).then(() => {
+      toast("Problem deleted successfully.");
+      navigate("/problems");
+    });
   };
 
   const [testCaseOpen, setTestCaseOpen] = useState(false);
 
   return (
-    <div className="flex h-full w-full p-1">
+    <div className="flex w-full flex-1 overflow-hidden p-4">
       <div className="flex grow flex-col overflow-hidden p-1">
         <Tab.Group>
           <Tab.List className="flex gap-0.5 self-start">
@@ -168,23 +179,38 @@ function EditProblem() {
           label="Problem Name"
           {...register("name")}
         />
+        <Input
+          label="Hardness"
+          {...register("hardness")}
+        />
         <div className="flex flex-row items-center gap-2">
-          <span className="ml-3 mr-auto text-red-700">{errorMessage}</span>
           {problemId && (
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                setTestCaseOpen(true);
-              }}
-              size="md"
-              className="flex-end font-bold">
-              Set TestCases
-            </Button>
+            <>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDelete();
+                }}
+                size="md"
+                variant="error"
+                className="font-bold">
+                Delete
+              </Button>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setTestCaseOpen(true);
+                }}
+                size="md"
+                className="font-bold">
+                Set TestCases
+              </Button>
+            </>
           )}
           <Button
             type="submit"
             size="md"
-            className="flex-end font-bold">
+            className="ml-auto font-bold">
             Save
           </Button>
         </div>

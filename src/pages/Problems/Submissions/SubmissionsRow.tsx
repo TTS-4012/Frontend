@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import CodeView from "./CodeView";
 
 enum Verdicts {
-  VerdictOK,
+  VerdictOK = 1,
   VerdictWrong,
   VerdictTimeLimit,
   VerdictMemoryLimit,
@@ -23,8 +23,10 @@ export type SubmissionData = {
     file_name: string;
   };
   results: {
-    message: string;
-    verdicts: Verdicts[];
+    service_message: string;
+    // testcase_id: number;
+    error_message: string;
+    verdicts: Verdicts[] | null;
   };
 };
 
@@ -38,12 +40,15 @@ type PropsType = {
   index: number;
 };
 
-const verdictNames = ["OK", "Wrong", "TimeLimit", "MemoryLimit", "RuntimeError", "Unknown", "CompileError"];
+const verdictNames = ["", "OK", "Wrong", "TimeLimit", "MemoryLimit", "RuntimeError", "Unknown", "CompileError"];
+
+const getScore = (verdicts: Verdicts[] | null) => {
+  if (!verdicts || verdicts.length == 0) return NaN;
+  return verdicts.filter((v) => v === Verdicts.VerdictOK).length / verdicts.length;
+};
 
 function SubmissionsRow({ data, index }: PropsType) {
-  const score = data.results.verdicts.filter((v) => v === Verdicts.VerdictOK).length / data.results.verdicts.length;
-  const message = data.results.verdicts.length === 0 ? "No tast case found" : data.results.message;
-
+  const score = getScore(data.results.verdicts);
   const [verdictsModalOpen, setVerdictsModalOpen] = useState(false);
   const [codeViewOpen, setCodeViewOpen] = useState(false);
 
@@ -55,8 +60,9 @@ function SubmissionsRow({ data, index }: PropsType) {
           onClose={setVerdictsModalOpen}
           title="Test Case Results">
           <div>
-            <p>{data.results.message}</p>
-            {data.results.verdicts.map((verdict, idx) => (
+            <p>{data.results.service_message}</p>
+            <p>{data.results.error_message}</p>
+            {data.results.verdicts?.map((verdict, idx) => (
               <p
                 className={
                   verdict === Verdicts.VerdictOK
@@ -88,11 +94,13 @@ function SubmissionsRow({ data, index }: PropsType) {
           {new Date(data.metadata.created_at).toLocaleString("en-us", { hour12: false })}
         </td>
         <td className="whitespace-nowrap px-3 py-4 capitalize">{data.metadata.language}</td>
-        <td className={`whitespace-nowrap px-3 py-4 ${score == 1 ? "text-green-800" : "text-red-800"}`}>
+        <td
+          className={`whitespace-nowrap px-3 py-4 ${score == 1 ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"}`}>
           {isNaN(score) ? "-" : (100 * score).toFixed(0)}
         </td>
-        <td className={`truncate whitespace-nowrap px-3 py-4 ${score == 1 ? "text-green-800" : "text-red-800"}`}>
-          {message}
+        <td
+          className={`truncate whitespace-nowrap px-3 py-4 capitalize ${score == 1 ? "text-green-800" : "text-red-800"}`}>
+          {data.results.service_message}
         </td>
         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
           <div className="flex gap-2">

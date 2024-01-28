@@ -3,12 +3,13 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Duration from "../../components/Duration";
 import { Controller, useForm } from "react-hook-form";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "../../components/Link";
 import { PencilIcon, TrashIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import toast from "react-hot-toast";
 
 type FormData = {
   title: string;
@@ -25,12 +26,19 @@ type ContestProblemDataType = {
   Title: string;
 };
 
+enum RegistrationStatus {
+  Owner = 1,
+  Registered,
+  NonRegistered,
+}
+
 type ContestDataType = {
   contest_Id: number;
   title: string;
   start_time: number;
-  problems: ContestProblemDataType[];
   duration: number;
+  register_status: RegistrationStatus;
+  problems: ContestProblemDataType[];
 };
 
 const validationSchema = yup
@@ -48,7 +56,6 @@ function EditContest() {
 
   const {
     control,
-    watch,
     register,
     reset,
     formState: { errors },
@@ -58,15 +65,13 @@ function EditContest() {
   });
 
   const [contestData, setContestData] = useState<ContestDataType>();
-  const [errorMessage, setErrorMessage] = useState<string>();
-
-  useEffect(() => {
-    const subscription = watch(() => setErrorMessage(undefined));
-    return () => subscription.unsubscribe();
-  }, [watch]);
 
   useEffect(() => {
     axios.get<ContestDataType>(`contests/${contestId}`).then((res) => {
+      if (res.data.register_status != RegistrationStatus.Owner) {
+        navigate(`/contests/${contestId}/problems/0`);
+        return;
+      }
       setContestData(res.data);
       reset({
         title: res.data.title,
@@ -74,7 +79,7 @@ function EditContest() {
         duration: res.data.duration,
       });
     });
-  }, [contestId, reset]);
+  }, [contestId, reset, navigate]);
 
   const handleApply = (data: FormData) => {
     axios
@@ -84,33 +89,23 @@ function EditContest() {
         Duration: data.duration,
       })
       .then(() => {
-        navigate("../problems/0");
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
+        toast("Contest edited successfully.");
+        navigate(`/contests/${contestId}/problems/0`);
       });
   };
 
   const handleRemoveProblem = (problemId: number) => {
-    axios
-      .delete(`/contests/${contestId}/problems/${problemId}`)
-      .then(() => {
-        navigate("");
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
+    axios.delete(`/contests/${contestId}/problems/${problemId}`).then(() => {
+      toast("Problem removed from contest successfully.");
+      navigate("");
+    });
   };
 
   const handleDelete = () => {
-    axios
-      .delete(`/contests/${contestId}`)
-      .then(() => {
-        navigate("/contests");
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-      });
+    axios.delete(`/contests/${contestId}`).then(() => {
+      toast("Contest deleted successfully.");
+      navigate("/contests");
+    });
   };
 
   return (
@@ -149,7 +144,6 @@ function EditContest() {
               )}
             />
             <div className="flex flex-row items-center">
-              <span className="ml-3 grow text-red-700">{errorMessage}</span>
               <Button
                 onClick={handleDelete}
                 variant="error"
