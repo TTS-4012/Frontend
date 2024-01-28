@@ -129,6 +129,13 @@ function EditProblem() {
     }
   };
 
+  const handleDelete = () => {
+    axios.delete(`/problems/${problemId}`).then(() => {
+      toast("Problem deleted successfully.");
+      navigate(-1);
+    });
+  };
+
   const [testCaseOpen, setTestCaseOpen] = useState(false);
 
   return (
@@ -178,20 +185,32 @@ function EditProblem() {
         />
         <div className="flex flex-row items-center gap-2">
           {problemId && (
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                setTestCaseOpen(true);
-              }}
-              size="md"
-              className="flex-end font-bold">
-              Set TestCases
-            </Button>
+            <>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDelete();
+                }}
+                size="md"
+                variant="error"
+                className="font-bold">
+                Delete
+              </Button>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setTestCaseOpen(true);
+                }}
+                size="md"
+                className="font-bold">
+                Set TestCases
+              </Button>
+            </>
           )}
           <Button
             type="submit"
             size="md"
-            className="flex-end font-bold">
+            className="ml-auto font-bold">
             Save
           </Button>
         </div>

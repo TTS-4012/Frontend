@@ -152,8 +152,8 @@ axios.interceptors.response.use(
       router.navigate("/login");
     } else {
       toast(err.response?.data.message ?? err.message);
-      throw err;
     }
+    throw err;
   },
 );
 
