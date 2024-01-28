@@ -139,7 +139,7 @@ function EditProblem() {
   const [testCaseOpen, setTestCaseOpen] = useState(false);
 
   return (
-    <div className="flex h-full w-full p-1">
+    <div className="flex w-full flex-1 overflow-hidden p-4">
       <div className="flex grow flex-col overflow-hidden p-1">
         <Tab.Group>
           <Tab.List className="flex gap-0.5 self-start">

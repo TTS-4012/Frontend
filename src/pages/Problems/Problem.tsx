@@ -9,10 +9,12 @@ function Problem() {
   const { problemId } = useParams<ParamsType>();
   return (
     problemId && (
-      <ProblemComponent
-        id={problemId}
-        className="m-5"
-      />
+      <div className="w-full flex-1 overflow-auto">
+        <ProblemComponent
+          id={problemId}
+          className="m-5"
+        />
+      </div>
     )
   );
 }
