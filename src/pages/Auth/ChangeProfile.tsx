@@ -87,12 +87,6 @@ function UpdateProfile() {
           <Link to="/profile/change-password">Change Your Password</Link>
         </p>
         <div className="flex flex-row items-center">
-          {/* {!errorMessage && <span className="ml-3 text-green-400">Confirmed</span>}
-          {errorMessage == "waiting for respond" && (
-            <span className={`ml-3 ${errorMessage == "waiting for respond" ? "text-yellow-400" : "text-red-700"}`}>
-              {errorMessage}
-            </span>
-          )} */}
           {errorMessage && <p className=" text-red-600"> {errorMessage} </p>}
           <Button
             type="submit"

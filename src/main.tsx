@@ -117,7 +117,7 @@ const router = createBrowserRouter([
         path: "/profile",
         children: [
           {
-            path: "edit",
+            path: "",
             Component: ChangeProfile,
           },
           {
