@@ -3,10 +3,11 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import Checkbox from "../../components/Checkbox";
-
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 type FormDataType = {
   password: string;
   passConfirm: string;
@@ -16,7 +17,7 @@ const validationSchema = yup
   .object({
     password: yup
       .string()
-      .matches(/^(?=.*[A-Za-z])(?=.*\d).{8,}$/, "Password must hava a digit, a letter and lengh at least 8")
+      .matches(/^(?=.*[A-Za-z])(?=.*\d).{8,}$/, "Password must have a digit, a letter and length at least 8")
       .required(),
     passConfirm: yup
       .string()
@@ -34,38 +35,38 @@ function ChangePassword() {
   } = useForm<FormDataType>({
     resolver: yupResolver(validationSchema),
   });
+
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string>(" ");
+  const [errorMessage, setErrorMessage] = useState<string>();
+
+  const navigate = useNavigate();
 
   const handleConfirm = (data: FormDataType) => {
-    setErrorMessage("waiting for respond");
-    axios
-      .post("/auth/edit_user", {
-        email: "",
-        username: "",
-        password: data.password,
-      })
-      .catch((err: AxiosError<any>) => {
-        setErrorMessage(err.response?.data.message ?? err.message);
-      })
-      .then(() => {
-        if (errorMessage == "waiting for respond") {
-          setErrorMessage("");
-        }
-      });
+    toast
+      .promise(
+        axios.post("/auth/edit_user", {
+          password: data.password,
+        }),
+        {
+          loading: "Loading...",
+          success: "Updated",
+          error: (err) => err?.response?.data?.msg ?? "Something went wrong, please try again",
+        },
+      )
+      .then(() => navigate("/profile"));
   };
 
   useEffect(() => {
-    const subscription = watch(() => setErrorMessage(" "));
+    const subscription = watch(() => setErrorMessage("s"));
     return () => subscription.unsubscribe();
   }, [watch]);
 
   return (
     <div className="m-auto w-full max-w-md rounded-lg bg-white p-3 shadow">
+      <Toaster />
       <form
         onSubmit={handleSubmit(handleConfirm)}
         className="flex flex-col">
-        {/* <p className="mb-3 p-3 text-left text-3xl font-extrabold text-indigo-700">Change Password</p> */}
         <Input
           label="New password"
           {...register("password")}
@@ -85,12 +86,7 @@ function ChangePassword() {
           className="m-1"
         />
         <div className="flex flex-row items-center">
-          {!errorMessage && <span className="ml-3 text-green-400">Confirmed</span>}
-          {errorMessage == "waiting for responde" && (
-            <span className={`ml-3 ${errorMessage == "waiting for responde" ? "text-yellow-400" : "text-red-700"}`}>
-              {errorMessage}
-            </span>
-          )}
+          {/* {errorMessage && <span className="ml-3 text-red-600">{errorMessage}</span>} */}
           <Button
             type="submit"
             size="md"

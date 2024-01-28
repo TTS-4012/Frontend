@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import Link from "../../components/Link";
 import toast, { Toaster } from "react-hot-toast";
@@ -51,19 +51,17 @@ function UpdateProfile() {
     return () => subscription.unsubscribe();
   }, [watch]);
   useEffect(() => {
-    toast.promise(
-      axios.get<FormDataType>("/auth", {}).then((res) => {
+    axios
+      .get<FormDataType>("/auth", {})
+      .then((res) => {
         reset({
           username: res.data?.username,
           email: res.data?.email,
         });
-      }),
-      {
-        loading: "Loading Profile...",
-        success: "",
-        error: (err) => err?.response?.data?.msg ?? "Something went wrong, please try again",
-      },
-    );
+      })
+      .catch((err: AxiosError<any>) => {
+        setErrorMessage(err.response?.data.message ?? err.message);
+      });
   }, [reset]);
 
   return (
