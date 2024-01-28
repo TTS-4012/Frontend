@@ -102,7 +102,7 @@ function ContestProblem() {
 
   return contestData ? (
     contestData.problems ? (
-      <div className="m-5 flex grow flex-row items-stretch gap-5">
+      <div className="flex grow flex-row items-stretch gap-5 overflow-auto p-5">
         {actualProblemId == -1 ? (
           <p className="m-auto basis-5/6 text-center text-5xl italic text-gray-500">No problems</p>
         ) : (

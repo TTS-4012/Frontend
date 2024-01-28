@@ -18,9 +18,11 @@ function ListSubmissions() {
   const [data, setData] = useState<ProblemSubmissionListData>();
 
   useEffect(() => {
-    axios.get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`).then((res) => {
-      setData(res.data);
-    });
+    axios
+      .get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`, { params: { descending: true } })
+      .then((res) => {
+        setData(res.data);
+      });
   }, [problemId]);
 
   return (

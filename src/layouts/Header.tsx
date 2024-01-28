@@ -1,5 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  ChartBarSquareIcon,
+  HomeIcon,
+  ListBulletIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 
 function Header() {
   const navigate = useNavigate();
@@ -9,109 +16,45 @@ function Header() {
     navigate("/login");
   };
   return (
-    <header className="bg-white p-2 shadow-sm">
-      <nav className="mx-auto flex flex-row items-center gap-2 px-4 sm:px-6 lg:px-8">
-        <Button
-          size="lg"
-          className="flex gap-1"
-          onClick={() => {
-            navigate("/home");
-          }}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-            />
-          </svg>
+    <header className="absolute inset-x-0 top-0 z-50 bg-white shadow-md">
+      <nav className="m:px-6 mx-auto flex flex-row items-center gap-2 px-4 lg:px-8">
+        <NavLink
+          to="/home"
+          className={({ isActive }) =>
+            `flex gap-1 border-b-2 p-2.5 text-gray-600 ${isActive ? "border-indigo-600 text-black" : "border-transparent hover:border-gray-200 hover:text-black"}`
+          }>
+          <HomeIcon className="h-6 w-6" />
           Home
-        </Button>
-        <Button
-          size="lg"
-          className="flex gap-1"
-          onClick={() => {
-            navigate("/problems");
-          }}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-            />
-          </svg>
-          problemset
-        </Button>
-        <Button
-          size="lg"
-          className="flex gap-1"
-          onClick={() => {
-            navigate("/contests");
-          }}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
-            />
-          </svg>
+        </NavLink>
+        <NavLink
+          to="/problems"
+          className={({ isActive }) =>
+            `flex gap-1 border-b-2 p-2.5 text-gray-600 ${isActive ? "border-indigo-600 text-black" : "border-transparent hover:border-gray-200 hover:text-black"}`
+          }>
+          <ListBulletIcon className="h-6 w-6" />
+          Problemset
+        </NavLink>
+        <NavLink
+          to="/contests"
+          className={({ isActive }) =>
+            `flex gap-1 border-b-2 p-2.5 text-gray-600 ${isActive ? "border-indigo-600 text-black" : "border-transparent hover:border-gray-200 hover:text-black"}`
+          }>
+          <ChartBarSquareIcon className="h-6 w-6" />
           Contests
-        </Button>
+        </NavLink>
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            `ml-auto border-b-2 p-2.5 text-gray-600 ${isActive ? "border-indigo-600 text-black" : "border-transparent hover:border-gray-200 hover:text-black"}`
+          }>
+          <UserCircleIcon className="h-6 w-6" />
+        </NavLink>
         <Button
           size="lg"
-          className="ml-auto flex gap-1"
-          onClick={() => {
-            navigate("/profile");
-          }}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-            />
-          </svg>
-        </Button>
-        <Button
-          size="lg"
-          className="flex gap-1"
+          className="border-transparent pt-1.5 text-gray-600 hover:border-gray-200 hover:text-black"
+          variant="inline"
           onClick={handleLogOut}>
-          Log Out
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
-            />
-          </svg>
+          <ArrowLeftStartOnRectangleIcon className="h-6 w-6" />
         </Button>
       </nav>
     </header>
