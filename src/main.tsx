@@ -107,7 +107,6 @@ const router = createBrowserRouter([
                   },
                   {
                     path: ":problemId",
-                    Component: ContestProblem,
                     children: [
                       {
                         index: true,

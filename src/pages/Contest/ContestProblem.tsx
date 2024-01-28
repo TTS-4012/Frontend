@@ -1,7 +1,14 @@
 import ProblemComponent from "../../components/ProblemComponent";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { CalendarIcon, ClockIcon, PuzzlePieceIcon, TrophyIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
+import {
+  CalendarIcon,
+  ClockIcon,
+  PuzzlePieceIcon,
+  TrophyIcon,
+  Cog6ToothIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/outline";
 import { useNavigate, useParams } from "react-router-dom";
 import Link from "../../components/Link";
 import Button from "../../components/Button";
@@ -23,7 +30,7 @@ type ContestDataType = {
   start_time: number;
   duration: number;
   register_status: RegistrationStatus;
-  problems: ContestProblemDataType[];
+  problems: ContestProblemDataType[] | null;
 };
 
 type ParamsType = {
@@ -37,7 +44,7 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
   useEffect(() => {
     if (!contestData) return;
 
-    const endTime = contestData.start_time + contestData.duration;
+    const endTime = contestData.start_time + contestData.duration * 60;
     setTimer(endTime - Date.now() / 1000);
     const intervalId = setInterval(() => setTimer((value) => value - 1), 1000);
 
@@ -46,27 +53,7 @@ function ContestDuration({ contestData }: { contestData: ContestDataType }) {
 
   return (
     <div className="flex flex-row gap-3 p-2">
-      {contestData.start_time - Math.floor(new Date().valueOf() / 1000) > 0 ? (
-        <>
-          <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
-          <div className="flex grow flex-col">
-            <div className="text-lg font-medium">
-              {new Date(contestData.start_time * 1000).toLocaleDateString("en-GB", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
-            </div>
-            <div className="text-lg">
-              {new Date(contestData.start_time * 1000).toLocaleString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-              })}
-            </div>
-          </div>
-        </>
-      ) : contestData.start_time + contestData.duration - Math.floor(new Date().valueOf() / 1000) > 0 ? (
+      {contestData.start_time + contestData.duration * 60 - Math.floor(new Date().valueOf() / 1000) > 0 ? (
         <>
           <div className="mx-auto flex flex-row gap-2 py-2">
             <ClockIcon className="m-auto h-6 w-6 shrink-0" />
@@ -113,8 +100,8 @@ function ContestProblem() {
 
   const actualProblemId = getActualProblemId(problemId ?? "", contestData);
 
-  return (
-    contestData && (
+  return contestData ? (
+    contestData.problems ? (
       <div className="flex grow flex-row items-stretch gap-5 overflow-auto p-5">
         {actualProblemId == -1 ? (
           <p className="m-auto basis-5/6 text-center text-5xl italic text-gray-500">No problems</p>
@@ -175,7 +162,32 @@ function ContestProblem() {
           </div>
         </div>
       </div>
+    ) : (
+      <div>
+        <div>contest will start in </div>
+        <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
+        <div className="flex grow flex-col">
+          <div className="text-lg font-medium">
+            {new Date(contestData.start_time * 1000).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
+          </div>
+          <div className="text-lg">
+            {new Date(contestData.start_time * 1000).toLocaleString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })}
+          </div>
+        </div>
+      </div>
     )
+  ) : (
+    <div className="flex h-screen w-full text-indigo-800">
+      <ArrowPathIcon className="m-auto h-20 w-20 animate-spin" />
+    </div>
   );
 }
 

@@ -58,6 +58,7 @@ function Leaderboard() {
         <tbody className="overflow-scroll">
           {data?.users.map((user, idx) => (
             <TableRow
+              key={user.user_id}
               index={idx}
               user={user}
             />
