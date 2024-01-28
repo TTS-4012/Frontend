@@ -132,7 +132,7 @@ function EditProblem() {
   const handleDelete = () => {
     axios.delete(`/problems/${problemId}`).then(() => {
       toast("Problem deleted successfully.");
-      navigate(-1);
+      navigate("/problems");
     });
   };
 
