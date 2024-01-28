@@ -57,7 +57,7 @@ function ChangePassword() {
   };
 
   useEffect(() => {
-    const subscription = watch(() => setErrorMessage("s"));
+    const subscription = watch(() => setErrorMessage(""));
     return () => subscription.unsubscribe();
   }, [watch]);
 
@@ -86,7 +86,7 @@ function ChangePassword() {
           className="m-1"
         />
         <div className="flex flex-row items-center">
-          {/* {errorMessage && <span className="ml-3 text-red-600">{errorMessage}</span>} */}
+          {errorMessage && <span className="ml-3 text-red-600">{errorMessage}</span>}
           <Button
             type="submit"
             size="md"
