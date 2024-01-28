@@ -18,6 +18,8 @@ import ListProblems from "./pages/Problems/ListProblems.tsx";
 import Problem from "./pages/Problems/Problem.tsx";
 import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
+import ChangeProfile from "./pages/Auth/ChangeProfile.tsx";
+import ChangePassword from "./pages/Auth/ChangePassword.tsx";
 import Leaderboard from "./pages/Contest/Leaderboard.tsx";
 import toast from "react-hot-toast";
 
@@ -125,6 +127,19 @@ const router = createBrowserRouter([
                 Component: Leaderboard,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: "/profile",
+        children: [
+          {
+            path: "",
+            Component: ChangeProfile,
+          },
+          {
+            path: "change-password",
+            Component: ChangePassword,
           },
         ],
       },
