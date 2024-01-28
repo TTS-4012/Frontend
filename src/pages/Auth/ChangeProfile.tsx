@@ -23,13 +23,13 @@ function UpdateProfile() {
   const {
     register,
     watch,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<FormDataType>({
     resolver: yupResolver(validationSchema),
   });
-  // const [errorMessage, setErrorMessage] = useState<string>(" ");
-  // const [userData, setUserData] = useState<FormDataType>({ email: "", username: "" });
+  const [errorMessage, setErrorMessage] = useState<string>(" ");
 
   const handleConfirm = (data: FormDataType) => {
     toast.promise(
@@ -40,24 +40,31 @@ function UpdateProfile() {
       }),
       {
         loading: "Loading...",
-        success: "Success",
+        success: "Updated",
         error: (err) => err?.response?.data?.msg ?? "Something went wrong, please try again",
       },
     );
   };
 
   useEffect(() => {
-    // axios
-    //   .get<FormDataType>("/auth", {})
-    //   .then((res) => {
-    //     setUserData(res.data);
-    //   })
-    //   .catch((err: AxiosError<any>) => {
-    //     setErrorMessage(err.response?.data.message ?? err.message);
-    //   });
     const subscription = watch(() => setErrorMessage(" "));
     return () => subscription.unsubscribe();
   }, [watch]);
+  useEffect(() => {
+    toast.promise(
+      axios.get<FormDataType>("/auth", {}).then((res) => {
+        reset({
+          username: res.data?.username,
+          email: res.data?.email,
+        });
+      }),
+      {
+        loading: "Loading Profile...",
+        success: "",
+        error: (err) => err?.response?.data?.msg ?? "Something went wrong, please try again",
+      },
+    );
+  }, [reset]);
 
   return (
     <div className="m-auto w-full max-w-md rounded-lg bg-white p-3 shadow">
@@ -86,6 +93,7 @@ function UpdateProfile() {
               {errorMessage}
             </span>
           )} */}
+          {errorMessage && <p className=" text-red-600"> {errorMessage} </p>}
           <Button
             type="submit"
             size="md"
