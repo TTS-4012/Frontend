@@ -12,16 +12,18 @@ function ListSubmissions() {
   const { problemId, contestId } = useParams();
 
   const [data, setData] = useState<ProblemSubmissionListData>();
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [rowPerPage, setRowPerPage] = useState<number>(100);
 
   useEffect(() => {
     axios
       .get<ProblemSubmissionListData>(`${contestId ? `contests/${contestId}` : ``}/problems/${problemId}/submissions`, {
-        params: { descending: true },
+        params: { descending: true, limit: rowPerPage, offset: (pageNumber - 1) * rowPerPage },
       })
       .then((res) => {
         setData(res.data);
       });
-  }, [problemId]);
+  }, [pageNumber, rowPerPage, contestId, problemId]);
 
   return (
     <>
@@ -64,9 +66,29 @@ function ListSubmissions() {
                     <SubmissionsRow
                       key={submission.metadata.submission_id}
                       data={submission}
-                      index={idx}
+                      index={idx + (pageNumber - 1) * rowPerPage}
                     />
                   ))}
+                  <tr className="bg-gray-50">
+                    <td
+                      colSpan={5}
+                      className="rounded-b-md py-2">
+                      <div className="flex flex-row gap-2">
+                        <p className="my-auto ml-auto">page number</p>
+                        <input
+                          value={pageNumber}
+                          onChange={(e) => setPageNumber(+e.target.value)}
+                          className="h-7 w-14 rounded-md text-center"
+                        />
+                        <p className="my-auto">row per page</p>
+                        <input
+                          value={rowPerPage}
+                          onChange={(e) => setRowPerPage(+e.target.value)}
+                          className="mr-5 h-7 w-14 rounded-md text-center"
+                        />
+                      </div>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>

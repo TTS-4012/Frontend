@@ -24,11 +24,7 @@ function Scoreboard() {
   useEffect(() => {
     axios
       .get<ScoreboardData>(`/contests/${contestId}/scoreboard`, {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
-        params: {
-          limit: rowPerPage,
-          offset: (pageNumber - 1) * rowPerPage,
-        },
+        params: { limit: rowPerPage, offset: (pageNumber - 1) * rowPerPage },
       })
       .then((res) => {
         setData(res.data);
@@ -63,7 +59,7 @@ function Scoreboard() {
           {data?.users.map((user, idx) => (
             <TableRow
               key={user.user_id}
-              index={idx}
+              index={idx + (pageNumber - 1) * rowPerPage}
               user={user}
             />
           ))}
