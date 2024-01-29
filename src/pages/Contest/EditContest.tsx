@@ -10,35 +10,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "../../components/Link";
 import { PencilIcon, TrashIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
+import { ContestDataType, RegistrationStatus } from "./types";
 
 type FormData = {
   title: string;
   start_time: string;
   duration: number;
-};
-
-type ParamsType = {
-  contestId: string;
-};
-
-type ContestProblemDataType = {
-  ID: number;
-  Title: string;
-};
-
-enum RegistrationStatus {
-  Owner = 1,
-  Registered,
-  NonRegistered,
-}
-
-type ContestDataType = {
-  contest_Id: number;
-  title: string;
-  start_time: number;
-  duration: number;
-  register_status: RegistrationStatus;
-  problems: ContestProblemDataType[];
 };
 
 const validationSchema = yup
@@ -50,7 +27,7 @@ const validationSchema = yup
   .required();
 
 function EditContest() {
-  const { contestId } = useParams<ParamsType>();
+  const { contestId } = useParams();
 
   const navigate = useNavigate();
 

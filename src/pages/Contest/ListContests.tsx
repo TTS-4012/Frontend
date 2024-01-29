@@ -54,7 +54,7 @@ function TablePaginationActions(props: {
   );
 }
 
-type ContestDataType = {
+type ContestListDataType = {
   total_count: number;
   contests: {
     contest_Id: number;
@@ -76,14 +76,14 @@ function ListContests() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
-  const [tableData, setTableData] = useState<ContestDataType>();
+  const [tableData, setTableData] = useState<ContestListDataType>();
 
   const [toggleUpdateData, UpdateTableData] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get<ContestDataType>("/contests", {
+      .get<ContestListDataType>("/contests", {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           limit: rowsPerPage,

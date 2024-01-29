@@ -20,7 +20,7 @@ import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
 import ChangeProfile from "./pages/Auth/ChangeProfile.tsx";
 import ChangePassword from "./pages/Auth/ChangePassword.tsx";
-import Scoreboard from "./pages/Contest/Scoreboard.tsx";
+import Scoreboard from "./pages/Contest/Scoreboard/Scoreboard.tsx";
 import toast from "react-hot-toast";
 
 const router = createBrowserRouter([
@@ -108,7 +108,7 @@ const router = createBrowserRouter([
                     Component: EditProblem,
                   },
                   {
-                    path: ":problemId",
+                    path: ":problemIndex",
                     children: [
                       {
                         index: true,
