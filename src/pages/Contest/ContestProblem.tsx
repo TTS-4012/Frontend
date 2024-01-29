@@ -113,7 +113,7 @@ function ContestProblem() {
         )}
         <div className="flex min-w-[16rem] basis-1/6 flex-col gap-2">
           <div className="flex flex-col gap-1 rounded-t-lg bg-white p-1 shadow-md">
-            <div className="relative border-b border-gray-200 p-4 text-center text-3xl font-bold text-gray-900 sm:px-6">
+            <div className="relative flex flex-row border-b border-gray-200 px-10 py-4 text-center text-3xl font-bold text-gray-900">
               {contestData.title}
               {contestData.register_status == RegistrationStatus.Owner && (
                 <Button
