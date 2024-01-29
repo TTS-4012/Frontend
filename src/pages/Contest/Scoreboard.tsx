@@ -2,24 +2,28 @@ import TableRow from "./TableRow";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { user } from "./TableRow";
-type pageData = {
-  count: number;
-  problems: problem[];
-  users: user[];
-};
-type problem = {
+import { ScoreboardUserData } from "./TableRow";
+
+type ScoreboardProblemData = {
   id: number;
   title: string;
 };
-function Leaderboard() {
+
+type ScoreboardData = {
+  count: number;
+  problems: ScoreboardProblemData[];
+  users: ScoreboardUserData[];
+};
+
+function Scoreboard() {
   const { contestId } = useParams();
-  const [data, setData] = useState<pageData>();
+  const [data, setData] = useState<ScoreboardData>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [rowPerPage, setRowPerPage] = useState<number>(100);
+
   useEffect(() => {
     axios
-      .get<pageData>(`/contests/${contestId}/scoreboard`, {
+      .get<ScoreboardData>(`/contests/${contestId}/scoreboard`, {
         headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           limit: rowPerPage,
@@ -91,4 +95,4 @@ function Leaderboard() {
   );
 }
 
-export default Leaderboard;
+export default Scoreboard;

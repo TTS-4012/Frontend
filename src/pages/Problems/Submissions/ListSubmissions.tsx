@@ -3,23 +3,21 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SubmissionsRow, { SubmissionData } from "./SubmissionsRow";
 
-type ParamsType = {
-  problemId: string;
-};
-
 type ProblemSubmissionListData = {
   total_count: number;
   submissions: SubmissionData[];
 };
 
 function ListSubmissions() {
-  const { problemId } = useParams<ParamsType>();
+  const { problemId, contestId } = useParams();
 
   const [data, setData] = useState<ProblemSubmissionListData>();
 
   useEffect(() => {
     axios
-      .get<ProblemSubmissionListData>(`/problems/${problemId}/submissions`, { params: { descending: true } })
+      .get<ProblemSubmissionListData>(`${contestId ? `contests/${contestId}` : ``}/problems/${problemId}/submissions`, {
+        params: { descending: true },
+      })
       .then((res) => {
         setData(res.data);
       });

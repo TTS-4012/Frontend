@@ -20,7 +20,7 @@ import ListSubmissions from "./pages/Problems/Submissions/ListSubmissions.tsx";
 import Home from "./pages/Home.tsx";
 import ChangeProfile from "./pages/Auth/ChangeProfile.tsx";
 import ChangePassword from "./pages/Auth/ChangePassword.tsx";
-import Leaderboard from "./pages/Contest/Leaderboard.tsx";
+import Scoreboard from "./pages/Contest/Scoreboard.tsx";
 import toast from "react-hot-toast";
 
 const router = createBrowserRouter([
@@ -124,7 +124,7 @@ const router = createBrowserRouter([
               },
               {
                 path: "scoreboard",
-                Component: Leaderboard,
+                Component: Scoreboard,
               },
             ],
           },
@@ -151,6 +151,7 @@ const router = createBrowserRouter([
   },
 ]);
 
+// axios.defaults.baseURL = "http://0.0.0.0:8080/v1";
 axios.defaults.baseURL = "https://api.ocontest.ir/v1";
 axios.interceptors.request.use((config) => {
   if (localStorage.getItem("auth.access_token"))
