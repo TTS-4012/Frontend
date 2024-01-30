@@ -99,7 +99,7 @@ function ProblemComponent({ id, className, ...otherProps }: PropsType) {
               size="xs"
               variant="inline"
               onClick={() => {
-                navigate("edit");
+                navigate(`/problems/${id}/edit`);
               }}>
               <PencilIcon className="h-5 w-5" />
             </Button>

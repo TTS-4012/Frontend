@@ -154,7 +154,7 @@ function ContestProblem() {
               Scoreboard
             </Link>
             <Link
-              to={`/problems/${problemId}/submissions`}
+              to={`/contests/${contestId}/submissions`}
               className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
               <PuzzlePieceIcon className="h-5 w-5" />
               Submissions
