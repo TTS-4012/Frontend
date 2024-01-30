@@ -27,6 +27,7 @@ function Scoreboard() {
         params: { limit: rowPerPage, offset: (pageNumber - 1) * rowPerPage },
       })
       .then((res) => {
+        res.data.users.reverse();
         setData(res.data);
       });
   }, [contestId, pageNumber, rowPerPage]);
@@ -60,7 +61,7 @@ function Scoreboard() {
             {data?.users.map((user, idx) => (
               <TableRow
                 key={user.user_id}
-                index={idx + (pageNumber - 1) * rowPerPage}
+                index={idx + (pageNumber - 1) * rowPerPage + 1}
                 user={user}
               />
             ))}
