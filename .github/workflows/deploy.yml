@@ -1,0 +1,23 @@
+name: FrontEnd Deployment
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        packages: write  
+    steps:
+      - name: deploy to remote host 
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            docker tag ghcr.io/ocontest/ocontest-frontend ghcr.io/ocontest/ocontest-frontend:$(date +%s)
+            docker kill ocontestf 
+            docker rmi ghcr.io/ocontest/ocontest-frontend
+            docker run -d --rm --name ocontestf -p 4041:80 ghcr.io/ocontest/ocontest-frontend
