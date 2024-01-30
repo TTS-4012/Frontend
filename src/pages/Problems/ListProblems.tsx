@@ -113,55 +113,55 @@ function ListProblems() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl p-2">
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-row">
-          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300 shadow-sm ">
-            <button
-              className={`px-5 ${order.order_by == "problem_id" && order.descending && "rounded-md bg-slate-400"}`}
-              onClick={() => handleOrdering("problem_id", true)}>
-              Latest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "problem_id" && !order.descending && "rounded-md bg-slate-400"}`}
-              onClick={() => handleOrdering("problem_id", false)}>
-              Oldest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "hardness" && order.descending && "rounded-md bg-slate-400"}`}
-              onClick={() => handleOrdering("hardness", true)}>
-              Hardest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "hardness" && !order.descending && "rounded-md bg-slate-400 "}`}
-              onClick={() => handleOrdering("hardness", false)}>
-              Easiest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "solve_count" && order.descending && "rounded-md bg-slate-400"}`}
-              onClick={() => handleOrdering("solve_count", true)}>
-              Most Solved
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "solve_count" && !order.descending && "rounded-md  bg-slate-400"}`}
-              onClick={() => handleOrdering("solve_count", false)}>
-              Least Solved
-            </button>
-          </div>
+    <div className="w-full flex-1 overflow-auto">
+      <div className="relative mx-auto w-full max-w-7xl p-2">
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row">
+            <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300 shadow-sm ">
+              <button
+                className={`px-5 ${order.order_by == "problem_id" && order.descending && "rounded-md bg-slate-400"}`}
+                onClick={() => handleOrdering("problem_id", true)}>
+                Latest
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "problem_id" && !order.descending && "rounded-md bg-slate-400"}`}
+                onClick={() => handleOrdering("problem_id", false)}>
+                Oldest
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "hardness" && order.descending && "rounded-md bg-slate-400"}`}
+                onClick={() => handleOrdering("hardness", true)}>
+                Hardest
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "hardness" && !order.descending && "rounded-md bg-slate-400 "}`}
+                onClick={() => handleOrdering("hardness", false)}>
+                Easiest
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "solve_count" && order.descending && "rounded-md bg-slate-400"}`}
+                onClick={() => handleOrdering("solve_count", true)}>
+                Most Solved
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "solve_count" && !order.descending && "rounded-md  bg-slate-400"}`}
+                onClick={() => handleOrdering("solve_count", false)}>
+                Least Solved
+              </button>
+            </div>
 
-          <Button
-            size="lg"
-            className=" ml-auto flex gap-1"
-            onClick={() => {
-              navigate("/problems/new");
-            }}>
-            <PlusCircleIcon className="h-6 w-6" />
-            Create problem
-          </Button>
-        </div>
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <TableContainer sx={{ maxHeight: 620 }}>
-            <Table>
+            <Button
+              size="lg"
+              className=" ml-auto flex gap-1"
+              onClick={() => {
+                navigate("/problems/new");
+              }}>
+              <PlusCircleIcon className="h-6 w-6" />
+              Create problem
+            </Button>
+          </div>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }}>
               <TableHead>
                 <TableRow className="bg-indigo-500">
                   <TableCell
@@ -223,7 +223,7 @@ function ListProblems() {
               </TableFooter>
             </Table>
           </TableContainer>
-        </Paper>
+        </div>
       </div>
     </div>
   );
