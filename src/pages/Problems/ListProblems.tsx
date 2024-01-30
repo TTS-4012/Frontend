@@ -161,7 +161,9 @@ function ListProblems() {
             </Button>
           </div>
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small">
+            <Table
+              sx={{ minWidth: 650 }}
+              size="small">
               <TableHead>
                 <TableRow className="bg-indigo-500">
                   <TableCell
