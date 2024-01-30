@@ -159,71 +159,71 @@ function ListProblems() {
             Create problem
           </Button>
         </div>
-        <TableContainer component={Paper}>
-          <Table
-            sx={{ minWidth: 650 }}
-            size="small">
-            <TableHead>
-              <TableRow className="bg-indigo-500">
-                <TableCell
-                  align="left"
-                  padding="checkbox">
-                  <p className="pl-2 font-bold text-white ">Number</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold text-white ">Problem</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold text-white ">Hardness</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold  text-white">Solve Count</p>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableData?.problems.map((problem, i) => (
-                <TableRow
-                  key={problem.problem_id}
-                  onClick={(event) => handleClick(event, problem.problem_id)}
-                  sx={{ cursor: "pointer" }}
-                  className="hover:bg-blue-100">
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <TableContainer sx={{ maxHeight: 620 }}>
+            <Table>
+              <TableHead>
+                <TableRow className="bg-indigo-500">
                   <TableCell
-                    className=""
-                    align="center">
-                    <p className="text-lg">{page * rowsPerPage + i + 1}</p>
+                    align="left"
+                    padding="checkbox">
+                    <p className="pl-2 font-bold text-white ">Number</p>
                   </TableCell>
                   <TableCell align="center">
-                    <p className=" text-lg">
-                      {problem.title.slice(0, 50)} {problem.title.length > 50 && " ..."}
-                    </p>
+                    <p className="font-bold text-white ">Problem</p>
                   </TableCell>
                   <TableCell align="center">
-                    <p className=" text-lg">{problem.hardness} </p>
+                    <p className="font-bold text-white ">Hardness</p>
                   </TableCell>
                   <TableCell align="center">
-                    <p className=" text-lg">{problem.solve_count} </p>
+                    <p className="font-bold  text-white">Solve Count</p>
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  className=""
-                  rowsPerPageOptions={[20, 50, 100]}
-                  colSpan={4}
-                  count={tableData?.total_count ?? -1}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {tableData?.problems.map((problem, i) => (
+                  <TableRow
+                    key={problem.problem_id}
+                    onClick={(event) => handleClick(event, problem.problem_id)}
+                    sx={{ cursor: "pointer" }}
+                    className="hover:bg-blue-100">
+                    <TableCell
+                      className=""
+                      align="center">
+                      <p className="text-lg">{page * rowsPerPage + i + 1}</p>
+                    </TableCell>
+                    <TableCell align="center">
+                      <p className=" text-lg">
+                        {problem.title.slice(0, 50)} {problem.title.length > 50 && " ..."}
+                      </p>
+                    </TableCell>
+                    <TableCell align="center">
+                      <p className=" text-lg">{problem.hardness} </p>
+                    </TableCell>
+                    <TableCell align="center">
+                      <p className=" text-lg">{problem.solve_count} </p>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    className=""
+                    rowsPerPageOptions={[20, 50, 100]}
+                    colSpan={4}
+                    count={tableData?.total_count ?? -1}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+        </Paper>
       </div>
     </div>
   );

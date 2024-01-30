@@ -182,92 +182,92 @@ function ListContests() {
             Create contest
           </Button>
         </div>
-        <TableContainer component={Paper}>
-          <Table
-            sx={{ minWidth: 650 }}
-            size="small">
-            <TableHead>
-              <TableRow className=" bg-indigo-500 text-lg">
-                <TableCell
-                  align="left"
-                  padding="checkbox">
-                  <p className="pl-2 font-bold text-white">Number</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold text-white  ">Contest Title</p>
-                </TableCell>
-                <TableCell
-                  align="center"
-                  padding="checkbox">
-                  <p className="px-auto font-bold text-white">Status</p>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableData?.contests.length == 0 && (
-                <>
-                  <TableRow>
-                    <TableCell>#</TableCell>
-                    <TableCell align="center">
-                      <p className=" text-lg font-medium italic text-slate-500"> no contests</p>
-                    </TableCell>
-                    <TableCell>-</TableCell>
-                  </TableRow>
-                </>
-              )}
-              {tableData?.contests?.map((contest, i) => (
-                <TableRow
-                  key={i}
-                  sx={{ cursor: "pointer" }}>
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <TableContainer sx={{ maxHeight: 620 }}>
+            <Table>
+              <TableHead>
+                <TableRow className=" bg-indigo-500 text-lg">
+                  <TableCell
+                    align="left"
+                    padding="checkbox">
+                    <p className="pl-2 font-bold text-white">Number</p>
+                  </TableCell>
                   <TableCell align="center">
-                    <p className="text-lg">{page * rowsPerPage + i + 1}</p>
+                    <p className="font-bold text-white  ">Contest Title</p>
                   </TableCell>
                   <TableCell
                     align="center"
-                    onClick={(event) => handleClick(event, contest.contest_Id, contest.register_status)}
-                    className="rounded-sm hover:bg-blue-100">
-                    <p className="text-lg font-medium">
-                      {contest.title.slice(0, 50)} {contest.title.length > 50 && "..."}
-                    </p>
-                  </TableCell>
-                  <TableCell align="center">
-                    {contest.register_status == 1 && (
-                      <button
-                        className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
-                        onClick={() => {
-                          navigate(`/contests/${contest.contest_Id}/edit`);
-                        }}>
-                        EDIT
-                      </button>
-                    )}
-                    {contest.register_status == 2 && <p className="italic">Joined</p>}
-                    {contest.register_status == 3 && (
-                      <button
-                        className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
-                        onClick={() => handleJoinContest(contest.contest_Id)}>
-                        JOIN
-                      </button>
-                    )}
+                    padding="checkbox">
+                    <p className="px-auto font-bold text-white">Status</p>
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[20, 50, 100]}
-                  colSpan={4}
-                  count={tableData?.total_count || -1}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {tableData?.contests.length == 0 && (
+                  <>
+                    <TableRow>
+                      <TableCell>#</TableCell>
+                      <TableCell align="center">
+                        <p className=" text-lg font-medium italic text-slate-500"> no contests</p>
+                      </TableCell>
+                      <TableCell>-</TableCell>
+                    </TableRow>
+                  </>
+                )}
+                {tableData?.contests?.map((contest, i) => (
+                  <TableRow
+                    key={i}
+                    sx={{ cursor: "pointer" }}>
+                    <TableCell align="center">
+                      <p className="text-lg">{page * rowsPerPage + i + 1}</p>
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      onClick={(event) => handleClick(event, contest.contest_Id, contest.register_status)}
+                      className="rounded-sm hover:bg-blue-100">
+                      <p className="text-lg font-medium">
+                        {contest.title.slice(0, 50)} {contest.title.length > 50 && "..."}
+                      </p>
+                    </TableCell>
+                    <TableCell align="center">
+                      {contest.register_status == 1 && (
+                        <button
+                          className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
+                          onClick={() => {
+                            navigate(`/contests/${contest.contest_Id}/edit`);
+                          }}>
+                          EDIT
+                        </button>
+                      )}
+                      {contest.register_status == 2 && <p className="italic">Joined</p>}
+                      {contest.register_status == 3 && (
+                        <button
+                          className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
+                          onClick={() => handleJoinContest(contest.contest_Id)}>
+                          JOIN
+                        </button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[20, 50, 100]}
+                    colSpan={4}
+                    count={tableData?.total_count || -1}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+        </Paper>
       </div>
     </div>
   );
