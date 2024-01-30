@@ -17,13 +17,16 @@ function ListSubmissions() {
 
   useEffect(() => {
     axios
-      .get<ProblemSubmissionListData>(`${contestId ? `contests/${contestId}` : ``}/problems/${problemId}/submissions`, {
-        params: { descending: true, limit: rowPerPage, offset: (pageNumber - 1) * rowPerPage },
-      })
+      .get<ProblemSubmissionListData>(
+        `${contestId ? `/contests/${contestId}` : ``}${problemId ? `/problems/${problemId}` : ``}/submissions`,
+        { params: { descending: true, limit: rowPerPage, offset: (pageNumber - 1) * rowPerPage } },
+      )
       .then((res) => {
         setData(res.data);
       });
   }, [pageNumber, rowPerPage, contestId, problemId]);
+
+  const showProblemName = problemId == undefined;
 
   return (
     <>
@@ -44,6 +47,13 @@ function ListSubmissions() {
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                       Language
                     </th>
+                    {showProblemName && (
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        Problem
+                      </th>
+                    )}
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
@@ -67,11 +77,12 @@ function ListSubmissions() {
                       key={submission.metadata.submission_id}
                       data={submission}
                       index={idx + (pageNumber - 1) * rowPerPage}
+                      showProblemName={showProblemName}
                     />
                   ))}
                   <tr className="bg-gray-50">
                     <td
-                      colSpan={5}
+                      colSpan={5 + (showProblemName ? 1 : 0)}
                       className="rounded-b-md py-2">
                       <div className="flex flex-row gap-2">
                         <p className="my-auto ml-auto">page number</p>

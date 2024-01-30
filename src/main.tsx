@@ -123,6 +123,10 @@ const router = createBrowserRouter([
                 ],
               },
               {
+                path: "submissions",
+                Component: ListSubmissions,
+              },
+              {
                 path: "scoreboard",
                 Component: Scoreboard,
               },
