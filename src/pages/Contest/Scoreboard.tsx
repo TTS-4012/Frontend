@@ -51,8 +51,8 @@ function Scoreboard() {
               {data?.problems.map((question) => (
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6">
-                  <Link to={`/contests/${contestId}/${question.id}`}> {question.title}</Link>
+                  className="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 last:rounded-tr-md sm:pl-6">
+                  <Link to={`/contests/${contestId}/problems/${question.id}`}> {question.title}</Link>
                 </th>
               ))}
             </tr>

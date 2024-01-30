@@ -84,7 +84,6 @@ function ListContests() {
   useEffect(() => {
     axios
       .get<ContestDataType>("/contests", {
-        headers: { Authorization: localStorage.getItem("auth.access_token") },
         params: {
           limit: rowsPerPage,
           offset: page * rowsPerPage,
@@ -109,7 +108,6 @@ function ListContests() {
     toast.promise(
       axios
         .patch(`/contests/${String(contest_id)}`, undefined, {
-          headers: { Authorization: localStorage.getItem("auth.access_token") },
           params: {
             action: "register",
           },
