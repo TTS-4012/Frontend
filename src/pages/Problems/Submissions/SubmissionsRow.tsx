@@ -21,6 +21,8 @@ export type SubmissionData = {
     language: string;
     created_at: string;
     file_name: string;
+    problem_id: number;
+    problem_title: string;
   };
   results: {
     service_message: string;
@@ -38,6 +40,7 @@ export type DialogData = {
 type PropsType = {
   data: SubmissionData;
   index: number;
+  showProblemName: boolean;
 };
 
 const verdictNames = ["", "OK", "Wrong", "TimeLimit", "MemoryLimit", "RuntimeError", "Unknown", "CompileError"];
@@ -47,7 +50,7 @@ const getScore = (verdicts: Verdicts[] | null) => {
   return verdicts.filter((v) => v === Verdicts.VerdictOK).length / verdicts.length;
 };
 
-function SubmissionsRow({ data, index }: PropsType) {
+function SubmissionsRow({ data, index, showProblemName }: PropsType) {
   const score = getScore(data.results.verdicts);
   const [verdictsModalOpen, setVerdictsModalOpen] = useState(false);
   const [codeViewOpen, setCodeViewOpen] = useState(false);
@@ -94,6 +97,7 @@ function SubmissionsRow({ data, index }: PropsType) {
           {new Date(data.metadata.created_at).toLocaleString("en-us", { hour12: false })}
         </td>
         <td className="whitespace-nowrap px-3 py-4 capitalize">{data.metadata.language}</td>
+        {showProblemName && <td className="whitespace-nowrap px-3 py-4 capitalize">{data.metadata.problem_title}</td>}
         <td
           className={`whitespace-nowrap px-3 py-4 ${score == 1 ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"}`}>
           {isNaN(score) ? "-" : (100 * score).toFixed(0)}
