@@ -29,7 +29,7 @@ function ListSubmissions() {
   const showProblemName = problemId == undefined;
 
   return (
-    <>
+    <div className="w-full flex-1 overflow-auto">
       <div className="mx-auto mt-8 flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -106,7 +106,7 @@ function ListSubmissions() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

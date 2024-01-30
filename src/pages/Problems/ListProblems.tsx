@@ -113,117 +113,117 @@ function ListProblems() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl p-2">
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-row">
-          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300 shadow-sm ">
-            <button
-              className={`px-5 ${order.order_by == "problem_id" && order.descending && "rounded-md bg-slate-400"}`}
-              onClick={() => handleOrdering("problem_id", true)}>
-              Latest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "problem_id" && !order.descending && "rounded-md bg-slate-400"}`}
-              onClick={() => handleOrdering("problem_id", false)}>
-              Oldest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "hardness" && order.descending && "rounded-md bg-slate-400"}`}
-              onClick={() => handleOrdering("hardness", true)}>
-              Hardest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "hardness" && !order.descending && "rounded-md bg-slate-400 "}`}
-              onClick={() => handleOrdering("hardness", false)}>
-              Easiest
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "solve_count" && order.descending && "rounded-md bg-slate-400"}`}
-              onClick={() => handleOrdering("solve_count", true)}>
-              Most Solved
-            </button>
-            <button
-              className={`px-5 ${order.order_by == "solve_count" && !order.descending && "rounded-md  bg-slate-400"}`}
-              onClick={() => handleOrdering("solve_count", false)}>
-              Least Solved
-            </button>
-          </div>
+    <div className="w-full flex-1 overflow-auto">
+      <div className="relative mx-auto w-full max-w-7xl p-2">
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row">
+            <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300 shadow-sm ">
+              <button
+                className={`px-5 ${order.order_by == "problem_id" && order.descending && "rounded-md bg-slate-400"}`}
+                onClick={() => handleOrdering("problem_id", true)}>
+                Latest
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "problem_id" && !order.descending && "rounded-md bg-slate-400"}`}
+                onClick={() => handleOrdering("problem_id", false)}>
+                Oldest
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "hardness" && order.descending && "rounded-md bg-slate-400"}`}
+                onClick={() => handleOrdering("hardness", true)}>
+                Hardest
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "hardness" && !order.descending && "rounded-md bg-slate-400 "}`}
+                onClick={() => handleOrdering("hardness", false)}>
+                Easiest
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "solve_count" && order.descending && "rounded-md bg-slate-400"}`}
+                onClick={() => handleOrdering("solve_count", true)}>
+                Most Solved
+              </button>
+              <button
+                className={`px-5 ${order.order_by == "solve_count" && !order.descending && "rounded-md  bg-slate-400"}`}
+                onClick={() => handleOrdering("solve_count", false)}>
+                Least Solved
+              </button>
+            </div>
 
-          <Button
-            size="lg"
-            className=" ml-auto flex gap-1"
-            onClick={() => {
-              navigate("/problems/new");
-            }}>
-            <PlusCircleIcon className="h-6 w-6" />
-            Create problem
-          </Button>
-        </div>
-        <TableContainer component={Paper}>
-          <Table
-            sx={{ minWidth: 650 }}
-            size="small">
-            <TableHead>
-              <TableRow className="bg-indigo-500">
-                <TableCell
-                  align="left"
-                  padding="checkbox">
-                  <p className="pl-2 font-bold text-white ">Number</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold text-white ">Problem</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold text-white ">Hardness</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold  text-white">Solve Count</p>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableData?.problems.map((problem, i) => (
-                <TableRow
-                  key={problem.problem_id}
-                  onClick={(event) => handleClick(event, problem.problem_id)}
-                  sx={{ cursor: "pointer" }}
-                  className="hover:bg-blue-100">
+            <Button
+              size="lg"
+              className=" ml-auto flex gap-1"
+              onClick={() => {
+                navigate("/problems/new");
+              }}>
+              <PlusCircleIcon className="h-6 w-6" />
+              Create problem
+            </Button>
+          </div>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }}>
+              <TableHead>
+                <TableRow className="bg-indigo-500">
                   <TableCell
-                    className=""
-                    align="center">
-                    <p className="text-lg">{page * rowsPerPage + i + 1}</p>
+                    align="left"
+                    padding="checkbox">
+                    <p className="pl-2 font-bold text-white ">Number</p>
                   </TableCell>
                   <TableCell align="center">
-                    <p className=" text-lg">
-                      {problem.title.slice(0, 50)} {problem.title.length > 50 && " ..."}
-                    </p>
+                    <p className="font-bold text-white ">Problem</p>
                   </TableCell>
                   <TableCell align="center">
-                    <p className=" text-lg">{problem.hardness} </p>
+                    <p className="font-bold text-white ">Hardness</p>
                   </TableCell>
                   <TableCell align="center">
-                    <p className=" text-lg">{problem.solve_count} </p>
+                    <p className="font-bold  text-white">Solve Count</p>
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  className=""
-                  rowsPerPageOptions={[20, 50, 100]}
-                  colSpan={4}
-                  count={tableData?.total_count ?? -1}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {tableData?.problems.map((problem, i) => (
+                  <TableRow
+                    key={problem.problem_id}
+                    onClick={(event) => handleClick(event, problem.problem_id)}
+                    sx={{ cursor: "pointer" }}
+                    className="hover:bg-blue-100">
+                    <TableCell
+                      className=""
+                      align="center">
+                      <p className="text-lg">{page * rowsPerPage + i + 1}</p>
+                    </TableCell>
+                    <TableCell align="center">
+                      <p className=" text-lg">
+                        {problem.title.slice(0, 50)} {problem.title.length > 50 && " ..."}
+                      </p>
+                    </TableCell>
+                    <TableCell align="center">
+                      <p className=" text-lg">{problem.hardness} </p>
+                    </TableCell>
+                    <TableCell align="center">
+                      <p className=" text-lg">{problem.solve_count} </p>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    className=""
+                    rowsPerPageOptions={[20, 50, 100]}
+                    colSpan={4}
+                    count={tableData?.total_count ?? -1}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+        </div>
       </div>
     </div>
   );

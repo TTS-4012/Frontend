@@ -163,18 +163,17 @@ function ContestProblem() {
         </div>
       </div>
     ) : (
-      <div>
-        <div>contest will start in </div>
-        <CalendarIcon className="m-auto h-6 w-6 shrink-0" />
-        <div className="flex grow flex-col">
-          <div className="text-lg font-medium">
+      <div className="m-auto flex w-3/12 flex-row rounded-md bg-white p-5">
+        <div className="flex grow flex-col text-2xl font-medium">
+          contest will start in
+          <div>
             {new Date(contestData.start_time * 1000).toLocaleDateString("en-GB", {
               day: "numeric",
               month: "short",
               year: "numeric",
             })}
           </div>
-          <div className="text-lg">
+          <div>
             {new Date(contestData.start_time * 1000).toLocaleString("en-US", {
               hour: "numeric",
               minute: "numeric",
@@ -182,6 +181,7 @@ function ContestProblem() {
             })}
           </div>
         </div>
+        <CalendarIcon className="m-auto h-10 w-10 shrink-0" />
       </div>
     )
   ) : (

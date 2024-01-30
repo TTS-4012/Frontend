@@ -135,139 +135,141 @@ function ListContests() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl p-2">
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-row gap-3">
-          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
-            <button
-              className={`px-5 ${!filterData.my_contest && "rounded-md bg-slate-400"}`}
-              onClick={() => setFilterData({ started: filterData.started, my_contest: false })}>
-              All
-            </button>
-            <button
-              className={`px-5 ${filterData.my_contest && "rounded-md bg-slate-400"}`}
-              onClick={() => setFilterData({ started: filterData.started, my_contest: true })}>
-              Joined
-            </button>
+    <div className="w-full flex-1 overflow-auto">
+      <div className="relative mx-auto w-full max-w-7xl p-2">
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row gap-3">
+            <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
+              <button
+                className={`px-5 ${!filterData.my_contest && "rounded-md bg-slate-400"}`}
+                onClick={() => setFilterData({ started: filterData.started, my_contest: false })}>
+                All
+              </button>
+              <button
+                className={`px-5 ${filterData.my_contest && "rounded-md bg-slate-400"}`}
+                onClick={() => setFilterData({ started: filterData.started, my_contest: true })}>
+                Joined
+              </button>
+            </div>
+            <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
+              <button
+                className={`px-5 ${!filterData.started && "rounded-md bg-slate-400"}`}
+                onClick={() =>
+                  setFilterData({
+                    started: false,
+                    my_contest: filterData.my_contest,
+                  })
+                }>
+                Not Started yet
+              </button>
+              <button
+                className={`px-5 ${filterData.started && "rounded-md bg-slate-400"}`}
+                onClick={() =>
+                  setFilterData({
+                    started: true,
+                    my_contest: filterData.my_contest,
+                  })
+                }>
+                Started
+              </button>
+            </div>
+            <Button
+              size="lg"
+              className="ml-auto flex gap-1"
+              onClick={() => {
+                navigate("/contests/new");
+              }}>
+              <PlusCircleIcon className="h-6 w-6" />
+              Create contest
+            </Button>
           </div>
-          <div className="flex flex-row justify-start gap-2 rounded-md bg-slate-300">
-            <button
-              className={`px-5 ${!filterData.started && "rounded-md bg-slate-400"}`}
-              onClick={() =>
-                setFilterData({
-                  started: false,
-                  my_contest: filterData.my_contest,
-                })
-              }>
-              Not Started yet
-            </button>
-            <button
-              className={`px-5 ${filterData.started && "rounded-md bg-slate-400"}`}
-              onClick={() =>
-                setFilterData({
-                  started: true,
-                  my_contest: filterData.my_contest,
-                })
-              }>
-              Started
-            </button>
-          </div>
-          <Button
-            size="lg"
-            className="ml-auto flex gap-1"
-            onClick={() => {
-              navigate("/contests/new");
-            }}>
-            <PlusCircleIcon className="h-6 w-6" />
-            Create contest
-          </Button>
-        </div>
-        <TableContainer component={Paper}>
-          <Table
-            sx={{ minWidth: 650 }}
-            size="small">
-            <TableHead>
-              <TableRow className=" bg-indigo-500 text-lg">
-                <TableCell
-                  align="left"
-                  padding="checkbox">
-                  <p className="pl-2 font-bold text-white">Number</p>
-                </TableCell>
-                <TableCell align="center">
-                  <p className="font-bold text-white  ">Contest Title</p>
-                </TableCell>
-                <TableCell
-                  align="center"
-                  padding="checkbox">
-                  <p className="px-auto font-bold text-white">Status</p>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableData?.contests.length == 0 && (
-                <>
-                  <TableRow>
-                    <TableCell>#</TableCell>
-                    <TableCell align="center">
-                      <p className=" text-lg font-medium italic text-slate-500"> no contests</p>
+          <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            <TableContainer sx={{ maxHeight: 620 }}>
+              <Table>
+                <TableHead>
+                  <TableRow className=" bg-indigo-500 text-lg">
+                    <TableCell
+                      align="left"
+                      padding="checkbox">
+                      <p className="pl-2 font-bold text-white">Number</p>
                     </TableCell>
-                    <TableCell>-</TableCell>
+                    <TableCell align="center">
+                      <p className="font-bold text-white  ">Contest Title</p>
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      padding="checkbox">
+                      <p className="px-auto font-bold text-white">Status</p>
+                    </TableCell>
                   </TableRow>
-                </>
-              )}
-              {tableData?.contests?.map((contest, i) => (
-                <TableRow
-                  key={i}
-                  sx={{ cursor: "pointer" }}>
-                  <TableCell align="center">
-                    <p className="text-lg">{page * rowsPerPage + i + 1}</p>
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    onClick={(event) => handleClick(event, contest.contest_Id, contest.register_status)}
-                    className="rounded-sm hover:bg-blue-100">
-                    <p className="text-lg font-medium">
-                      {contest.title.slice(0, 50)} {contest.title.length > 50 && "..."}
-                    </p>
-                  </TableCell>
-                  <TableCell align="center">
-                    {contest.register_status == 1 && (
-                      <button
-                        className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
-                        onClick={() => {
-                          navigate(`/contests/${contest.contest_Id}/edit`);
-                        }}>
-                        EDIT
-                      </button>
-                    )}
-                    {contest.register_status == 2 && <p className="italic">Joined</p>}
-                    {contest.register_status == 3 && (
-                      <button
-                        className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
-                        onClick={() => handleJoinContest(contest.contest_Id)}>
-                        JOIN
-                      </button>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[20, 50, 100]}
-                  colSpan={4}
-                  count={tableData?.total_count || -1}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {tableData?.contests.length == 0 && (
+                    <>
+                      <TableRow>
+                        <TableCell>#</TableCell>
+                        <TableCell align="center">
+                          <p className=" text-lg font-medium italic text-slate-500"> no contests</p>
+                        </TableCell>
+                        <TableCell>-</TableCell>
+                      </TableRow>
+                    </>
+                  )}
+                  {tableData?.contests?.map((contest, i) => (
+                    <TableRow
+                      key={i}
+                      sx={{ cursor: "pointer" }}>
+                      <TableCell align="center">
+                        <p className="text-lg">{page * rowsPerPage + i + 1}</p>
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        onClick={(event) => handleClick(event, contest.contest_Id, contest.register_status)}
+                        className="rounded-sm hover:bg-blue-100">
+                        <p className="text-lg font-medium">
+                          {contest.title.slice(0, 50)} {contest.title.length > 50 && "..."}
+                        </p>
+                      </TableCell>
+                      <TableCell align="center">
+                        {contest.register_status == 1 && (
+                          <button
+                            className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
+                            onClick={() => {
+                              navigate(`/contests/${contest.contest_Id}/edit`);
+                            }}>
+                            EDIT
+                          </button>
+                        )}
+                        {contest.register_status == 2 && <p className="italic">Joined</p>}
+                        {contest.register_status == 3 && (
+                          <button
+                            className="rounded-md px-3 py-0.5 text-base hover:bg-slate-100"
+                            onClick={() => handleJoinContest(contest.contest_Id)}>
+                            JOIN
+                          </button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TablePagination
+                      rowsPerPageOptions={[20, 50, 100]}
+                      colSpan={4}
+                      count={tableData?.total_count || -1}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                      ActionsComponent={TablePaginationActions}
+                    />
+                  </TableRow>
+                </TableFooter>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </div>
       </div>
     </div>
   );

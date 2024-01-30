@@ -32,61 +32,63 @@ function Scoreboard() {
   }, [contestId, pageNumber, rowPerPage]);
 
   return (
-    <div className="w-screen p-2">
-      <table className="mx-auto w-11/12 overflow-y-scroll rounded-md shadow-md">
-        <thead>
-          <tr className="bg-indigo-400">
-            <td
-              scope="col"
-              className="w-14 rounded-tl-md py-3.5 text-center text-sm font-semibold text-gray-900">
-              Rank
-            </td>
-            <td
-              scope="col"
-              className="w-1/12 py-3.5 text-center text-sm font-semibold text-gray-900">
-              User
-            </td>
-            {data?.problems.map((question) => (
-              <th
-                scope="col"
-                className="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6">
-                <Link to={`/contests/${contestId}/${question.id}`}> {question.title}</Link>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="overflow-scroll">
-          {data?.users.map((user, idx) => (
-            <TableRow
-              key={user.user_id}
-              index={idx + (pageNumber - 1) * rowPerPage}
-              user={user}
-            />
-          ))}
-          <tr className="bg-gray-50">
-            {data?.problems && (
+    <div className="w-full flex-1 overflow-auto">
+      <div className="relative w-screen p-2">
+        <table className="mx-auto w-11/12 overflow-y-scroll rounded-md shadow-md">
+          <thead>
+            <tr className="bg-indigo-400">
               <td
-                colSpan={2 + data?.problems.length}
-                className="rounded-b-md py-2">
-                <div className="flex flex-row gap-2">
-                  <p className="my-auto ml-auto">page number</p>
-                  <input
-                    value={pageNumber}
-                    onChange={(e) => setPageNumber(+e.target.value)}
-                    className="h-7 w-14 rounded-md text-center"
-                  />
-                  <p className="my-auto">row per page</p>
-                  <input
-                    value={rowPerPage}
-                    onChange={(e) => setRowPerPage(+e.target.value)}
-                    className="mr-5 h-7 w-14 rounded-md text-center"
-                  />
-                </div>
+                scope="col"
+                className="w-14 rounded-tl-md py-3.5 text-center text-sm font-semibold text-gray-900">
+                Rank
               </td>
-            )}
-          </tr>
-        </tbody>
-      </table>
+              <td
+                scope="col"
+                className="w-1/12 py-3.5 text-center text-sm font-semibold text-gray-900">
+                User
+              </td>
+              {data?.problems.map((question) => (
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6">
+                  <Link to={`/contests/${contestId}/${question.id}`}> {question.title}</Link>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="overflow-scroll">
+            {data?.users.map((user, idx) => (
+              <TableRow
+                key={user.user_id}
+                index={idx + (pageNumber - 1) * rowPerPage}
+                user={user}
+              />
+            ))}
+            <tr className="bg-gray-50">
+              {data?.problems && (
+                <td
+                  colSpan={2 + data?.problems.length}
+                  className="rounded-b-md py-2">
+                  <div className="flex flex-row gap-2">
+                    <p className="my-auto ml-auto">page number</p>
+                    <input
+                      value={pageNumber}
+                      onChange={(e) => setPageNumber(+e.target.value)}
+                      className="h-7 w-14 rounded-md text-center"
+                    />
+                    <p className="my-auto">row per page</p>
+                    <input
+                      value={rowPerPage}
+                      onChange={(e) => setRowPerPage(+e.target.value)}
+                      className="mr-5 h-7 w-14 rounded-md text-center"
+                    />
+                  </div>
+                </td>
+              )}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
